@@ -1,4 +1,6 @@
+using Mediator.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MoneyFlow.Application;
 using MoneyFlow.Infra;
 using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;
@@ -12,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddInfra(builder.Configuration);
+builder.Services.AddDependencyInjectionApplication();
+builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).Assembly);
 
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 

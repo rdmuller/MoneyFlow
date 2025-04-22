@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Common;
+using MoneyFlow.Domain.Repositories;
+using MoneyFlow.Domain.Repositories.Users;
 using MoneyFlow.Infra.DataAccess;
+using MoneyFlow.Infra.DataAccess.Repositories;
 using MoneyFlow.Infra.Services;
 
 namespace MoneyFlow.Infra;
@@ -14,6 +17,13 @@ public static class DependencyInjection
     {
         AddDataBase(services, config);
         AddServices(services);
+        AddRepositories(services);
+    }
+
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
     }
 
     private static void AddServices(IServiceCollection services)

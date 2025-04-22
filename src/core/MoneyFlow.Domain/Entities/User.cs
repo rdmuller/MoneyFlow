@@ -1,4 +1,4 @@
-using MoneyFlow.Common;
+using MoneyFlow.Common.Entities;
 using MoneyFlow.Domain.Enums;
 
 namespace MoneyFlow.Domain.Entities;

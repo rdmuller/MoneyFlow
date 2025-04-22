@@ -10,8 +10,4 @@
     <ProjectReference Include="..\MoneyFlow.Common\MoneyFlow.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

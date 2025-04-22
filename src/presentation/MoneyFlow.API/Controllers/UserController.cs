@@ -1,15 +1,30 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Mediator.Abstractions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MoneyFlow.Application.DTOs.Users;
+using MoneyFlow.Application.UseCases.Users.Commands.Register;
 
 namespace MoneyFlow.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController(IMediator mediator) : ControllerBase
 {
+    private readonly IMediator _mediator = mediator;
+
     [HttpGet]
     public async Task<IActionResult> Register()
     { 
         return Ok("");
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommandDTO data)
+    {
+        var command = new RegisterUserCommand{ data = data };
+        var result = await _mediator.SendAsync(command);
+        return Created("", result);
     }
 }
