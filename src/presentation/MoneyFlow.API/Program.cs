@@ -1,21 +1,23 @@
 using Mediator.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MoneyFlow.Application;
+using MoneyFlow.Application.Behaviors;
 using MoneyFlow.Infra;
 using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddDependencyInjectionApplication();
 builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).Assembly);
+
+builder.Services.AddControllers(options => {
+    options.Filters.Add<ValidationFilter>();
+});
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
+
 
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 

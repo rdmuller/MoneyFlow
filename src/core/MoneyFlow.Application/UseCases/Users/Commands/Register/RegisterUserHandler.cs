@@ -12,11 +12,6 @@ public class RegisterUserHandler(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     public async Task<string> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        var validator = new RegisterUserValidator();
-        var result = validator.Validate(request.data);
-        if (!result.IsValid)
-            return result.Errors.SelectMany(x => x.ErrorMessage).ToList().ToString();
-
         var user = request.data!.DtoToEntity();
 
         await _userRepository.CreateUserAsync(user, cancellationToken);
