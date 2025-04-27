@@ -14,6 +14,7 @@ builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).A
 
 builder.Services.AddControllers(options => {
     options.Filters.Add<ValidationFilter>();
+    options.Filters.Add<ExceptionFilter>();
 });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

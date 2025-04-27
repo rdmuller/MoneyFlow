@@ -1,6 +1,7 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using MoneyFlow.Common.Communications;
+using MoneyFlow.Common.Exceptions;
 
 namespace MoneyFlow.Application.Behaviors;
 
@@ -29,16 +30,22 @@ public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFi
 
                 if (!validationResult.IsValid)
                 {
-                    foreach (var error in validationResult.Errors)
+                    /*foreach (var error in validationResult.Errors)
                     {
                         context.ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                     }
-
                     context.Result = new BadRequestObjectResult(new
                     {
                         Erros = validationResult.Errors.Select(e => new { ErrorCode = e.ErrorCode, ErrorMessage = $"{e.PropertyName}: {e.ErrorMessage}" })
                     });
-                    return;
+                    return;*/
+
+                    var failures = validationResult
+                        .Errors
+                        .Select(e => new BaseError() { ErrorCode = e.ErrorCode, ErrorMessage = e.ErrorMessage } )
+                        .ToList();
+
+                    throw new ErrorOnValidationException(failures);
                 }
             }
         }

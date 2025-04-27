@@ -23,7 +23,7 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommandDTO data)
     {
-        var command = new RegisterUserCommand{ data = data };
+        var command = new RegisterUserCommand{ Data = data };
         var result = await _mediator.SendAsync(command);
         return Created("", result);
     }

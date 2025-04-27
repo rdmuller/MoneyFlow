@@ -13,7 +13,9 @@ public class RegisterUserValidator : AbstractValidator<RegisterUserCommandDTO>
             .MinimumLength(5)
             .WithMessage("Name must be between 5 and 100 characters.");
 
-        RuleFor(x => x.Email).NotEmpty()
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("E-mail is required.")
+            .When(x => !string.IsNullOrWhiteSpace(x.Email))
             .EmailAddress()
             .WithMessage("E-mail must be valid.");
     }
