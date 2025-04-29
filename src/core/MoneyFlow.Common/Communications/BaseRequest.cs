@@ -4,6 +4,6 @@ namespace MoneyFlow.Common.Communications;
 
 public class BaseRequest<T>
 {
-    [JsonPropertyName("name")]
+    [JsonPropertyName("data")]
     public T? Data { get; set; }
 }

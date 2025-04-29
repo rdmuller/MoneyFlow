@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,16 +34,18 @@ public static class DependencyInjection
 
     private static void AddDataBase(IServiceCollection services, IConfiguration config)
     {
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+
         var connectionString = config.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             options.UseSqlServer(connectionString, b =>
             {
                 b.MigrationsHistoryTable(HistoryRepository.DefaultTableName, DbSchemas.SYSTEM);
+                b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
             });
-
-            //options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
         });
     }
 }
