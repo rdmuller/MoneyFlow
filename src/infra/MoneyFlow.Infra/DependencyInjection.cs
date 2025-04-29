@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.Common;
+using MoneyFlow.Common.Services;
 using MoneyFlow.Domain.Repositories;
 using MoneyFlow.Domain.Repositories.Users;
 using MoneyFlow.Infra.DataAccess;

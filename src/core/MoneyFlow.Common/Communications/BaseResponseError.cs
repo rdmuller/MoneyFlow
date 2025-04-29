@@ -1,3 +1,5 @@
+using MoneyFlow.Common.Abstractions;
+
 namespace MoneyFlow.Common.Communications;
 
 public class BaseResponseError : BaseResponseGeneric<string>

@@ -1,4 +1,4 @@
-using MoneyFlow.Common;
+using MoneyFlow.Common.Services;
 
 namespace MoneyFlow.Infra.Services;
 

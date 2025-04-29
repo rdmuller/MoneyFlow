@@ -1,6 +1,7 @@
+using MoneyFlow.Common.Communications;
 using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Common.Communications;
+namespace MoneyFlow.Common.Abstractions;
 
 public abstract class BaseResponseGeneric<T>
 {

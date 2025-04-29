@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MoneyFlow.Common;
 using MoneyFlow.Common.Entities;
+using MoneyFlow.Common.Services;
 
 namespace MoneyFlow.Infra.DataAccess;
 
