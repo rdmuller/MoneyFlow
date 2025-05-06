@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.Application.Behaviors;
+using MoneyFlow.Application.Common.Behaviors;
 using System.Reflection;
 
 namespace MoneyFlow.Application;

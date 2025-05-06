@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
 
-namespace MoneyFlow.Application.Behaviors;
+namespace MoneyFlow.Application.Common.Behaviors;
 
 public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFilter
 {

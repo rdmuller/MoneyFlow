@@ -4,7 +4,7 @@ using MoneyFlow.Common.Communications;
 
 namespace MoneyFlow.Application.UseCases.Users.Commands.Register;
 
-public class RegisterUserCommand : BaseRequest<RegisterUserCommandDTO>, IRequest<BaseResponse<string>>
+public class RegisterUserCommand : IRequest<BaseResponse<string>>
 {
-    //public RegisterUserCommandDTO? data { get; set; }
+    public RegisterUserCommandDTO? User { get; set; }
 }

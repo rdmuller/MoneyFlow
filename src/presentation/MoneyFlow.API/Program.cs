@@ -1,7 +1,7 @@
 using Mediator.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MoneyFlow.Application;
-using MoneyFlow.Application.Behaviors;
+using MoneyFlow.Application.Common.Behaviors;
 using MoneyFlow.Infra;
 using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;

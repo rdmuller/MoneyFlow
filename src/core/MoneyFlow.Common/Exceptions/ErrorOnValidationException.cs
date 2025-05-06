@@ -13,4 +13,21 @@ public class ErrorOnValidationException : BaseException
     {
         Errors = errors;
     }
+
+    public ErrorOnValidationException(string errorCode, string errorMessage)
+    {
+        Errors = new List<BaseError>
+        {
+            new BaseError
+            {
+                ErrorCode = errorCode,
+                ErrorMessage = errorMessage
+            }
+        };
+    }
+
+    public static ErrorOnValidationException DataNotFound()
+    {
+        return new ErrorOnValidationException("DataNotFound", "Tag 'Data' not found");
+    }
 }

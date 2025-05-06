@@ -4,7 +4,7 @@ using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
 using System.Net;
 
-namespace MoneyFlow.Application.Behaviors;
+namespace MoneyFlow.Application.Common.Behaviors;
 
 public class ExceptionFilter : IExceptionFilter
 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Common.Services;
 using MoneyFlow.Domain.Repositories;
 using MoneyFlow.Domain.Repositories.Users;
+using MoneyFlow.Domain.Security;
 using MoneyFlow.Infra.DataAccess;
 using MoneyFlow.Infra.DataAccess.Repositories;
 using MoneyFlow.Infra.Services;
@@ -30,6 +31,7 @@ public static class DependencyInjection
     private static void AddServices(IServiceCollection services)
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
     }
 
     private static void AddDataBase(IServiceCollection services, IConfiguration config)
