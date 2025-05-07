@@ -1,13 +1,11 @@
 using FluentValidation;
-using FluentValidation.Results;
+using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Validators;
 using MoneyFlow.Application.DTOs.Users;
-using MoneyFlow.Common.Communications;
-using MoneyFlow.Common.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.Users.Commands.Register;
 
-public class RegisterUserValidator : AbstractValidator<RegisterUserCommandDTO>
+public class RegisterUserValidator : Validator<RegisterUserCommandDTO>
 {
     public RegisterUserValidator()
     {
