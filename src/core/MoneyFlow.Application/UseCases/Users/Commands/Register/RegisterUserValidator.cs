@@ -5,7 +5,7 @@ using MoneyFlow.Application.DTOs.Users;
 
 namespace MoneyFlow.Application.UseCases.Users.Commands.Register;
 
-public class RegisterUserValidator : Validator<RegisterUserCommandDTO>
+public class RegisterUserValidator : CommonValidator<RegisterUserCommandDTO>
 {
     public RegisterUserValidator()
     {
@@ -23,19 +23,4 @@ public class RegisterUserValidator : Validator<RegisterUserCommandDTO>
 
             RuleFor(x => x.Password).SetValidator(new PasswordValidator<RegisterUserCommandDTO>());
     }
-
-    /*public override async Task<ValidationResult> ValidateAsync(ValidationContext<RegisterUserCommandDTO> context, CancellationToken cancellation = default)
-    {
-        var result = await base.ValidateAsync(context, cancellation);
-        if (!result.IsValid)
-        {
-            var failures = result
-                .Errors
-                .Select(e => new BaseError() { ErrorCode = e.ErrorCode, ErrorMessage = e.ErrorMessage })
-                .ToList();
-            throw new ErrorOnValidationException(failures);
-        }
-
-        return result;
-    }*/
 }

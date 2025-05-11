@@ -9,14 +9,12 @@ public record RegisterUserCommandDTO
     [JsonRequired]
     public string Name { get; set; } = string.Empty;
 
+    [JsonPropertyName("email")]
+    public string Email { get; set; } = string.Empty;
+
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
 
-    [JsonPropertyName("confirm_password")]
-    public string ConfirmPassword { get; set; } = string.Empty;
-
-    [JsonPropertyName("email")]
-    public string Email { get; set; } = string.Empty;
 
     public User DtoToEntity ()
     {

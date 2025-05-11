@@ -4,26 +4,16 @@ namespace MoneyFlow.Common.Exceptions;
 
 public class ErrorOnValidationException : BaseException
 {
-    public ErrorOnValidationException()
+    public ErrorOnValidationException() : base()
     {
-        Errors = new List<BaseError>();
     }
 
-    public ErrorOnValidationException(IEnumerable<BaseError> errors)
+    public ErrorOnValidationException(string errorCode, string errorMessage) : base(errorCode, errorMessage)
     {
-        Errors = errors;
     }
 
-    public ErrorOnValidationException(string errorCode, string errorMessage)
+    public ErrorOnValidationException(IEnumerable<BaseError> errors) : base(errors)
     {
-        Errors = new List<BaseError>
-        {
-            new BaseError
-            {
-                ErrorCode = errorCode,
-                ErrorMessage = errorMessage
-            }
-        };
     }
 
     public static ErrorOnValidationException DataNotFound()

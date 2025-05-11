@@ -1,5 +1,4 @@
 ﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.Users;
 using MoneyFlow.Application.UseCases.Users.Commands.Register;
