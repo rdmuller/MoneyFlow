@@ -2,7 +2,7 @@ using MoneyFlow.Common.Communications;
 
 namespace MoneyFlow.Common.Exceptions;
 
-public abstract class BaseException //: Exception
+public abstract class BaseException : Exception
 {
     public IEnumerable<BaseError> Errors { get; protected set; } = [];
 
