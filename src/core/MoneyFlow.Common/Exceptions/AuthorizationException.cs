@@ -33,6 +33,6 @@ public class AuthorizationException : BaseException
 
     public static AuthorizationException InvalidData(string errorMessage)
     {
-        return new AuthorizationException("InvalidAuthorizationdata", errorMessage);
+        return new AuthorizationException("InvalidAuthorizationData", errorMessage);
     }
 }

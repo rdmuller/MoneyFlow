@@ -24,7 +24,7 @@ public partial class PasswordValidator<T> : PropertyValidator<T, string>
             || !Numbers().IsMatch(password)
             || !SpecialSymbols().IsMatch(password))
         {
-            context.MessageFormatter.AppendArgument(ERROR_CODE, "Senha deve conter 8 caracteres, letras maiúsculas/minúsculas, números e caracteres especiais.");
+            context.MessageFormatter.AppendArgument(ERROR_CODE, "Password must contain 8 characters, upper/lower case letters, numbers and special characters"); // Senha deve conter 8 caracteres, letras maiúsculas/minúsculas, números e caracteres especiais.
             return false;
         }
 
