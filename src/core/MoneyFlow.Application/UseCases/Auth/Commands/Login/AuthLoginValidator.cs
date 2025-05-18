@@ -21,6 +21,6 @@ public class AuthLoginValidator : CommonValidator<AuthLoginCommand>
 
         When(x => !string.IsNullOrWhiteSpace(x.Password),
             () => RuleFor(x => x.Password)
-            .SetValidator(new PasswordValidator<AuthLoginCommand>()).WithMessage("Email or password is wrong"));
+            .SetValidator(new PasswordValidator<AuthLoginCommand>()).WithMessage("Invalid password"));
     }
 }

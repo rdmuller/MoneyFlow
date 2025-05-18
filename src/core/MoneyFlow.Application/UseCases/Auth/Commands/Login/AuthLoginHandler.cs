@@ -2,12 +2,16 @@
 using MoneyFlow.Common.Exceptions;
 using MoneyFlow.Domain.Entities;
 using MoneyFlow.Domain.Repositories.Users;
+using MoneyFlow.Domain.Security;
 
 namespace MoneyFlow.Application.UseCases.Auth.Commands.Login;
 
-public class AuthLoginHandler(IUserQueryRepository userQueryRepository) : IHandler<AuthLoginCommand, string>
+public class AuthLoginHandler(
+    IUserQueryRepository userQueryRepository,
+    IPasswordHasher passwordHasher) : IHandler<AuthLoginCommand, string>
 {
     private readonly IUserQueryRepository _userQueryRepository = userQueryRepository;
+    private readonly IPasswordHasher _passwordHasher = passwordHasher;
 
     public async Task<string> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken = default)
     {
@@ -28,6 +32,9 @@ public class AuthLoginHandler(IUserQueryRepository userQueryRepository) : IHandl
 
         if (user is null)
             throw AuthorizationException.InvalidData("Invalid e-mail");
+
+        if (!_passwordHasher.Verify(request.Password, user.Password))
+            throw AuthorizationException.InvalidData("Invalid password");
 
         return user;
     }
