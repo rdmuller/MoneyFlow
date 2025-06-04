@@ -1,4 +1,5 @@
 ﻿using Mediator.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.Users;
 using MoneyFlow.Application.UseCases.Users.Commands.Register;
@@ -13,7 +14,8 @@ public class UserController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
-    public async Task<IActionResult> Register()
+    [Authorize]
+    public async Task<IActionResult> GetProfile()
     { 
         return Ok("");
     }

@@ -25,10 +25,10 @@ public static class DependencyInjection
 
     private static void AddToken(IServiceCollection services, IConfiguration config)
     {
-        var expirationTimeMinutes = config.GetValue<int>("Settings:jwt:ExpiresMinutes");
+        var expirationTimeMinutes = config.GetValue<uint>("Settings:jwt:ExpiresMinutes");
         var signingKey = config.GetValue<string>("Settings:jwt:SigningKey");
 
-        services.AddScoped<IAccessTokenGenerator>(config => new AccessTokenGenerator(expirationTimeMinutes, signingKey!));
+        services.AddScoped<IAccessTokenGenerator>(config => new AccessTokenGenerator(expirationTimeMinutes, signingKey!, new DateTimeProvider()));
     }
 
     private static void AddRepositories(IServiceCollection services)
@@ -43,7 +43,6 @@ public static class DependencyInjection
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddSingleton<IAccessTokenGenerator, AccessTokenGenerator>();
     }
 
     private static void AddDataBase(IServiceCollection services, IConfiguration config)

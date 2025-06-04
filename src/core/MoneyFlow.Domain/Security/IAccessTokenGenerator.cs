@@ -4,5 +4,5 @@ namespace MoneyFlow.Domain.Security;
 
 public interface IAccessTokenGenerator
 {
-    string GenerateAccessToken(User user);
+    TokenJwt GenerateAccessToken(User user);
 }

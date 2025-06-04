@@ -1,15 +1,15 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.Common.Services;
 using MoneyFlow.Domain.Entities;
 using MoneyFlow.Domain.Security;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace MoneyFlow.Infra.Services;
 
 public class AccessTokenGenerator(
-    uint expirationTimeInMinutes, 
+    uint expirationTimeInMinutes,
     string signingKey,
     IDateTimeProvider dateTimeProvider) : IAccessTokenGenerator
 {
@@ -17,7 +17,7 @@ public class AccessTokenGenerator(
     private readonly string _signinKey = signingKey;
     private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
 
-    public string GenerateAccessToken(User user)
+    public TokenJwt GenerateAccessToken(User user)
     {
         var claims = new Claim[]
         {
@@ -36,7 +36,13 @@ public class AccessTokenGenerator(
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
-        return tokenHandler.WriteToken(securityToken);
+        var token = new TokenJwt
+        {
+            Token = tokenHandler.WriteToken(securityToken),
+            ExpiresAt = tokenDescriptor.Expires!.Value,
+        };
+
+        return token;
     }
 
     private SymmetricSecurityKey SecurityKey()

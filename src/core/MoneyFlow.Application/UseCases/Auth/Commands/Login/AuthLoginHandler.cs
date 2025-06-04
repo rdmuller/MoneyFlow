@@ -1,4 +1,5 @@
 ﻿using Mediator.Abstractions;
+using MoneyFlow.Application.DTOs.Auth;
 using MoneyFlow.Common.Exceptions;
 using MoneyFlow.Domain.Entities;
 using MoneyFlow.Domain.Repositories.Users;
@@ -8,17 +9,23 @@ namespace MoneyFlow.Application.UseCases.Auth.Commands.Login;
 
 public class AuthLoginHandler(
     IUserQueryRepository userQueryRepository,
-    IPasswordHasher passwordHasher) : IHandler<AuthLoginCommand, string>
+    IPasswordHasher passwordHasher, 
+    IAccessTokenGenerator accessTokenGenerator) : IHandler<AuthLoginCommand, TokenDTO>
 {
     private readonly IUserQueryRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
+    private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
 
-    public async Task<string> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken = default)
+    public async Task<TokenDTO> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken = default)
     {
         var user = await ValidateLogin(request);
 
-        var token = "token";
-        return token;
+        var token = _accessTokenGenerator.GenerateAccessToken(user);
+        return new TokenDTO
+        {
+            Token = token.Token,
+            ExpiresAt = token.ExpiresAt
+        };
     }
 
     private async Task<User> ValidateLogin(AuthLoginCommand request)
