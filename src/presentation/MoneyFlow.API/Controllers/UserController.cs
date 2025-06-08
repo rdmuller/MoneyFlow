@@ -9,18 +9,19 @@ namespace MoneyFlow.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UserController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
-    [HttpGet]
-    [Authorize]
+    [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     { 
-        return Ok("");
+        return Ok("funcionou");
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser([FromBody] BaseRequest<RegisterUserCommandDTO> request)
