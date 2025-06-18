@@ -43,6 +43,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ILoggedUser, LoggedUser>();
     }
 
     private static void AddDataBase(IServiceCollection services, IConfiguration config)

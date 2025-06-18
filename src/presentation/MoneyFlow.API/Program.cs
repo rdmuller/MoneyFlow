@@ -2,8 +2,10 @@ using Mediator.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
+using MoneyFlow.Domain.Security;
 using MoneyFlow.Infra;
 using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;
@@ -14,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddDependencyInjectionApplication();
 builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).Assembly);
+builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers(options => {
     //options.Filters.Add<ValidationFilter>();
@@ -57,7 +61,7 @@ app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options =>
+    app.MapScalarApiReference(options => 
     {
         options.WithTheme(ScalarTheme.Moon)
             .WithDarkMode(true)
@@ -70,7 +74,7 @@ if (app.Environment.IsDevelopment())
             });
         options.Authentication = new ScalarAuthenticationOptions
         {
-            PreferredSecurityScheme = JwtBearerDefaults.AuthenticationScheme,
+            PreferredSecurityScheme = "BearerAuth",
         };
     });
 }

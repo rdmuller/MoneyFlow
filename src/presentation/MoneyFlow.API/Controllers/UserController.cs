@@ -4,20 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.Users;
 using MoneyFlow.Application.UseCases.Users.Commands.Register;
 using MoneyFlow.Common.Communications;
+using MoneyFlow.Domain.Security;
 
 namespace MoneyFlow.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class UserController(IMediator mediator) : ControllerBase
+public class UserController(IMediator mediator, ITokenProvider tokenProvider) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
+    private readonly ITokenProvider _tokenProvider = tokenProvider;
 
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     { 
-        return Ok("funcionou");
+        return Ok(_tokenProvider.TokenOnRequest());
     }
 
     [HttpPost]
