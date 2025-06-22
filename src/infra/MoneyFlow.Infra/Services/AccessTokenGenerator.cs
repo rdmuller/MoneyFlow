@@ -24,6 +24,7 @@ public class AccessTokenGenerator(
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Sid, user.ExternalId.ToString()),
             new Claim(ClaimTypes.Role, user.Role),
+            new Claim(ClaimTypes.Name, user.Name),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

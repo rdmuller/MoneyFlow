@@ -11,7 +11,7 @@ public class LoggedUser(ITokenProvider tokenProvider, ApplicationDbContext dbCon
     private readonly ITokenProvider _tokenProvider = tokenProvider;
     private readonly ApplicationDbContext _dbContext = dbContext;
 
-    public async Task<User> GetUserAsync()
+    public async Task<long> GetUserIdAsync()
     {
         Console.WriteLine("Vai buscar usuário do token...");
 
@@ -26,6 +26,8 @@ public class LoggedUser(ITokenProvider tokenProvider, ApplicationDbContext dbCon
         return await _dbContext
             .Users
             .AsNoTracking()
-            .FirstAsync(u => u.ExternalId == Guid.Parse(userExternalId));
+            .Where(u => u.ExternalId == Guid.Parse(userExternalId))
+            .Select(u => u.Id)
+            .FirstAsync();
     }
 }

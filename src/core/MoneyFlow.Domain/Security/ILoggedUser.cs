@@ -4,5 +4,5 @@ namespace MoneyFlow.Domain.Security;
 
 public interface ILoggedUser
 {
-    Task<User> GetUserAsync();
+    Task<long> GetUserIdAsync();
 }
