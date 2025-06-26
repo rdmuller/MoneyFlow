@@ -16,7 +16,7 @@ public record RegisterUserCommandDTO
     public string Password { get; set; } = string.Empty;
 
 
-    public User DtoToEntity ()
+    public User DtoToEntity()
     {
         return new User
         {

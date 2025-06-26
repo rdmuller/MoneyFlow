@@ -5,7 +5,7 @@ using MoneyFlow.Application.DTOs.Users;
 
 namespace MoneyFlow.Application.UseCases.Users.Commands.Register;
 
-public class RegisterUserValidator : CommonValidator<RegisterUserCommandDTO>
+internal class RegisterUserValidator : CommonValidator<RegisterUserCommandDTO>
 {
     public RegisterUserValidator()
     {

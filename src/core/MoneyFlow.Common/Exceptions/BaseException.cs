@@ -15,6 +15,11 @@ public abstract class BaseException : Exception
         Errors = errors;
     }
 
+    public BaseException(BaseError error)
+    {
+        Errors = [error];
+    }
+
     public BaseException(string errorCode, string errorMessage)
     {
         Errors = new List<BaseError>

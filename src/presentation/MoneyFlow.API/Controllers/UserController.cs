@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.Users;
+using MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
 using MoneyFlow.Application.UseCases.Users.Commands.Register;
+using MoneyFlow.Application.UseCases.Users.Queries.GetLoggedUserProfile;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Domain.Security;
 
@@ -17,9 +19,26 @@ public class UserController(IMediator mediator, ITokenProvider tokenProvider) : 
     private readonly ITokenProvider _tokenProvider = tokenProvider;
 
     [HttpGet("profile")]
+    [ProducesResponseType(typeof(BaseResponse<GetUserFullQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProfile()
     { 
-        return Ok(_tokenProvider.TokenOnRequest());
+        var result = await _mediator.SendAsync(new GetLoggedUserProfileQuery());
+
+        return Ok(result);
+    }
+
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] BaseRequest<UserChangePasswordCommand> request)
+    {
+        var command = new UserChangePasswordCommand
+        {
+            OldPassword = request.Data.OldPassword,
+            NewPassword = request.Data.NewPassword
+        };
+
+        var result = await _mediator.SendAsync(command);
+
+        return Ok(result);
     }
 
     [HttpPost]

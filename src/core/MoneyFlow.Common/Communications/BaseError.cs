@@ -34,8 +34,15 @@ public class BaseError
         ErrorMessage = errorMessage;
     }
 
-    public static BaseError RecordAlreadyExists(string errorMessage)
+    public static BaseError RecordAlreadyExists(string errorMessage) => new BaseError() 
+    { 
+        ErrorCode = "RecordAlreadyExists", 
+        ErrorMessage = errorMessage
+    };
+
+    public static BaseError Unauthorized(string ErrorMessage) => new BaseError()
     {
-        return new BaseError() { ErrorCode = "RecordAlreadyExists", ErrorMessage = errorMessage };
-    }
+        ErrorCode = "Unauthorized",
+        ErrorMessage = ErrorMessage
+    };
 }

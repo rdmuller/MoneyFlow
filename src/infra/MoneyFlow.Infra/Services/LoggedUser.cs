@@ -13,15 +13,11 @@ public class LoggedUser(ITokenProvider tokenProvider, ApplicationDbContext dbCon
 
     public async Task<long> GetUserIdAsync()
     {
-        Console.WriteLine("Vai buscar usuário do token...");
-
         var token = _tokenProvider.TokenOnRequest();
         var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(token);
 
         var userExternalId = jwtToken.Claims.First(jwtToken => jwtToken.Type == ClaimTypes.Sid).Value;
-
-        Console.WriteLine($"Id externo {userExternalId}");
 
         return await _dbContext
             .Users

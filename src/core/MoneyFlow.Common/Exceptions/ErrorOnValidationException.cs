@@ -16,6 +16,10 @@ public class ErrorOnValidationException : BaseException
     {
     }
 
+    public ErrorOnValidationException(BaseError error) : base(error)
+    {
+    }
+
     public static ErrorOnValidationException DataNotFound()
     {
         return new ErrorOnValidationException("DataNotFound", "Tag 'Data' not found");

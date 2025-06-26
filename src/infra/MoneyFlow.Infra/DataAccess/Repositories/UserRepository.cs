@@ -12,7 +12,12 @@ public class UserRepository(ApplicationDbContext dbcontext) : IUserWriteOnlyRepo
         await _dbContext.Users.AddAsync(user, cancellationToken);
     }
 
-    public async Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public void UpdateUser(User user, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Users.Update(user);
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(email), cancellationToken);
     }
@@ -20,5 +25,15 @@ public class UserRepository(ApplicationDbContext dbcontext) : IUserWriteOnlyRepo
     public async Task<bool> ExistUserWithEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users.AsNoTracking().AnyAsync(u => u.Email.Equals(email), cancellationToken);
+    }
+
+    async Task<User> IUserQueryRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users.AsNoTracking().FirstAsync(u => u.Id.Equals(userId), cancellationToken);
+    }
+
+    async Task<User> IUserWriteOnlyRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users.FirstAsync(u => u.Id.Equals(userId), cancellationToken);
     }
 }

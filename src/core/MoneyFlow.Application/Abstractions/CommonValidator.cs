@@ -1,5 +1,6 @@
 using FluentValidation;
 using MoneyFlow.Common.Communications;
+using MoneyFlow.Common.Exceptions;
 
 namespace MoneyFlow.Application.Abstractions;
 
@@ -15,5 +16,12 @@ public abstract class CommonValidator<T> : AbstractValidator<T>
         return result.Errors
             .Select(e => new BaseError() { ErrorCode = e.ErrorCode, ErrorMessage = e.ErrorMessage })
             .ToList();
+    }
+
+    public async Task ValidateAndThrowWhenErrorAsync(T context, CancellationToken cancellationToken = default)
+    {
+        var errors = await ValidateWithErrorsAsync(context, cancellationToken);
+        if (errors.Count > 0)
+            throw new ErrorOnValidationException(errors);
     }
 }
