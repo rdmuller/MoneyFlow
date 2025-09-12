@@ -1,6 +1,9 @@
 ﻿using Mediator.Abstractions;
+using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
+using MoneyFlow.Common.Services;
+using MoneyFlow.Domain.Entities.Users;
 using MoneyFlow.Domain.Repositories;
 using MoneyFlow.Domain.Repositories.Users;
 using MoneyFlow.Domain.Security;
@@ -11,12 +14,14 @@ public class UserChangePasswordHandler(
     ILoggedUser loggedUser,
     IUserWriteOnlyRepository userWriteOnlyRepository,
     IUnitOfWork unitOfWork,
-    IPasswordHasher passwordHasher) : IHandler<UserChangePasswordCommand, BaseResponse<string>>
+    IPasswordHasher passwordHasher,
+    IDomainEventsDispatcher domainEvents) : IHandler<UserChangePasswordCommand, BaseResponse<string>>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository = userWriteOnlyRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IDomainEventsDispatcher _domainEvents = domainEvents;
 
     public async Task<BaseResponse<string>> HandleAsync(UserChangePasswordCommand request, CancellationToken cancellationToken = default)
     {
@@ -26,12 +31,15 @@ public class UserChangePasswordHandler(
         var user = await _userWriteOnlyRepository.GetUserByIdAsync(userId);
 
         if (!_passwordHasher.Verify(request.OldPassword!, user.Password))
-            throw new ErrorOnValidationException(BaseError.Unauthorized("Old password does not match"));
+            throw AuthorizationException.InvalidData("Old password does not match");
 
         user.Password = _passwordHasher.Hash(request.NewPassword!);
         _userWriteOnlyRepository.UpdateUser(user, cancellationToken);
 
+        Console.WriteLine($"User {userId} changed password at {DateTime.UtcNow}");
+
         await _unitOfWork.CommitAsync(cancellationToken);
+        await _domainEvents.DispatchAsync([new UserChangePasswordDomainEvent(user)], cancellationToken);
 
         return new BaseResponse<string>();
     }

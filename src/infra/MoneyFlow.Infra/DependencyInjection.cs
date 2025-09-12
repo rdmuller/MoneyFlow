@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -7,9 +8,11 @@ using MoneyFlow.Common.Services;
 using MoneyFlow.Domain.Repositories;
 using MoneyFlow.Domain.Repositories.Users;
 using MoneyFlow.Domain.Security;
+using MoneyFlow.Domain.Services.Email;
 using MoneyFlow.Infra.DataAccess;
 using MoneyFlow.Infra.DataAccess.Repositories;
 using MoneyFlow.Infra.Services;
+using MoneyFlow.Infra.Settings;
 
 namespace MoneyFlow.Infra;
 
@@ -21,6 +24,12 @@ public static class DependencyInjection
         AddServices(services);
         AddRepositories(services);
         AddToken(services, config);
+        AddEmail(services, config);
+    }
+
+    private static void AddEmail(IServiceCollection services, IConfiguration config)
+    {
+        services.AddSingleton<EmailSettings>(EmailSettings.GetSettings(config));
     }
 
     private static void AddToken(IServiceCollection services, IConfiguration config)
@@ -44,6 +53,7 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ILoggedUser, LoggedUser>();
+        services.AddTransient<IEmailService, EmailService>();
     }
 
     private static void AddDataBase(IServiceCollection services, IConfiguration config)

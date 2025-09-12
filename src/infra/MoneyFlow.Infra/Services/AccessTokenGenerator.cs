@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.Common.Services;
-using MoneyFlow.Domain.Entities;
+using MoneyFlow.Domain.Entities.Users;
 using MoneyFlow.Domain.Security;
 
 namespace MoneyFlow.Infra.Services;

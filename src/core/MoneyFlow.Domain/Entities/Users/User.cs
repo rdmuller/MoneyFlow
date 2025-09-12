@@ -1,7 +1,7 @@
 using MoneyFlow.Common.Entities;
 using MoneyFlow.Domain.Enums;
 
-namespace MoneyFlow.Domain.Entities;
+namespace MoneyFlow.Domain.Entities.Users;
 
 public class User : BaseEntity
 {

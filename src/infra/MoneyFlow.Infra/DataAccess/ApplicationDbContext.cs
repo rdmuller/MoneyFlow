@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MoneyFlow.Domain.Entities;
+using MoneyFlow.Domain.Entities.Users;
 
 namespace MoneyFlow.Infra.DataAccess;
 

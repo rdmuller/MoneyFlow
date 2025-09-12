@@ -1,24 +1,11 @@
 using Mediator.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Mediator;
 
 public class Mediator(IServiceProvider serviceProvider) : IMediator
 {
     private readonly IServiceProvider _serviceProvider = serviceProvider;
-
-    public async Task PublishAsync<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
-        where TNotification : INotification
-    {
-        var handlerType = typeof(INotificationHandler<>).MakeGenericType(notification.GetType());
-        var handler = _serviceProvider.GetService(handlerType);
-
-        //foreach (var handler in handlers)
-        //{
-            await (Task)handlerType
-                .GetMethod("Handle")!
-                .Invoke(handler, new object[] { notification, cancellationToken })!;
-        //}
-    }
 
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
     {

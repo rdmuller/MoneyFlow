@@ -1,7 +1,7 @@
 ﻿using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.Auth;
 using MoneyFlow.Common.Exceptions;
-using MoneyFlow.Domain.Entities;
+using MoneyFlow.Domain.Entities.Users;
 using MoneyFlow.Domain.Repositories.Users;
 using MoneyFlow.Domain.Security;
 
