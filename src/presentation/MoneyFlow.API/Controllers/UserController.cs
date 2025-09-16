@@ -30,11 +30,7 @@ public class UserController(IMediator mediator, ITokenProvider tokenProvider) : 
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePassword([FromBody] BaseRequest<UserChangePasswordCommand> request)
     {
-        var command = new UserChangePasswordCommand
-        {
-            OldPassword = request.Data.OldPassword,
-            NewPassword = request.Data.NewPassword
-        };
+        UserChangePasswordCommand command = request.Data;
 
         var result = await _mediator.SendAsync(command);
 
