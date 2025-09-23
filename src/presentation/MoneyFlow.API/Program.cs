@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
-using MoneyFlow.Domain.Security;
+using MoneyFlow.Domain.Common.Security;
 using MoneyFlow.Infra;
 using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;

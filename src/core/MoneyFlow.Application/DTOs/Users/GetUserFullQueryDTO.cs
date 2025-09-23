@@ -1,4 +1,4 @@
-﻿using MoneyFlow.Domain.Entities.Users;
+﻿using MoneyFlow.Domain.Common.Entities.Users;
 
 namespace MoneyFlow.Application.DTOs.Users;
 

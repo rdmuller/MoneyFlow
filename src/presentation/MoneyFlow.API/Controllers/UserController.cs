@@ -6,7 +6,7 @@ using MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
 using MoneyFlow.Application.UseCases.Users.Commands.Register;
 using MoneyFlow.Application.UseCases.Users.Queries.GetLoggedUserProfile;
 using MoneyFlow.Common.Communications;
-using MoneyFlow.Domain.Security;
+using MoneyFlow.Domain.Common.Security;
 
 namespace MoneyFlow.API.Controllers;
 
@@ -30,7 +30,7 @@ public class UserController(IMediator mediator, ITokenProvider tokenProvider) : 
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePassword([FromBody] BaseRequest<UserChangePasswordCommand> request)
     {
-        UserChangePasswordCommand command = request.Data;
+        UserChangePasswordCommand command = request!.Data!;
 
         var result = await _mediator.SendAsync(command);
 

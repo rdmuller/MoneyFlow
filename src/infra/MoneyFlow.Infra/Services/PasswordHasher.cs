@@ -1,5 +1,5 @@
 using BC = BCrypt.Net.BCrypt;
-using MoneyFlow.Domain.Security;
+using MoneyFlow.Domain.Common.Security;
 
 namespace MoneyFlow.Infra.Services;
 

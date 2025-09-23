@@ -1,4 +1,4 @@
-﻿using MoneyFlow.Domain.Security;
+﻿using MoneyFlow.Domain.Common.Security;
 
 namespace MoneyFlow.API.Security;
 

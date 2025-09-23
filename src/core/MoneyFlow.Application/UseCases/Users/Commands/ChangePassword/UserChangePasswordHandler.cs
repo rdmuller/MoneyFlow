@@ -3,10 +3,10 @@ using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
 using MoneyFlow.Common.Services;
-using MoneyFlow.Domain.Entities.Users;
-using MoneyFlow.Domain.Repositories;
-using MoneyFlow.Domain.Repositories.Users;
-using MoneyFlow.Domain.Security;
+using MoneyFlow.Domain.Common.Repositories;
+using MoneyFlow.Domain.Common.Repositories.Users;
+using MoneyFlow.Domain.Common.Security;
+using MoneyFlow.Domain.Common.Entities.Users;
 
 namespace MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
 

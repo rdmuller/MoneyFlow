@@ -1,9 +1,9 @@
 ﻿using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.Auth;
 using MoneyFlow.Common.Exceptions;
-using MoneyFlow.Domain.Entities.Users;
-using MoneyFlow.Domain.Repositories.Users;
-using MoneyFlow.Domain.Security;
+using MoneyFlow.Domain.Common.Entities.Users;
+using MoneyFlow.Domain.Common.Repositories.Users;
+using MoneyFlow.Domain.Common.Security;
 
 namespace MoneyFlow.Application.UseCases.Auth.Commands.Login;
 

@@ -1,4 +1,4 @@
-using MoneyFlow.Domain.Repositories;
+using MoneyFlow.Domain.Common.Repositories;
 
 namespace MoneyFlow.Infra.DataAccess;
 

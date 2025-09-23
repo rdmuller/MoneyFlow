@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using MoneyFlow.Domain.Entities.Users;
-using MoneyFlow.Domain.Repositories.Users;
+using MoneyFlow.Domain.Common.Entities.Users;
+using MoneyFlow.Domain.Common.Repositories.Users;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 
@@ -27,12 +27,12 @@ public class UserRepository(ApplicationDbContext dbcontext) : IUserWriteOnlyRepo
         return await _dbContext.Users.AsNoTracking().AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }
 
-    async Task<User> IUserQueryRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken = default)
+    async Task<User> IUserQueryRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Users.AsNoTracking().FirstAsync(u => u.Id.Equals(userId), cancellationToken);
     }
 
-    async Task<User> IUserWriteOnlyRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken = default)
+    async Task<User> IUserWriteOnlyRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Users.FirstAsync(u => u.Id.Equals(userId), cancellationToken);
     }

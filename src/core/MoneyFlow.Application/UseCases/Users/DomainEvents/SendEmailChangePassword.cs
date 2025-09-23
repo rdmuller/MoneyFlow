@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MoneyFlow.Application.Common.Events;
-using MoneyFlow.Domain.Entities.Users;
-using MoneyFlow.Domain.Services.Email;
+using MoneyFlow.Domain.Common.Entities.Users;
+using MoneyFlow.Domain.Common.Services.Email;
 
 namespace MoneyFlow.Application.UseCases.Users.DomainEvents;
 

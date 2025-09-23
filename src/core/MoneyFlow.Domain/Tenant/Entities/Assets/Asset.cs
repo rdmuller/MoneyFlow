@@ -1,0 +1,18 @@
+﻿using MoneyFlow.Common.Entities;
+using MoneyFlow.Domain.Common.Entities.Categories;
+using MoneyFlow.Domain.Common.Entities.Sectors;
+using MoneyFlow.Domain.Tenant.Entities.Wallets;
+
+namespace MoneyFlow.Domain.Tenant.Entities.Assets;
+public class Asset : BaseEntityTentant
+{
+    public string Name { get; set; } = string.Empty;
+    public string Ticker { get; set; } = string.Empty;
+    public long CategoryId { get; set; }
+    public long SectorId { get; set; }
+    public long WalletId { get; set; }
+
+    public Category? Category { get; set; }
+    public Sector? Sector { get; set; }
+    public Wallet? Wallet { get; set; }
+}
