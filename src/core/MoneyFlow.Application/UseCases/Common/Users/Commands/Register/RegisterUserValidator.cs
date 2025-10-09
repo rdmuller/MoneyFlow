@@ -1,9 +1,9 @@
 using FluentValidation;
 using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Validators;
-using MoneyFlow.Application.DTOs.Users;
+using MoneyFlow.Application.DTOs.Common.Users;
 
-namespace MoneyFlow.Application.UseCases.Users.Commands.Register;
+namespace MoneyFlow.Application.UseCases.Common.Users.Commands.Register;
 
 internal class RegisterUserValidator : CommonValidator<RegisterUserCommandDTO>
 {

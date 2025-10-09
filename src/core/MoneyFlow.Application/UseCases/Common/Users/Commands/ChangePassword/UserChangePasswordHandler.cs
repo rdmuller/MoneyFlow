@@ -2,13 +2,12 @@
 using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
-using MoneyFlow.Common.Services;
+using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Common.Repositories;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
-using MoneyFlow.Domain.Common.Entities.Users;
 
-namespace MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
+namespace MoneyFlow.Application.UseCases.Common.Users.Commands.ChangePassword;
 
 public class UserChangePasswordHandler(
     ILoggedUser loggedUser,

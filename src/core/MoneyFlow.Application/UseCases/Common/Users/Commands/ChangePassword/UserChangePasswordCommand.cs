@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Mediator.Abstractions;
 using MoneyFlow.Common.Communications;
 
-namespace MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
+namespace MoneyFlow.Application.UseCases.Common.Users.Commands.ChangePassword;
 
 public class UserChangePasswordCommand : IRequest<BaseResponse<string>>
 {

@@ -1,10 +1,10 @@
 ﻿using Mediator.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MoneyFlow.Application.DTOs.Users;
-using MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
-using MoneyFlow.Application.UseCases.Users.Commands.Register;
-using MoneyFlow.Application.UseCases.Users.Queries.GetLoggedUserProfile;
+using MoneyFlow.Application.DTOs.Common.Users;
+using MoneyFlow.Application.UseCases.Common.Users.Commands.ChangePassword;
+using MoneyFlow.Application.UseCases.Common.Users.Commands.Register;
+using MoneyFlow.Application.UseCases.Common.Users.Queries.GetLoggedUserProfile;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Domain.Common.Security;
 

@@ -5,7 +5,6 @@ using MoneyFlow.Domain.Common.Entities.Markets;
 using MoneyFlow.Domain.Common.Entities.Sectors;
 using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Tenant.Entities.Assets;
-using MoneyFlow.Domain.Tenant.Entities.Investments;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
 
 namespace MoneyFlow.Infra.DataAccess;

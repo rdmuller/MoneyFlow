@@ -1,7 +1,7 @@
 using MoneyFlow.Domain.Common.Entities.Users;
 using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Application.DTOs.Users;
+namespace MoneyFlow.Application.DTOs.Common.Users;
 
 public record RegisterUserCommandDTO
 {

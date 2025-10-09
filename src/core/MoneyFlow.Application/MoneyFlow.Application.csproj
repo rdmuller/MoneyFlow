@@ -19,4 +19,13 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Common\Markets\" />
+    <Folder Include="DTOs\Tenant\" />
+    <Folder Include="UseCases\Common\Markets\Commands\Create\" />
+    <Folder Include="UseCases\Common\Markets\Commands\Update\" />
+    <Folder Include="UseCases\Common\Markets\Queries\" />
+    <Folder Include="UseCases\Tenant\" />
+  </ItemGroup>
+
 </Project>

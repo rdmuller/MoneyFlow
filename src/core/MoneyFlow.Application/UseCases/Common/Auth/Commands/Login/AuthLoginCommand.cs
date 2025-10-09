@@ -1,8 +1,8 @@
 using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.Auth;
+using MoneyFlow.Application.DTOs.Common.Auth;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoneyFlow.Application.UseCases.Auth.Commands.Login;
+namespace MoneyFlow.Application.UseCases.Common.Auth.Commands.Login;
 
 public class AuthLoginCommand : IRequest<TokenDTO>
 {

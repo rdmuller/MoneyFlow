@@ -1,7 +1,7 @@
 ﻿using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Validators;
 
-namespace MoneyFlow.Application.UseCases.Users.Commands.ChangePassword;
+namespace MoneyFlow.Application.UseCases.Common.Users.Commands.ChangePassword;
 
 internal class UserChangePasswordValidator : CommonValidator<string>
 {

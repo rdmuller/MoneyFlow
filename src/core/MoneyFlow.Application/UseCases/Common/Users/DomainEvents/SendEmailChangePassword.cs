@@ -3,7 +3,7 @@ using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Common.Services.Email;
 
-namespace MoneyFlow.Application.UseCases.Users.DomainEvents;
+namespace MoneyFlow.Application.UseCases.Common.Users.DomainEvents;
 
 internal sealed class SendEmailChangePassword(IEmailService emailService) : IDomainEventHandler<UserChangePasswordDomainEvent>
 {

@@ -2,7 +2,7 @@ using FluentValidation;
 using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Validators;
 
-namespace MoneyFlow.Application.UseCases.Auth.Commands.Login;
+namespace MoneyFlow.Application.UseCases.Common.Auth.Commands.Login;
 
 public class AuthLoginValidator : CommonValidator<AuthLoginCommand>
 {

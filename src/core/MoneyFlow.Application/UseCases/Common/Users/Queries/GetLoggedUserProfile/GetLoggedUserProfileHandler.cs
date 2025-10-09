@@ -1,10 +1,10 @@
 ﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.Users;
+using MoneyFlow.Application.DTOs.Common.Users;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
 
-namespace MoneyFlow.Application.UseCases.Users.Queries.GetLoggedUserProfile;
+namespace MoneyFlow.Application.UseCases.Common.Users.Queries.GetLoggedUserProfile;
 
 public class GetLoggedUserProfileHandler(IUserQueryRepository userQueryRepository, ILoggedUser loggedUser) : IHandler<GetLoggedUserProfileQuery, BaseResponse<GetUserFullQueryDTO>>
 {

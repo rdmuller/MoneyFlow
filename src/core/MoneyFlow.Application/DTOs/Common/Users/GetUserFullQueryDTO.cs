@@ -1,6 +1,6 @@
 ﻿using MoneyFlow.Domain.Common.Entities.Users;
 
-namespace MoneyFlow.Application.DTOs.Users;
+namespace MoneyFlow.Application.DTOs.Common.Users;
 
 public record GetUserFullQueryDTO
 {

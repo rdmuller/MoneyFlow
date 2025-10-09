@@ -1,11 +1,11 @@
 ﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.Auth;
+using MoneyFlow.Application.DTOs.Common.Auth;
 using MoneyFlow.Common.Exceptions;
 using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
 
-namespace MoneyFlow.Application.UseCases.Auth.Commands.Login;
+namespace MoneyFlow.Application.UseCases.Common.Auth.Commands.Login;
 
 public class AuthLoginHandler(
     IUserQueryRepository userQueryRepository,
