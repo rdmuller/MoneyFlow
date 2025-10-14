@@ -68,9 +68,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options => 
     {
-        options.WithTheme(ScalarTheme.Moon)
+        options.WithTheme(ScalarTheme.Saturn)
+            .WithTitle("MoneyFlow")
             .WithDarkMode(true)
-            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+            .WithDefaultHttpClient(ScalarTarget.Http, ScalarClient.Http)
             .WithDarkModeToggle(false)
             .WithPreferredScheme(JwtBearerDefaults.AuthenticationScheme)
             .WithHttpBearerAuthentication(bearer =>

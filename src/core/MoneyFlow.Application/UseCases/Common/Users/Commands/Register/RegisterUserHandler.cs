@@ -1,7 +1,9 @@
 using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.Common.Users;
+using MoneyFlow.Application.UseCases.Common.Users.Commands.Validators;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
+using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Common.Repositories;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
@@ -24,9 +26,9 @@ public class RegisterUserHandler(
         if (request.User is null)
             throw ErrorOnValidationException.DataNotFound();
 
-        await ValidateAsync(request.User);
-
         var user = request.User.DtoToEntity();
+
+        await ValidateAsync(user);
 
         user.Password = _passwordHasher.Hash(user.Password);
 
@@ -39,9 +41,9 @@ public class RegisterUserHandler(
         };
     }
 
-    private async Task ValidateAsync(RegisterUserCommandDTO user)
+    private async Task ValidateAsync(User user)
     {
-        var errors = await new RegisterUserValidator().ValidateWithErrorsAsync(user);
+        var errors = await new UserValidator().ValidateWithErrorsAsync(user);
 
         if (!string.IsNullOrWhiteSpace(user.Email))
         {
@@ -50,6 +52,10 @@ public class RegisterUserHandler(
             if (emailExist)
                 errors.Add(BaseError.RecordAlreadyExists("E-mail already exists"));
         }
+
+        var passwordError = await new UserPasswordValidator().ValidateWithErrorsAsync(user.Password);
+        if (passwordError.Count > 0)
+            errors.AddRange(passwordError);
 
         if (errors.Count > 0)
             throw new ErrorOnValidationException(errors);

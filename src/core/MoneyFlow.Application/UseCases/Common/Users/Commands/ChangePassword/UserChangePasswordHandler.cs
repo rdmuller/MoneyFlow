@@ -1,5 +1,6 @@
 ﻿using Mediator.Abstractions;
 using MoneyFlow.Application.Common.Events;
+using MoneyFlow.Application.UseCases.Common.Users.Commands.Validators;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Common.Exceptions;
 using MoneyFlow.Domain.Common.Entities.Users;
@@ -45,6 +46,6 @@ public class UserChangePasswordHandler(
 
     private async Task ValidateAsync(string password)
     {
-        await new UserChangePasswordValidator().ValidateAndThrowWhenErrorAsync(password);
+        await new UserPasswordValidator().ValidateAndThrowWhenErrorAsync(password);
     }
 }

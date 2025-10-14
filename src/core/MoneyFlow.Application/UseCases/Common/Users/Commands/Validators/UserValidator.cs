@@ -2,12 +2,13 @@ using FluentValidation;
 using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Validators;
 using MoneyFlow.Application.DTOs.Common.Users;
+using MoneyFlow.Domain.Common.Entities.Users;
 
-namespace MoneyFlow.Application.UseCases.Common.Users.Commands.Register;
+namespace MoneyFlow.Application.UseCases.Common.Users.Commands.Validators;
 
-internal class RegisterUserValidator : CommonValidator<RegisterUserCommandDTO>
+internal class UserValidator : CommonValidator<User>
 {
-    public RegisterUserValidator()
+    public UserValidator()
     {
             RuleFor(x => x.Name).NotEmpty()
                 .WithMessage("Name is required.")
@@ -20,7 +21,5 @@ internal class RegisterUserValidator : CommonValidator<RegisterUserCommandDTO>
                 .When(x => !string.IsNullOrWhiteSpace(x.Email))
                 .EmailAddress()
                 .WithMessage("E-mail must be valid.");
-
-            RuleFor(x => x.Password).SetValidator(new PasswordValidator<RegisterUserCommandDTO>());
     }
 }

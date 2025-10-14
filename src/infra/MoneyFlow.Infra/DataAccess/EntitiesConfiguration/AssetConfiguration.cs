@@ -11,7 +11,10 @@ internal class AssetConfiguration : IEntityTypeConfiguration<Asset>
         builder.HasKey(a => a.Id);
         builder.HasAlternateKey(a => a.ExternalId);
 
-        builder.HasIndex(a => new { a.TenantId, a.Ticker }).IsUnique().HasFilter("Code is not null and RTRIM(Code) <> ''").HasDatabaseName("IActive1");
+        builder.HasIndex(a => new { a.TenantId, a.Ticker })
+            .IsUnique()
+            .HasFilter(sql: $"{nameof(Asset.Ticker)} is not null and {nameof(Asset.Ticker)} <> ''")
+            .HasDatabaseName("IActive1");
         builder.HasIndex(a => new { a.TenantId, a.Name }).HasDatabaseName("IAsset2");
         builder.HasIndex(a => new { a.TenantId, a.CategoryId }).HasDatabaseName("IAsset3");
 
@@ -32,5 +35,9 @@ internal class AssetConfiguration : IEntityTypeConfiguration<Asset>
                 .WithMany()
                 .HasForeignKey(a => a.WalletId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+        builder.ToTable(tb => tb.HasCheckConstraint(
+            "CK_TickerWithEmptySpace", 
+            sql: $"rtrim({nameof(Asset.Ticker)})={nameof(Asset.Ticker)}"));
     }
 }

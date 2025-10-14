@@ -14,21 +14,17 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions options) : base(options) {}
 
     #region Common entities
-
     public DbSet<User> Users { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Sector> Sectors { get; set; }
     public DbSet<Market> Markets { get; set; }
     public DbSet<Currency> Currencies { get; set; }
-
     #endregion
 
     #region Tenant entities
-
     public DbSet<Asset> Assets { get; set; }
     //public DbSet<Operation> Operations { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
-
     #endregion
 
 
