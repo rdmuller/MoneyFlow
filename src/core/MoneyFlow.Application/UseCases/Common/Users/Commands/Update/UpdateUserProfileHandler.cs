@@ -1,5 +1,7 @@
 ﻿using Mediator.Abstractions;
+using MoneyFlow.Application.UseCases.Common.Users.Commands.Validators;
 using MoneyFlow.Common.Communications;
+using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
 
@@ -11,8 +13,13 @@ public class UpdateUserProfileHandler(ILoggedUser loggedUser, IUserWriteOnlyRepo
 
     public async Task<BaseResponse<string>> HandleAsync(UpdateUserProfileCommand request, CancellationToken cancellationToken = default)
     {
-        var userId = await _loggedUser.GetUserIdAsync();
+        await Validate(request.user.DtoToEntity());
 
-        throw new NotImplementedException();
+        var userId = await _loggedUser.GetUserIdAsync();
+    }
+
+    private async Task Validate(User user)
+    {
+        await new UserValidator().ValidateAndThrowWhenErrorAsync(user);
     }
 }
