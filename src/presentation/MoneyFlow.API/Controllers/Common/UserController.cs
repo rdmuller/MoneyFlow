@@ -9,15 +9,14 @@ using MoneyFlow.Application.UseCases.Common.Users.Queries.GetLoggedUserProfile;
 using MoneyFlow.Common.Communications;
 using MoneyFlow.Domain.Common.Security;
 
-namespace MoneyFlow.API.Controllers;
+namespace MoneyFlow.API.Controllers.Common;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class UserController(IMediator mediator, ITokenProvider tokenProvider) : ControllerBase
+public class UserController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly ITokenProvider _tokenProvider = tokenProvider;
 
     [HttpGet("profile")]
     [ProducesResponseType(typeof(BaseResponse<GetUserFullQueryDTO>), StatusCodes.Status200OK)]

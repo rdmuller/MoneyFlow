@@ -13,12 +13,12 @@ namespace MoneyFlow.Application.UseCases.Common.Users.Commands.Register;
 public class RegisterUserHandler(
     IUserWriteOnlyRepository userRepository,
     IUnitOfWork unitOfWork,
-    IUserQueryRepository userQueryRepository,
+    IUserReadRepository userQueryRepository,
     IPasswordHasher passwordHasher) : IHandler<RegisterUserCommand, BaseResponse<string>>
 {
     private readonly IUserWriteOnlyRepository _userRepository = userRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IUserQueryRepository _userQueryRepository = userQueryRepository;
+    private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
 
     public async Task<BaseResponse<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)

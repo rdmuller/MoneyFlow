@@ -8,11 +8,11 @@ using MoneyFlow.Domain.Common.Security;
 namespace MoneyFlow.Application.UseCases.Common.Auth.Commands.Login;
 
 public class AuthLoginHandler(
-    IUserQueryRepository userQueryRepository,
+    IUserReadRepository userQueryRepository,
     IPasswordHasher passwordHasher, 
     IAccessTokenGenerator accessTokenGenerator) : IHandler<AuthLoginCommand, TokenDTO>
 {
-    private readonly IUserQueryRepository _userQueryRepository = userQueryRepository;
+    private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
 

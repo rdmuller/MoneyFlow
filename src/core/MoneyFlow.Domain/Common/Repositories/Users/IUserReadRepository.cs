@@ -2,7 +2,7 @@
 
 namespace MoneyFlow.Domain.Common.Repositories.Users;
 
-public interface IUserQueryRepository
+public interface IUserReadRepository
 {
     Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
 

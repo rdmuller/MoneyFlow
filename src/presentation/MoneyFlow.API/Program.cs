@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options => 
     {
-        options.WithTheme(ScalarTheme.Saturn)
+        options.WithTheme(ScalarTheme.BluePlanet)
             .WithTitle("MoneyFlow")
             .WithDarkMode(true)
             .WithDefaultHttpClient(ScalarTarget.Http, ScalarClient.Http)

@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\mediator\Mediator\Mediator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Tenant\" />
+  </ItemGroup>
+
 </Project>

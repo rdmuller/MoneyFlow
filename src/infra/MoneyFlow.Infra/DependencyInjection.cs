@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Common.Services;
 using MoneyFlow.Domain.Common.Repositories;
+using MoneyFlow.Domain.Common.Repositories.Markets;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
 using MoneyFlow.Domain.Common.Services.Email;
@@ -45,7 +46,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
-        services.AddScoped<IUserQueryRepository, UserRepository>();
+        services.AddScoped<IUserReadRepository, UserRepository>();
+        services.AddScoped<IMarketReadRepository, MarketRepository>();
+        services.AddScoped<IMarketWriteRepository, MarketRepository>();
     }
 
     private static void AddServices(IServiceCollection services)

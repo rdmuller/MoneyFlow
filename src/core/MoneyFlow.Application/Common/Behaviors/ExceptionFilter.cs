@@ -11,7 +11,7 @@ public class ExceptionFilter : IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         if (context.Exception is ErrorOnValidationException)
-            HandleErrorOnValidationexception(context);
+            HandleErrorOnValidationException(context);
 
         else if (context.Exception is AuthorizationException)
             HandleAuthorizationException(context);
@@ -29,7 +29,7 @@ public class ExceptionFilter : IExceptionFilter
         context.Result = new ObjectResult(response);
     }
 
-    private void HandleErrorOnValidationexception(ExceptionContext context)
+    private void HandleErrorOnValidationException(ExceptionContext context)
     {
         var validationErrors = (ErrorOnValidationException)context.Exception;
         var response = new BaseResponseError(validationErrors.Errors);

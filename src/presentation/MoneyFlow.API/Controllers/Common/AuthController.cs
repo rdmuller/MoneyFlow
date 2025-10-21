@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.UseCases.Common.Auth.Commands.Login;
 
-namespace MoneyFlow.API.Controllers;
+namespace MoneyFlow.API.Controllers.Common;
 
 [Route("api/[controller]")]
 [ApiController]
