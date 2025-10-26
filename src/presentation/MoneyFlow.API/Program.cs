@@ -20,7 +20,7 @@ builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers(options => {
-    //options.Filters.Add<ValidationFilter>();
+    options.Filters.Add<ValidationFilter>();
     options.Filters.Add<ExceptionFilter>();
 });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -70,18 +70,14 @@ if (app.Environment.IsDevelopment())
     {
         options.WithTheme(ScalarTheme.BluePlanet)
             .WithTitle("MoneyFlow")
-            .WithDarkMode(true)
-            .WithDefaultHttpClient(ScalarTarget.Http, ScalarClient.Http)
-            .WithDarkModeToggle(false)
-            .WithPreferredScheme(JwtBearerDefaults.AuthenticationScheme)
-            .WithHttpBearerAuthentication(bearer =>
+            .ForceDarkMode()
+            .ExpandAllTags()
+            .SortOperationsByMethod()
+            .AddPreferredSecuritySchemes("BearerAuth")
+            .AddHttpAuthentication("BearerAuth", auth =>
             {
-                bearer.Token = "your-bearer-token";
+                auth.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
             });
-        options.Authentication = new ScalarAuthenticationOptions
-        {
-            PreferredSecurityScheme = "BearerAuth",
-        };
     });
 }
 

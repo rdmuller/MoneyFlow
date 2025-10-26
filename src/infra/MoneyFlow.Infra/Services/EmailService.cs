@@ -1,5 +1,5 @@
 ﻿using MoneyFlow.Infra.Settings;
-using MoneyFlow.Common.Exceptions;
+using SharedKernel.Exceptions;
 using System.Net.Mail;
 using MoneyFlow.Domain.Common.Services.Email;
 

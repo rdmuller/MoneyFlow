@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.Common.Services;
 using MoneyFlow.Domain.Common.Repositories;
 using MoneyFlow.Domain.Common.Repositories.Markets;
 using MoneyFlow.Domain.Common.Repositories.Users;
@@ -14,6 +13,7 @@ using MoneyFlow.Infra.DataAccess;
 using MoneyFlow.Infra.DataAccess.Repositories;
 using MoneyFlow.Infra.Services;
 using MoneyFlow.Infra.Settings;
+using SharedKernel.Services;
 
 namespace MoneyFlow.Infra;
 
@@ -61,7 +61,7 @@ public static class DependencyInjection
 
     private static void AddDataBase(IServiceCollection services, IConfiguration config)
     {
-        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, EFCoreInterceptor>();
 
         var connectionString = config.GetConnectionString("DefaultConnection");
 

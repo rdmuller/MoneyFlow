@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.DTOs.Common.Markets;
-using MoneyFlow.Common.Communications;
+using SharedKernel.Communications;
 
-namespace MoneyFlow.Application.UseCases.Common.Markets.Commands.Create;
+namespace MoneyFlow.Application.UseCases.Common.Markets.Commands;
 
-public class MarketValidator : CommonValidator<BaseRequest<MarketCommandDTO>>
+public class MarketCommandDTOValidator : CommonValidator<BaseRequest<MarketCommandDTO>>
 {
-    public MarketValidator()
+    public MarketCommandDTOValidator()
     {
         RuleFor(x => x.Data).NotNull().WithMessage("Market data must be provided.");
         When(x => x.Data is not null, () =>

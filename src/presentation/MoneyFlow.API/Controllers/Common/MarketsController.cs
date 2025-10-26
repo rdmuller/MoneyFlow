@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.Common.Markets;
 using MoneyFlow.Application.UseCases.Common.Markets.Commands.Create;
-using MoneyFlow.Common.Communications;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.API.Controllers.Common;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class MarketController(IMediator mediator) : ControllerBase
+public class MarketsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 

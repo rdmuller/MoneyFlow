@@ -1,7 +1,7 @@
-﻿using MoneyFlow.Common.Entities;
-using MoneyFlow.Domain.Common.Entities.Categories;
+﻿using MoneyFlow.Domain.Common.Entities.Categories;
 using MoneyFlow.Domain.Common.Entities.Sectors;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Assets;
 public class Asset : BaseEntityTentant

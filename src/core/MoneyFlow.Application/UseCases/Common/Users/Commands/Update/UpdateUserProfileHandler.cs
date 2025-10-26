@@ -1,10 +1,10 @@
 ﻿using Mediator.Abstractions;
 using MoneyFlow.Application.UseCases.Common.Users.Commands.Validators;
-using MoneyFlow.Common.Communications;
 using MoneyFlow.Domain.Common.Entities.Users;
 using MoneyFlow.Domain.Common.Repositories;
 using MoneyFlow.Domain.Common.Repositories.Users;
 using MoneyFlow.Domain.Common.Security;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.Common.Users.Commands.Update;
 public class UpdateUserProfileHandler(ILoggedUser loggedUser, IUserWriteOnlyRepository userWriteOnlyRepository, IUnitOfWork unitOfWork) : IHandler<UpdateUserProfileCommand, BaseResponse<string>>

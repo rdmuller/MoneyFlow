@@ -1,4 +1,4 @@
-namespace MoneyFlow.Common.Entities;
+namespace SharedKernel.Entities;
 
 public abstract class BaseEntity
 {

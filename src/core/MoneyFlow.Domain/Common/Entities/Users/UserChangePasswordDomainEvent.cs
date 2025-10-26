@@ -1,4 +1,4 @@
-﻿using MoneyFlow.Common.Abstractions;
+﻿using SharedKernel.Abstractions;
 
 namespace MoneyFlow.Domain.Common.Entities.Users;
 

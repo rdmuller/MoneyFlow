@@ -6,8 +6,8 @@ using MoneyFlow.Application.UseCases.Common.Users.Commands.ChangePassword;
 using MoneyFlow.Application.UseCases.Common.Users.Commands.Register;
 using MoneyFlow.Application.UseCases.Common.Users.Commands.Update;
 using MoneyFlow.Application.UseCases.Common.Users.Queries.GetLoggedUserProfile;
-using MoneyFlow.Common.Communications;
 using MoneyFlow.Domain.Common.Security;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.API.Controllers.Common;
 

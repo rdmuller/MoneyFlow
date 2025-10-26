@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Application.Common.Events;
+using MoneyFlow.Application.Common.Mappings;
 using MoneyFlow.Application.UseCases.Common.Markets.Commands.Create;
 
 namespace MoneyFlow.Application;
@@ -12,12 +13,14 @@ public static class DependencyInjection
     {
         AddValidators(services);
         AddDomainEvents(services);
+
+        MapConfigurations.Configure();
     }
 
     private static void AddValidators(IServiceCollection services) 
     {
-        //services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
-        services.AddValidatorsFromAssemblyContaining<MarketValidator>();
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        //services.AddValidatorsFromAssemblyContaining<MarketValidator>();
         //services.AddScoped<ValidationFilter>();
     }
 

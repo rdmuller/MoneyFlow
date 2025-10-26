@@ -1,5 +1,5 @@
-using MoneyFlow.Common.Entities;
 using MoneyFlow.Domain.Common.Enums;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Common.Entities.Users;
 

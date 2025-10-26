@@ -1,6 +1,6 @@
-using MoneyFlow.Common.Communications;
+using SharedKernel.Communications;
 
-namespace MoneyFlow.Common.Exceptions;
+namespace SharedKernel.Exceptions;
 
 public class ErrorOnValidationException : BaseException
 {

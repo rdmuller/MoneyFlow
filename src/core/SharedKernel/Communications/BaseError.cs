@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Common.Communications;
+namespace SharedKernel.Communications;
 
 public class BaseError
 {

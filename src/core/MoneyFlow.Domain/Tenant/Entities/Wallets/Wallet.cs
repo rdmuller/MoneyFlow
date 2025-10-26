@@ -1,4 +1,4 @@
-﻿using MoneyFlow.Common.Entities;
+﻿using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Wallets;
 public class Wallet : BaseEntityTentant

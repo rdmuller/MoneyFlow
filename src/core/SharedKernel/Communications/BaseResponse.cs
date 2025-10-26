@@ -1,6 +1,6 @@
-using MoneyFlow.Common.Abstractions;
+using SharedKernel.Abstractions;
 
-namespace MoneyFlow.Common.Communications;
+namespace SharedKernel.Communications;
 
 public class BaseResponse<T> : BaseResponseGeneric<T>
 {

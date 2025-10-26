@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.Common.Abstractions;
+using SharedKernel.Abstractions;
 
 namespace MoneyFlow.Application.Common.Events;
 

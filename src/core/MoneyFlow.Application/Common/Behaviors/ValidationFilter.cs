@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MoneyFlow.Common.Communications;
-using MoneyFlow.Common.Exceptions;
+using SharedKernel.Communications;
+using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.Common.Behaviors;
 

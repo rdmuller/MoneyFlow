@@ -1,6 +1,6 @@
 using FluentValidation;
-using MoneyFlow.Common.Communications;
-using MoneyFlow.Common.Exceptions;
+using SharedKernel.Exceptions;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.Abstractions;
 

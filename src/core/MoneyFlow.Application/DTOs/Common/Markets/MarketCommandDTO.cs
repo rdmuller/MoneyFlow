@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MoneyFlow.Domain.Common.Entities.Markets;
+using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.DTOs.Common.Markets;
 

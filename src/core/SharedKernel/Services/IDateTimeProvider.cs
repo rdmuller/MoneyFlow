@@ -1,4 +1,4 @@
-﻿namespace MoneyFlow.Common.Services;
+﻿namespace SharedKernel.Services;
 
 public interface IDateTimeProvider
 {

@@ -1,5 +1,5 @@
-﻿using MoneyFlow.Common.Entities;
-using MoneyFlow.Domain.Common.Entities.Categories;
+﻿using MoneyFlow.Domain.Common.Entities.Categories;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Common.Entities.Sectors;
 

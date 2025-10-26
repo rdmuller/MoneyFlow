@@ -1,11 +1,13 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MoneyFlow.Common.Entities;
-using MoneyFlow.Common.Services;
+using SharedKernel.Entities;
+using SharedKernel.Exceptions;
+using SharedKernel.Services;
 
 namespace MoneyFlow.Infra.DataAccess;
 
-public class AuditableEntityInterceptor(IDateTimeProvider timeProvider) : SaveChangesInterceptor
+public class EFCoreInterceptor(IDateTimeProvider timeProvider) : SaveChangesInterceptor
 {
     private readonly IDateTimeProvider _timeProvider = timeProvider;
 
@@ -21,6 +23,21 @@ public class AuditableEntityInterceptor(IDateTimeProvider timeProvider) : SaveCh
         UpdateEntity(eventData.Context);
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
+
+    public override Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = default)
+    {
+        HandleException(eventData.Exception);
+
+        return base.SaveChangesFailedAsync(eventData, cancellationToken);
+    }
+
+    private static void HandleException(Exception exception)
+    {
+        if (exception.IsUniqueConstraintViolation())
+        {
+            throw DataBaseException.DuplicatedUniqueKey("A record with the same unique key already exists.");
+        }
     }
 
     private void UpdateEntity(DbContext? context)

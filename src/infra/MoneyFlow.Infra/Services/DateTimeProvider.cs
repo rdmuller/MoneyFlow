@@ -1,4 +1,4 @@
-using MoneyFlow.Common.Services;
+using SharedKernel.Services;
 
 namespace MoneyFlow.Infra.Services;
 

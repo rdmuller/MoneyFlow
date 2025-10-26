@@ -1,5 +1,5 @@
-﻿using MoneyFlow.Common.Entities;
-using MoneyFlow.Domain.Tenant.Entities.Assets;
+﻿using MoneyFlow.Domain.Tenant.Entities.Assets;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Operations;
 public class Operation : BaseEntityTentant
