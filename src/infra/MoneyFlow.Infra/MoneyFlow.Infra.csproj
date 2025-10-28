@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\MoneyFlow.Domain\MoneyFlow.Domain.csproj" />
-    <ProjectReference Include="..\..\core\MoneyFlow.Common\MoneyFlow.Common.csproj" />
+    <ProjectReference Include="..\..\core\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

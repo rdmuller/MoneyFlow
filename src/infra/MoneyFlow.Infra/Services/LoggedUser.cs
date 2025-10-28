@@ -1,8 +1,7 @@
-﻿using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using MoneyFlow.Domain.Common.Security;
-using MoneyFlow.Domain.Common.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MoneyFlow.Domain.General.Security;
 using MoneyFlow.Infra.DataAccess;
+using System.Security.Claims;
 
 namespace MoneyFlow.Infra.Services;
 

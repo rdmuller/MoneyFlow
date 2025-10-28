@@ -1,9 +1,8 @@
-using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Application.Common.Mappings;
-using MoneyFlow.Application.UseCases.Common.Markets.Commands.Create;
+using System.Reflection;
 
 namespace MoneyFlow.Application;
 

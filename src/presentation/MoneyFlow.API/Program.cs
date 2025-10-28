@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
-using MoneyFlow.Domain.Common.Security;
+using MoneyFlow.Domain.General.Security;
 using MoneyFlow.Infra;
 using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;
@@ -71,7 +71,7 @@ if (app.Environment.IsDevelopment())
         options.WithTheme(ScalarTheme.BluePlanet)
             .WithTitle("MoneyFlow")
             .ForceDarkMode()
-            .ExpandAllTags()
+            //.ExpandAllTags()
             .SortOperationsByMethod()
             .AddPreferredSecuritySchemes("BearerAuth")
             .AddHttpAuthentication("BearerAuth", auth =>

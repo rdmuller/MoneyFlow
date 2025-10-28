@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MoneyFlow.Domain.Common.Entities.Users;
+using MoneyFlow.Domain.General.Entities.Users;
 
 namespace MoneyFlow.Infra.DataAccess.EntitiesConfiguration;
 

@@ -19,7 +19,19 @@ public class ExceptionFilter : IExceptionFilter
         else if (context.Exception is DataBaseException)
             HandleDataBaseException(context);
 
+        else if (context.Exception is RequiredFieldIsEmptyException)
+            HandleRequiredFieldsIsEmptyException(context);
+
         else throw new NotImplementedException();
+    }
+
+    private void HandleRequiredFieldsIsEmptyException(ExceptionContext context)
+    {
+        var validationErrors = (RequiredFieldIsEmptyException)context.Exception;
+        var response = new BaseResponseError(validationErrors.Errors);
+
+        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        context.Result = new ObjectResult(response);
     }
 
     private void HandleAuthorizationException(ExceptionContext context)

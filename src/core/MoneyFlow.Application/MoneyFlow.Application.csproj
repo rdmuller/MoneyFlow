@@ -22,8 +22,7 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Tenant\" />
-    <Folder Include="UseCases\Common\Markets\Commands\Update\" />
-    <Folder Include="UseCases\Common\Markets\Queries\" />
+    <Folder Include="UseCases\General\Markets\Queries\" />
     <Folder Include="UseCases\Tenant\" />
   </ItemGroup>
 

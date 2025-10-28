@@ -10,4 +10,9 @@ public class DataBaseException : BaseException
     {
         return new DataBaseException("DuplicatedUniqueKey", message);
     }
+
+    public static DataBaseException RecordNotFound(string message)
+    {
+        return new DataBaseException("RecordNotFound", message);
+    }
 }

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using MoneyFlow.Domain.Common.Entities.Categories;
-using MoneyFlow.Domain.Common.Entities.Currencies;
-using MoneyFlow.Domain.Common.Entities.Markets;
-using MoneyFlow.Domain.Common.Entities.Sectors;
-using MoneyFlow.Domain.Common.Entities.Users;
+using MoneyFlow.Domain.General.Entities.Categories;
+using MoneyFlow.Domain.General.Entities.Currencies;
+using MoneyFlow.Domain.General.Entities.Markets;
+using MoneyFlow.Domain.General.Entities.Sectors;
+using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.Tenant.Entities.Assets;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
 

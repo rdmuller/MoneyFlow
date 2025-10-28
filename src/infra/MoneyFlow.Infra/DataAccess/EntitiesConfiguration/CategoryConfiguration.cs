@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MoneyFlow.Domain.Common.Entities.Categories;
+using MoneyFlow.Domain.General.Entities.Categories;
 
 namespace MoneyFlow.Infra.DataAccess.EntitiesConfiguration;
 
