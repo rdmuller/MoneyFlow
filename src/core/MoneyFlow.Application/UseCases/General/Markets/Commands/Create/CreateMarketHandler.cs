@@ -18,7 +18,7 @@ public class CreateMarketHandler(
     {
         var market = request.Market.Adapt<Market>();
 
-        await _marketWriteRepository.CreateMarketAsync(market, cancellationToken);
+        await _marketWriteRepository.CreateAsync(market, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return new BaseResponse<string>

@@ -8,26 +8,26 @@ public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepos
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
-    public async Task CreateMarketAsync(Market market, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(Market market, CancellationToken cancellationToken = default)
     {
         await _dbContext.Markets.AddAsync(market, cancellationToken);
     }
 
-    public Task<IEnumerable<Market>> GetAllMarketsAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Market>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Markets.AsNoTracking().ToListAsync();
     }
 
-    async Task<Market?> IMarketReadRepository.GetMarketByIdAsync(long marketId, CancellationToken cancellationToken)
+    async Task<Market?> IMarketReadRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)
     {
         return await _dbContext.Markets.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(marketId), cancellationToken);
     }
-    async Task<Market?> IMarketWriteRepository.GetMarketByIdAsync(long marketId, CancellationToken cancellationToken)
+    async Task<Market?> IMarketWriteRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)
     {
         return await _dbContext.Markets.FirstOrDefaultAsync(t => t.Id.Equals(marketId), cancellationToken);
     }
 
-    public void UpdateMarket(Market market, CancellationToken cancellationToken = default)
+    public void Update(Market market, CancellationToken cancellationToken = default)
     {
         _dbContext.Markets.Update(market);
     }

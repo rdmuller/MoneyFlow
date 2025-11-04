@@ -19,13 +19,13 @@ public class UpdateMarketHandler(
         if (request!.Market!.Id == 0)
             throw new RequiredFieldIsEmptyException("Market id is required");
 
-        var market = await _marketWriteRepository.GetMarketByIdAsync(request.Market.Id, cancellationToken);
+        var market = await _marketWriteRepository.GetByIdAsync(request.Market.Id, cancellationToken);
         if (market is null)
             throw DataBaseException.RecordNotFound("Market not found");
 
         request.Market.Adapt(market);
 
-        _marketWriteRepository.UpdateMarket(market, cancellationToken);
+        _marketWriteRepository.Update(market, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return new BaseResponse<string>();

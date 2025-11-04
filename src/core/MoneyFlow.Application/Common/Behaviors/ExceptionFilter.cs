@@ -22,6 +22,9 @@ public class ExceptionFilter : IExceptionFilter
         else if (context.Exception is RequiredFieldIsEmptyException)
             HandleRequiredFieldsIsEmptyException(context);
 
+        else if (context.Exception is NoContentException)
+            HandlerNoContentException(context);
+
         else throw new NotImplementedException();
     }
 
@@ -59,5 +62,11 @@ public class ExceptionFilter : IExceptionFilter
 
         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
         context.Result = new ObjectResult(response);
+    }
+
+    private void HandlerNoContentException(ExceptionContext context)
+    {
+        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NoContent;
+        context.Result = new ObjectResult(null);
     }
 }
