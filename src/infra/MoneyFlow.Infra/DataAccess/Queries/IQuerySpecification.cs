@@ -1,4 +1,4 @@
 ﻿namespace MoneyFlow.Infra.DataAccess.Queries;
-internal interface IQuerySpecification
+internal interface IQuerySpecification<T>
 {
 }

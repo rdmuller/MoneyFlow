@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Markets;
 using MoneyFlow.Domain.General.Repositories.Markets;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 
@@ -13,8 +14,10 @@ public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepos
         await _dbContext.Markets.AddAsync(market, cancellationToken);
     }
 
-    public async Task<IEnumerable<Market>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Market>> GetAllAsync(QueryParams? query, CancellationToken cancellationToken = default)
     {
+
+
         return await _dbContext.Markets.AsNoTracking().ToListAsync();
     }
 

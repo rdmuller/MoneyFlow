@@ -12,7 +12,7 @@ internal class GetAllMarketsHandler(IMarketReadRepository marketReadRepository) 
 
     public async Task<BaseQueryResponse<List<MarketQueryDTO>>> HandleAsync(GetAllMarketsQuery request, CancellationToken cancellationToken = default)
     {
-        var markets = await _marketReadRepository.GetAllAsync(cancellationToken);
+        var markets = await _marketReadRepository.GetAllAsync(request.Query, cancellationToken);
 
         if (markets.Count() == 0)
             throw new NoContentException();

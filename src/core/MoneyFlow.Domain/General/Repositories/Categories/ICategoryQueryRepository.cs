@@ -1,6 +1,6 @@
 ﻿using MoneyFlow.Domain.General.Entities.Categories;
 
-namespace MoneyFlow.Domain.Common.Repositories.Categories;
+namespace MoneyFlow.Domain.General.Categories;
 public interface ICategoryQueryRepository
 {
     Task<Category?> GetById(long id, CancellationToken cancellationToken = default);

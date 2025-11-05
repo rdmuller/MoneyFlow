@@ -1,10 +1,11 @@
 ﻿using MoneyFlow.Domain.General.Entities.Markets;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.Domain.General.Repositories.Markets;
 
 public interface IMarketReadRepository
 {
-    Task<IEnumerable<Market>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Market>> GetAllAsync(QueryParams? query, CancellationToken cancellationToken = default);
 
     Task<Market?> GetByIdAsync(long marketId, CancellationToken cancellationToken = default);
 }

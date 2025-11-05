@@ -29,7 +29,7 @@ public static class StatusFilterExtensions
         { StatusFilter.Inactive, "I" }
     };
 
-    public static StatusFilter FromCode(string code)
+    public static StatusFilter FromCode(string? code)
     {
         if (string.IsNullOrWhiteSpace(code))
             return StatusFilter.Active;

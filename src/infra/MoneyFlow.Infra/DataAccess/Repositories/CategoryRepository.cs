@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Categories;
-using MoneyFlow.Domain.Common.Repositories.Categories;
+using MoneyFlow.Domain.General.Categories;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryQueryRepository
