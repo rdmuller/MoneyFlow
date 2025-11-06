@@ -5,7 +5,7 @@ namespace MoneyFlow.Domain.General.Repositories.Markets;
 
 public interface IMarketReadRepository
 {
-    Task<IEnumerable<Market>> GetAllAsync(QueryParams? query, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Market>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default);
 
     Task<Market?> GetByIdAsync(long marketId, CancellationToken cancellationToken = default);
 }

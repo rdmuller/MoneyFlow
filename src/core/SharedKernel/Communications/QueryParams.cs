@@ -4,8 +4,8 @@ using System.ComponentModel;
 namespace SharedKernel.Communications;
 public class QueryParams
 {
-    public long? PageNum { get; set; }
-    public long? PageRows { get; set; }
+    public int? PageNum { get; set; }
+    public int? PageRows { get; set; }
 
     [Description("\"F\" - Full, \"A\" - Active, \"I\" - Inactive")]
     public string? Status { get; set; }

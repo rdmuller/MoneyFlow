@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 namespace MoneyFlow.Infra.DataAccess.Queries;
 internal class QuerySpecification<T> : IQuerySpecification<T>
 {
-    public long Skip { get; private set; }
-    public long Take { get; private set; }
-    
-    public List<Expression<Func<T, bool>>> Filters { get; set; }
+    public int Skip { get; private set; }
+    public int Take { get; private set; }
+    public List<Expression<Func<T, bool>>> Filters { get; set; } = new();
+
+    private const string _ActivePropertyName = "Active";
 
     public QuerySpecification(QueryParams query)
     {
@@ -16,12 +17,12 @@ internal class QuerySpecification<T> : IQuerySpecification<T>
         Take = query.PageRows ?? 9999;
 
         var statusFilter = StatusFilterExtensions.FromCode(query.Status);
-        if (!statusFilter.Equals(StatusFilter.Full))
+        if (!statusFilter.Equals(StatusFilter.Full) && typeof(T).GetProperty(_ActivePropertyName) is not null)
         {
-            if (!statusFilter.Equals(StatusFilter.Active)) // testar se possui essa propriedade
-                Filters.Add(x => EF.Property<bool>(x!, "Active"));
+            if (statusFilter.Equals(StatusFilter.Active)) // testar se possui essa propriedade
+                Filters.Add(x => EF.Property<bool>(x!, _ActivePropertyName) == true);
             else
-                Filters.Add(x => !EF.Property<bool>(x!, "Active"));
+                Filters.Add(x => !EF.Property<bool>(x!, _ActivePropertyName) == false);
         }
 
         if (query.ExtraParams != null && query.ExtraParams.Any())
