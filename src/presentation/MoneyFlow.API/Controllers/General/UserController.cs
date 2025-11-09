@@ -8,7 +8,7 @@ using MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 using SharedKernel.Communications;
 
-namespace MoneyFlow.API.Controllers.Common;
+namespace MoneyFlow.API.Controllers.General;
 
 [Route("api/[controller]")]
 [ApiController]

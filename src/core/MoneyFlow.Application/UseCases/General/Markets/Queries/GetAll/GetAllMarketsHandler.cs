@@ -14,12 +14,9 @@ internal class GetAllMarketsHandler(IMarketReadRepository marketReadRepository) 
     {
         var markets = await _marketReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        if (markets.Count() == 0)
+        if (markets.TotalRows == 0)
             throw new NoContentException();
 
-        return new BaseQueryResponse<List<MarketQueryDTO>>
-        {
-            Data = markets.Adapt<List<MarketQueryDTO>>()
-        };
+        return markets.Adapt<BaseQueryResponse<List<MarketQueryDTO>>>();
     }
 }

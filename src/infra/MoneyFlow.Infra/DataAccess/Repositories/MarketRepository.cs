@@ -16,22 +16,24 @@ public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepos
         await _dbContext.Markets.AddAsync(market, cancellationToken);
     }
 
-    public async Task<IEnumerable<Market>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
+    public async Task<BaseQueryResponse<IEnumerable<Market>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Markets.AsNoTracking().AsQueryable();
         var querySpecification = new QuerySpecification<Market>(queryParams ?? new QueryParams());
 
-        foreach (var filter in querySpecification.Filters)
-            query = query.Where(filter);
+        //query = querySpecification.ApplyFilters(query);
 
-        var total = await query.CountAsync(cancellationToken);
+        //var total = await query.CountAsync(cancellationToken);
 
-        var data = await query
-            .Skip(querySpecification.Skip)
-            .Take(querySpecification.Take)
-            .ToListAsync(cancellationToken);
+        //query = querySpecification.AddPagination(query);
 
-        return data;
+        //return new BaseQueryResponse<IEnumerable<Market>>
+        //{
+        //    TotalRows = total,
+        //    Data = await query.ToListAsync(cancellationToken)
+        //};
+
+        return await querySpecification.ExecuteQueryAsync(query);
     }
 
     async Task<Market?> IMarketReadRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)

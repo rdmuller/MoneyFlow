@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\MoneyFlow.Application\MoneyFlow.Application.csproj" />
+    <ProjectReference Include="..\..\core\SharedKernel\SharedKernel.csproj" />
     <ProjectReference Include="..\..\infra\MoneyFlow.Infra\MoneyFlow.Infra.csproj" />
     <ProjectReference Include="..\..\mediator\Mediator\Mediator.csproj" />
   </ItemGroup>

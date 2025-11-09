@@ -1,6 +1,7 @@
 ﻿using Mediator.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.Common.Markets;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
@@ -9,7 +10,7 @@ using MoneyFlow.Application.UseCases.General.Markets.Queries.GetById;
 using SharedKernel.Communications;
 using System.Net;
 
-namespace MoneyFlow.API.Controllers.Common;
+namespace MoneyFlow.API.Controllers.General;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -52,7 +53,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(BaseQueryResponse<List<MarketQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAllMarkets([FromQuery]QueryParams query)
+    public async Task<IActionResult> GetAllMarkets([FromQuery]BoundQueryParams query)
     {
         var result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = query });
         return Ok(result);
