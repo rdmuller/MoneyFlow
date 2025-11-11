@@ -1,9 +1,10 @@
 ﻿using SharedKernel.Communications;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
+using MoneyFlow.Infra.Helpers;
 
-namespace MoneyFlow.Infra.DataAccess.Queries;
+
+namespace MoneyFlow.Infra.DataAccess.Extensions;
 internal class QuerySpecification<T>
 {
     public int Skip { get; private set; }
@@ -30,9 +31,16 @@ internal class QuerySpecification<T>
         {
             foreach (var param in query.ExtraParams)
             {
-                var key = param.Key;
+                string attributeName;
+                string condition;
                 var value = param.Value;
-                Filters.Add(x => EF.Property<string>(x!, key) == value);
+
+                GetFieldAndConditionFromExtraParamKey(param.Key, out attributeName, out condition);
+
+                if (!string.IsNullOrEmpty(attributeName))
+                {
+                    Filters.Add(x => EF.Property<string>(x!, attributeName) == value);
+                }
             }
         }
     }
@@ -65,7 +73,7 @@ internal class QuerySpecification<T>
         if (addPagination == true)
         {
             totalRows = await query.CountAsync();
-            totalPages = (int)Math.Ceiling((double)totalRows / (double)Take);
+            totalPages = (int)Math.Ceiling(totalRows / (double)Take);
             query = AddPagination(query);
         }
 
@@ -84,6 +92,9 @@ internal class QuerySpecification<T>
         {
             attributeName = conditionParts[0];
             condition = conditionParts[1].ToLower();
+
+            if (string.IsNullOrWhiteSpace(condition))
+                condition = "eq";
         }
         else
         {
@@ -91,7 +102,7 @@ internal class QuerySpecification<T>
             condition = "eq";
         }
 
-        // aqui procurar se o att está na classe
-        // também validar se é um condition valida
+        if (!string.IsNullOrWhiteSpace(attributeName))
+            attributeName = PropertyCache.GetRealPropertyName(typeof(T), extraParamKey) ?? "";
     }
 }
