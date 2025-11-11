@@ -33,13 +33,27 @@ internal class QuerySpecification<T>
             {
                 string attributeName;
                 string condition;
-                var value = param.Value;
+                var value = param.Value.ToLower();
 
                 GetFieldAndConditionFromExtraParamKey(param.Key, out attributeName, out condition);
 
                 if (!string.IsNullOrEmpty(attributeName))
                 {
-                    Filters.Add(x => EF.Property<string>(x!, attributeName) == value);
+                    switch (condition)
+                    {
+                        case "gt":
+                            //Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower() > value);
+                            break;
+                        case "neq":
+                            Filters.Add(x => !EF.Property<string>(x!, attributeName).ToLower().Equals(value));
+                            break;
+                        case "like":
+                            Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Contains(value));
+                            break;
+                        default:
+                            Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Equals(value));
+                            break;
+                    }
                 }
             }
         }
@@ -88,7 +102,7 @@ internal class QuerySpecification<T>
     private void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out string attributeName, out string condition)
     {
         var conditionParts = extraParamKey.Split("__");
-        if (conditionParts.Length > 0)
+        if (conditionParts.Length > 1)
         {
             attributeName = conditionParts[0];
             condition = conditionParts[1].ToLower();
@@ -103,6 +117,6 @@ internal class QuerySpecification<T>
         }
 
         if (!string.IsNullOrWhiteSpace(attributeName))
-            attributeName = PropertyCache.GetRealPropertyName(typeof(T), extraParamKey) ?? "";
+            attributeName = PropertyCache.GetRealPropertyName(typeof(T), attributeName) ?? "";
     }
 }

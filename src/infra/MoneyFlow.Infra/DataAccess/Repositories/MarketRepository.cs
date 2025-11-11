@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Markets;
 using MoneyFlow.Domain.General.Repositories.Markets;
-using MoneyFlow.Infra.DataAccess.Queries;
+using MoneyFlow.Infra.DataAccess.Extensions;
 using SharedKernel.Communications;
 using System.Linq;
 
