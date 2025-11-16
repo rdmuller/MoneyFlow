@@ -1,7 +1,8 @@
-﻿using SharedKernel.Communications;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedKernel.Communications;
+using SharedKernel.Exceptions;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using MoneyFlow.Infra.Helpers;
+using static MoneyFlow.Infra.Helpers.AttributePropertiesCache;
 
 
 namespace MoneyFlow.Infra.DataAccess.Extensions;
@@ -28,35 +29,7 @@ internal class QuerySpecification<T>
         }
 
         if (query.ExtraParams != null && query.ExtraParams.Any())
-        {
-            foreach (var param in query.ExtraParams)
-            {
-                string attributeName;
-                string condition;
-                var value = param.Value.ToLower();
-
-                GetFieldAndConditionFromExtraParamKey(param.Key, out attributeName, out condition);
-
-                if (!string.IsNullOrEmpty(attributeName))
-                {
-                    switch (condition)
-                    {
-                        case "gt":
-                            //Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower() > value);
-                            break;
-                        case "neq":
-                            Filters.Add(x => !EF.Property<string>(x!, attributeName).ToLower().Equals(value));
-                            break;
-                        case "like":
-                            Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Contains(value));
-                            break;
-                        default:
-                            Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Equals(value));
-                            break;
-                    }
-                }
-            }
-        }
+            AddExtraParamsFilters(query.ExtraParams);
     }
 
     public IQueryable<T> ApplyFilters(IQueryable<T> query)
@@ -99,9 +72,87 @@ internal class QuerySpecification<T>
         };
     }
 
-    private void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out string attributeName, out string condition)
+    private void AddExtraParamsFilters(Dictionary<string, string> extraParams)
+    {
+        foreach (var param in extraParams)
+        {
+            if (param.Value is not null)
+            {
+                AttributeProperties attributeProperties;
+                string condition;
+
+                GetFieldAndConditionFromExtraParamKey(param.Key, out attributeProperties, out condition);
+                if (attributeProperties is null)
+                    continue;
+
+                if (attributeProperties.Type.Contains("string"))
+                    AddStringExtraParamFilter(attributeProperties.RealName, condition, param.Value.ToLower());
+
+                else if (attributeProperties.Type.Contains("int") || attributeProperties.Type.Contains("short") || attributeProperties.Type.Contains("long"))
+                    AddNumericWihtoutDecimalsExtraParamFilter(attributeProperties.RealName, condition, param.Value);
+
+                else throw new NotImplementedException($"The filter for the attribute type '{attributeProperties.Type}' is not implemented.");
+            }
+        }
+    }
+
+    private void AddStringExtraParamFilter(string attributeName, string condition, string value)
+    {
+        switch (condition)
+        {
+            case "eq":
+                Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Equals(value));
+                break;
+            case "neq":
+                Filters.Add(x => !EF.Property<string>(x!, attributeName).ToLower().Equals(value));
+                break;
+            case "like":
+                Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Contains(value));
+                break;
+            default:
+                throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter.");
+        }
+    }
+
+    private void AddNumericWihtoutDecimalsExtraParamFilter(string attributeName, string condition, string stringValue)
+    {
+        long value;
+
+        if (long.TryParse(stringValue, out value))
+        {
+            switch (condition)
+            {
+                case "gt":
+                    Filters.Add(x => EF.Property<long>(x!, attributeName) > value);
+                    break;
+                case "gte":
+                    Filters.Add(x => EF.Property<long>(x!, attributeName) >= value);
+                    break;
+                case "lt":
+                    Filters.Add(x => EF.Property<long>(x!, attributeName) < value);
+                    break;
+                case "lte":
+                    Filters.Add(x => EF.Property<long>(x!, attributeName) <= value);
+                    break;
+                case "neq":
+                    Filters.Add(x => !EF.Property<long>(x!, attributeName).Equals(value));
+                    break;
+                case "eq":
+                    Filters.Add(x => EF.Property<long>(x!, attributeName).Equals(value));
+                    break;
+                default:
+                    throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for numeric attribute filter.");
+            }
+        }
+        else
+            throw new DataBaseException("InvalidFilterValue", $"The value '{stringValue}' is not valid for numeric attribute filter.");
+    }
+
+    private static void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out AttributeProperties attributeProperties, out string condition)
     {
         var conditionParts = extraParamKey.Split("__");
+        string attributeName;
+
         if (conditionParts.Length > 1)
         {
             attributeName = conditionParts[0];
@@ -116,7 +167,6 @@ internal class QuerySpecification<T>
             condition = "eq";
         }
 
-        if (!string.IsNullOrWhiteSpace(attributeName))
-            attributeName = PropertyCache.GetRealPropertyName(typeof(T), attributeName) ?? "";
+        attributeProperties = !string.IsNullOrWhiteSpace(attributeName) ? GetAttributeProperties(typeof(T), attributeName) : null!;
     }
 }
