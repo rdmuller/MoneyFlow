@@ -364,3 +364,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /src/presentation/MoneyFlow.API/appsettings.json
+/src/presentation/MoneyFlow.API/appsettings.Development.json
