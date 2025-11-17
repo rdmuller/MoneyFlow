@@ -2,7 +2,6 @@ using Mediator.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
-using MoneyFlow.API.APIs.Bindings;
 using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
