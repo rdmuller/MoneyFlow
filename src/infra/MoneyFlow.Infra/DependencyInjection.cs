@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MoneyFlow.Domain.General.Categories;
 using MoneyFlow.Domain.General.Repositories;
+using MoneyFlow.Domain.General.Repositories.Categories;
 using MoneyFlow.Domain.General.Repositories.Markets;
 using MoneyFlow.Domain.General.Repositories.Users;
 using MoneyFlow.Domain.General.Security;
@@ -49,6 +51,8 @@ public static class DependencyInjection
         services.AddScoped<IUserReadRepository, UserRepository>();
         services.AddScoped<IMarketReadRepository, MarketRepository>();
         services.AddScoped<IMarketWriteRepository, MarketRepository>();
+        services.AddScoped<ICategoryReadRepository, CategoryRepository>();
+        services.AddScoped<ICategoryWriteRepository, CategoryRepository>();
     }
 
     private static void AddServices(IServiceCollection services)

@@ -7,7 +7,7 @@ using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 
-public class UpdateMarketHandler(
+internal class UpdateMarketHandler(
     IMarketWriteRepository marketWriteRepository,
     IUnitOfWork unitOfWork) : IHandler<UpdateMarketCommand, BaseResponse<string>>
 {

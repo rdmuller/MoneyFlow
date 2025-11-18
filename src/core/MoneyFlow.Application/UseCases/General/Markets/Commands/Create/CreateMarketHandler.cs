@@ -7,7 +7,7 @@ using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 
-public class CreateMarketHandler(
+internal class CreateMarketHandler(
     IMarketWriteRepository marketWriteRepository,
     IUnitOfWork unitOfWork) : IHandler<CreateMarketCommand, BaseResponse<string>>
 {
