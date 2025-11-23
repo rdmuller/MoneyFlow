@@ -4,7 +4,10 @@ using System.ComponentModel;
 namespace SharedKernel.Communications;
 public class QueryParams
 {
+    [Description("Page number (starting from 1)")]
     public int? PageNum { get; set; }
+
+    [Description("Number of rows per page")]
     public int? PageRows { get; set; }
 
     [Description("\"F\" - Full, \"A\" - Active, \"I\" - Inactive")]

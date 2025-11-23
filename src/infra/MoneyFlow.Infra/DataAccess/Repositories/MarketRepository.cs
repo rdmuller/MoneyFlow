@@ -33,7 +33,7 @@ public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepos
         //    Data = await query.ToListAsync(cancellationToken)
         //};
 
-        return await querySpecification.ExecuteQueryAsync(query);
+        return await querySpecification.ExecuteQueryAsync(query, cancellationToken: cancellationToken);
     }
 
     async Task<Market?> IMarketReadRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)

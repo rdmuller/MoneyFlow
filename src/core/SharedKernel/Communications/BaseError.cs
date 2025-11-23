@@ -40,9 +40,15 @@ public class BaseError
         ErrorMessage = errorMessage
     };
 
-    public static BaseError Unauthorized(string ErrorMessage) => new BaseError()
+    public static BaseError Unauthorized(string errorMessage) => new BaseError()
     {
         ErrorCode = "Unauthorized",
-        ErrorMessage = ErrorMessage
+        ErrorMessage = errorMessage
+    };
+
+    public static BaseError ValidationError(string errorMessage) => new BaseError()
+    {
+        ErrorCode = "ValidationError",
+        ErrorMessage = errorMessage
     };
 }

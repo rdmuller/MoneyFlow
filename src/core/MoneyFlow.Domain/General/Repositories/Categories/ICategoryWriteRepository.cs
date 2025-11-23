@@ -8,5 +8,5 @@ public interface ICategoryWriteRepository
 
     void Update(Category category, CancellationToken cancellationToken = default);
 
-    Task GetById(long categoryId, CancellationToken cancellationToken = default);
+    Task<Category?> GetByIdAsync(long categoryId, CancellationToken cancellationToken = default);
 }
