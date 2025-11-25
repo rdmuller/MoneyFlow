@@ -4,11 +4,11 @@ using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Sectors;
 
-public class Sector : BaseEntity
+public sealed class Sector : BaseEntity
 {
-    public string Name { get; set; } = string.Empty;
-    public bool Active { get; set; } = true;
-    public long CategoryId { get; set; }
+    public string Name { get; private set; } = string.Empty;
+    public bool Active { get; private set; } = true;
+    public long CategoryId { get; private set; }
 
     public Category Category { get; set; } = null!;
 

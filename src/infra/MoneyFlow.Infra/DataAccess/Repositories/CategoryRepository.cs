@@ -17,7 +17,14 @@ public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryReadR
 
     public async Task<BaseQueryResponse<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Categories.AsNoTracking().AsQueryable();
+        var query = _dbContext.Categories.AsNoTracking().Select(a => new Category
+        {
+            Id = a.Id,
+            Name = a.Name,
+            Active = a.Active,
+            ExternalId = null
+        }).AsQueryable();
+
         var querySpecifications = new QuerySpecification<Category>(queryParams ?? new QueryParams());
 
         return await querySpecifications.ExecuteQueryAsync(query, cancellationToken: cancellationToken);
