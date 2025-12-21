@@ -10,6 +10,7 @@ using MoneyFlow.Application.UseCases.General.Categories.Queries.GetById;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.API.Controllers.General;
+
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -20,7 +21,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(BaseResponse<IEnumerable<CategoryQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAll([FromQuery]BoundQueryParams queryParams)
+    public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
         var result = await _mediator.SendAsync(new GetAllCategoriesQuery { Query = queryParams });
         return Ok(result);

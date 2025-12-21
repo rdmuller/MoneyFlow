@@ -1,6 +1,4 @@
-﻿using MoneyFlow.Domain.General.Entities.Users;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.DTOs.Common.Users;
 

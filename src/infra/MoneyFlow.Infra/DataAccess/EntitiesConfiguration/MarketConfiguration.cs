@@ -11,7 +11,7 @@ internal class MarketConfiguration : IEntityTypeConfiguration<Market>
         builder.HasKey(a => a.Id);
         builder.HasAlternateKey(a => a.ExternalId);
 
-        builder.HasIndex(a => a.Name).IsUnique().HasDatabaseName("IMarket1");
+        builder.HasIndex(a => a.Name).IsUnique().HasDatabaseName("imarket1");
 
         builder.Property(a => a.Name).IsRequired().HasMaxLength(256);
     }

@@ -11,7 +11,7 @@ namespace MoneyFlow.Infra.DataAccess;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options) {}
+    public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
     #region Common entities
     public DbSet<User> Users { get; set; }
@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        modelBuilder.HasDefaultSchema(DbSchemas.APPLICATION);
+        modelBuilder.HasDefaultSchema(DbSchemas.Application);
 
         base.OnModelCreating(modelBuilder);
     }

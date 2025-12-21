@@ -1,7 +1,6 @@
 using SharedKernel.BusinessRules;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
-using System.ComponentModel.DataAnnotations;
 
 namespace SharedKernel.Entities;
 

@@ -20,7 +20,7 @@ internal static class AttributePropertiesCache
         var map = _propertyCache.GetOrAdd(type, t =>
             t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
              .ToDictionary(p => p.Name.ToLower(), p => new AttributeProperties(
-                 p.Name, 
+                 p.Name,
                  p.PropertyType.ToString().ToLower(),
                  p.PropertyType))
         );

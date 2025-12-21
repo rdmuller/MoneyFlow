@@ -1,10 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MoneyFlow.Infra.Services;
 
@@ -22,7 +22,7 @@ public class AccessTokenGenerator(
         var claims = new Claim[]
         {
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Sid, user.ExternalId.ToString()),
+            new Claim(ClaimTypes.Sid, user.ExternalId.ToString()!),
             new Claim(ClaimTypes.Role, user.Role),
             new Claim(ClaimTypes.Name, user.Name),
         };

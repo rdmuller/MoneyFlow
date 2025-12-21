@@ -1,6 +1,7 @@
 ﻿using SharedKernel.Communications;
 
 namespace SharedKernel.Exceptions;
+
 public class RequiredFieldIsEmptyException : BaseException
 {
     public RequiredFieldIsEmptyException() : base()

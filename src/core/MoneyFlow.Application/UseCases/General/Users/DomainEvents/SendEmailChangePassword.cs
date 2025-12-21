@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using MoneyFlow.Application.Common.Events;
+﻿using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Services.Email;
 

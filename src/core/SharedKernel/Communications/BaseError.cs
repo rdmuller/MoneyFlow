@@ -18,7 +18,7 @@ public class BaseError
 
     public BaseError()
     {
-        
+
     }
 
     public BaseError(string errorCode, string errorMessage, string errorDescription)
@@ -34,9 +34,9 @@ public class BaseError
         ErrorMessage = errorMessage;
     }
 
-    public static BaseError RecordAlreadyExists(string errorMessage) => new BaseError() 
-    { 
-        ErrorCode = "RecordAlreadyExists", 
+    public static BaseError RecordAlreadyExists(string errorMessage) => new BaseError()
+    {
+        ErrorCode = "RecordAlreadyExists",
         ErrorMessage = errorMessage
     };
 

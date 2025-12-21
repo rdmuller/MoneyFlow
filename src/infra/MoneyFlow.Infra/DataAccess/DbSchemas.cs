@@ -2,7 +2,7 @@ namespace MoneyFlow.Infra.DataAccess;
 
 internal class DbSchemas
 {
-    public const string SYSTEM = "system";
-    public const string AUDIT = "audit";
-    public const string APPLICATION = "app";
+    public const string System = "system";
+    public const string Audit = "audit";
+    public const string Application = "app";
 }

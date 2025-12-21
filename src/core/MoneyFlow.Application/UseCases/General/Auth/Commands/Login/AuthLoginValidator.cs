@@ -11,7 +11,7 @@ public class AuthLoginValidator : CommonValidator<AuthLoginCommand>
         RuleFor(x => x.Email)
             .NotEmpty()
             .WithMessage("Email is required");
-        
+
         When(x => !string.IsNullOrWhiteSpace(x.Email),
             () => RuleFor(x => x.Email)
             .EmailAddress().WithMessage("Invalid email format"));

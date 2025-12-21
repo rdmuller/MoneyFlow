@@ -2,6 +2,7 @@
 using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Operations;
+
 public class Operation : BaseEntityTentant
 {
     public string Name { get; set; } = string.Empty;

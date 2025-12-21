@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace SharedKernel.Communications;
+
 public class QueryParams
 {
     [Description("Page number (starting from 1)")]
@@ -38,9 +38,10 @@ public static class StatusFilterExtensions
             return StatusFilter.Active;
 
         var statusFilter = _statusFilterMappings.FirstOrDefault(x => x.Value.Equals(code, StringComparison.OrdinalIgnoreCase));
-        if (statusFilter.Key != null)
-            return statusFilter.Key;
 
-        return StatusFilter.Active; // Default value
+        if (string.IsNullOrWhiteSpace(statusFilter.Value))
+            return StatusFilter.Active;
+
+        return statusFilter.Key;
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using Mediator.Abstractions;
+﻿using Mediator.Abstractions;
 using SharedKernel.Communications;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 

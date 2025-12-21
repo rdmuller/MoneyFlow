@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.DTOs.General.Categories;
+
 public class CategoryQueryDTO
 {
     [JsonPropertyName("id")]

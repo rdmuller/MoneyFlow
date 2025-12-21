@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using Mediator.Abstractions;
-using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Repositories;
 using MoneyFlow.Domain.General.Repositories.Categories;
 using SharedKernel.Communications;

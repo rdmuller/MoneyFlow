@@ -1,7 +1,7 @@
-﻿using MoneyFlow.Infra.Settings;
+﻿using MoneyFlow.Domain.General.Services.Email;
+using MoneyFlow.Infra.Settings;
 using SharedKernel.Exceptions;
 using System.Net.Mail;
-using MoneyFlow.Domain.General.Services.Email;
 
 namespace MoneyFlow.Infra.Services;
 

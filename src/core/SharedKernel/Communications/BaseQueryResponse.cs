@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace SharedKernel.Communications;
+
 public class BaseQueryResponse<T> : BaseResponseGeneric<T>
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

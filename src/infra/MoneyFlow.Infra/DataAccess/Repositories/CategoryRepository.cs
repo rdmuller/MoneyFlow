@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Categories;
+using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Repositories.Categories;
-using SharedKernel.Communications;
 using MoneyFlow.Infra.DataAccess.Extensions;
+using SharedKernel.Communications;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
+
 public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryReadRepository, ICategoryWriteRepository
 {
     private readonly ApplicationDbContext _dbContext = dbContext;

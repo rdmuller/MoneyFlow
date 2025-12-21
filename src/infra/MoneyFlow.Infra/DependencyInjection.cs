@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -72,11 +71,11 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-            options.UseSqlServer(connectionString, b =>
+            options.UseNpgsql(connectionString, config =>
             {
-                b.MigrationsHistoryTable(HistoryRepository.DefaultTableName, DbSchemas.SYSTEM);
-                b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
-            });
+                config.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLower(), DbSchemas.System);
+                config.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+            }).UseSnakeCaseNamingConvention();
         });
     }
 }

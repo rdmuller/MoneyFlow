@@ -14,9 +14,9 @@ internal class AssetConfiguration : IEntityTypeConfiguration<Asset>
         builder.HasIndex(a => new { a.TenantId, a.Ticker })
             .IsUnique()
             .HasFilter(sql: $"{nameof(Asset.Ticker)} is not null and {nameof(Asset.Ticker)} <> ''")
-            .HasDatabaseName("IActive1");
-        builder.HasIndex(a => new { a.TenantId, a.Name }).HasDatabaseName("IAsset2");
-        builder.HasIndex(a => new { a.TenantId, a.CategoryId }).HasDatabaseName("IAsset3");
+            .HasDatabaseName("iasset1");
+        builder.HasIndex(a => new { a.TenantId, a.Name }).HasDatabaseName("iasset2");
+        builder.HasIndex(a => new { a.TenantId, a.CategoryId }).HasDatabaseName("iasset3");
 
         builder.Property(a => a.Name).IsRequired().HasMaxLength(256);
         builder.Property(a => a.Ticker).IsRequired().HasMaxLength(50);
@@ -37,7 +37,7 @@ internal class AssetConfiguration : IEntityTypeConfiguration<Asset>
                 .OnDelete(DeleteBehavior.NoAction);
 
         builder.ToTable(tb => tb.HasCheckConstraint(
-            "CK_TickerWithEmptySpace", 
+            "ck_ticker_with_empty_space",
             sql: $"rtrim({nameof(Asset.Ticker)})={nameof(Asset.Ticker)}"));
     }
 }

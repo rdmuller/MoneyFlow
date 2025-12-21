@@ -6,6 +6,7 @@ using static MoneyFlow.Infra.Helpers.AttributePropertiesCache;
 
 
 namespace MoneyFlow.Infra.DataAccess.Extensions;
+
 internal class QuerySpecification<T>
 {
     public int Skip { get; private set; }
@@ -38,7 +39,7 @@ internal class QuerySpecification<T>
             query = query.Where(filter);
 
         return query;
-    } 
+    }
 
     public IQueryable<T> AddPagination(IQueryable<T> query)
     {
@@ -148,7 +149,7 @@ internal class QuerySpecification<T>
             throw new DataBaseException("InvalidFilterValue", $"The value '{stringValue}' is not valid for numeric attribute filter.");
     }
 
-    private static void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out AttributeProperties attributeProperties, out string condition)
+    private static void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out AttributeProperties? attributeProperties, out string condition)
     {
         var conditionParts = extraParamKey.Split("__");
         string attributeName;

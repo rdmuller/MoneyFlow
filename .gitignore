@@ -9,8 +9,14 @@
 *.user
 *.userosscache
 *.sln.docstates
-appsettings.json
-appsettings.Development.json
+#appsettings.json
+#appsettings.Development.json
+
+# Docker / Visual Studio
+.containers/
+.vs/
+bin/
+obj/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

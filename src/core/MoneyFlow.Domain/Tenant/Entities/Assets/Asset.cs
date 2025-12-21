@@ -4,6 +4,7 @@ using MoneyFlow.Domain.Tenant.Entities.Wallets;
 using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Assets;
+
 public class Asset : BaseEntityTentant
 {
     public string Name { get; set; } = string.Empty;

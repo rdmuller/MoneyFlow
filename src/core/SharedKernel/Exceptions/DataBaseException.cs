@@ -6,7 +6,7 @@ public class DataBaseException : BaseException
     {
     }
 
-    public static DataBaseException DuplicatedUniqueKey (string message)
+    public static DataBaseException DuplicatedUniqueKey(string message)
     {
         return new DataBaseException("DuplicatedUniqueKey", message);
     }

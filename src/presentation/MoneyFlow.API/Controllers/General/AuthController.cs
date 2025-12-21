@@ -12,7 +12,7 @@ public class AuthController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login([FromBody]AuthLoginCommand authLoginCommand)
+    public async Task<IActionResult> Login([FromBody] AuthLoginCommand authLoginCommand)
     {
         var result = await _mediator.SendAsync(authLoginCommand);
         return Ok(result);

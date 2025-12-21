@@ -8,7 +8,6 @@ using MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetById;
 using SharedKernel.Communications;
-using System.Net;
 
 namespace MoneyFlow.API.Controllers.General;
 
@@ -53,7 +52,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(BaseQueryResponse<List<MarketQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAllMarkets([FromQuery]BoundQueryParams query)
+    public async Task<IActionResult> GetAllMarkets([FromQuery] BoundQueryParams query)
     {
         var result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = query });
         return Ok(result);

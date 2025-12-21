@@ -1,13 +1,11 @@
 using Mediator.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
 using MoneyFlow.Domain.General.Security;
 using MoneyFlow.Infra;
-using MoneyFlow.Infra.DataAccess;
 using Scalar.AspNetCore;
 using System.Text;
 
@@ -19,7 +17,8 @@ builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).A
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddControllers(options => {
+builder.Services.AddControllers(options =>
+{
     //options.ModelBinderProviders.Insert(0, new QueryParamsBinderProvider()); // se ficar assim, não é necessário adicionar no modelo, ex: QueryParamsBinder
     options.Filters.Add<ValidationFilter>();
     options.Filters.Add<ExceptionFilter>();
@@ -27,8 +26,6 @@ builder.Services.AddControllers(options => {
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-
-builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
 var signingKey = builder.Configuration.GetValue<string>("Settings:jwt:SigningKey");
 builder.Services.AddAuthentication(config =>
@@ -48,16 +45,6 @@ builder.Services.AddAuthentication(config =>
 
 var app = builder.Build();
 
-app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
-{
-    AllowCachingResponses = false,
-    ResultStatusCodes =
-    {
-        [HealthStatus.Healthy] = StatusCodes.Status200OK,
-        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
-    }
-});
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -67,7 +54,7 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options => 
+    app.MapScalarApiReference(options =>
     {
         options.WithTheme(ScalarTheme.BluePlanet)
             .WithTitle("MoneyFlow")

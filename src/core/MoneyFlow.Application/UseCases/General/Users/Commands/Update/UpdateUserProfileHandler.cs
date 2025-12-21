@@ -8,6 +8,7 @@ using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Update;
+
 public class UpdateUserProfileHandler(ILoggedUser loggedUser, IUserWriteOnlyRepository userWriteOnlyRepository, IUnitOfWork unitOfWork) : IHandler<UpdateUserProfileCommand, BaseResponse<string>>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;

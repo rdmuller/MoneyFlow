@@ -6,6 +6,7 @@ using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetById;
+
 internal class GetCategoryByIdHandler(ICategoryReadRepository categoryReadRepository) : IHandler<GetCategoryByIdQuery, BaseResponse<CategoryQueryDTO>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;

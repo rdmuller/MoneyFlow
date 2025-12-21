@@ -20,7 +20,7 @@ public class UserController(IMediator mediator) : ControllerBase
     [HttpGet("profile")]
     [ProducesResponseType(typeof(BaseResponse<GetUserFullQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProfile()
-    { 
+    {
         var result = await _mediator.SendAsync(new GetLoggedUserProfileQuery());
 
         return Ok(result);
@@ -50,7 +50,7 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser([FromBody] BaseRequest<RegisterUserCommandDTO> request)
     {
-        var command = new RegisterUserCommand{ User = request.Data };
+        var command = new RegisterUserCommand { User = request.Data };
         var result = await _mediator.SendAsync(command);
         return Created("", result);
     }

@@ -6,6 +6,7 @@ using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
+
 internal class GetAllMarketsHandler(IMarketReadRepository marketReadRepository) : IHandler<GetAllMarketsQuery, BaseQueryResponse<IEnumerable<MarketQueryDTO>>>
 {
     private readonly IMarketReadRepository _marketReadRepository = marketReadRepository;

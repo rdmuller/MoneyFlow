@@ -16,7 +16,7 @@ public static class DependencyInjection
         MapConfigurations.Configure();
     }
 
-    private static void AddValidators(IServiceCollection services) 
+    private static void AddValidators(IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
         //services.AddValidatorsFromAssemblyContaining<MarketValidator>();
@@ -27,7 +27,7 @@ public static class DependencyInjection
     {
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
         //services.AddScoped<IDomainEventHandler<UserChangePasswordDomainEvent>, SendEmailChangePassword>();
-        
+
         var domainEventHandlerType = typeof(IDomainEventHandler<>);
         var domainEventHandlers = Assembly.GetExecutingAssembly()
             .GetTypes()

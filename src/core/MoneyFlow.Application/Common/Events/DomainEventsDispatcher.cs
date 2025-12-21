@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Abstractions;
+using System.Collections.Concurrent;
 
 namespace MoneyFlow.Application.Common.Events;
 
@@ -37,7 +37,7 @@ internal sealed class DomainEventsDispatcher(IServiceProvider serviceProvider) :
 
         public static HandlerWrapper Create(object handler, Type domainEventType)
         {
-            Type wrapperType = WrapperTypeDictionary.GetOrAdd(domainEventType, 
+            Type wrapperType = WrapperTypeDictionary.GetOrAdd(domainEventType,
                 type => typeof(HandlerWrapper<>).MakeGenericType(type));
 
             return (HandlerWrapper)Activator.CreateInstance(wrapperType, handler)!;

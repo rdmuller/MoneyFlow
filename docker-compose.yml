@@ -1,0 +1,21 @@
+services:
+  moneyflow.api:
+    image: ${DOCKER_REGISTRY-}moneyflowapi
+    container_name: MoneyFlow.Api
+    build:
+      context: .
+      dockerfile: src/presentation/MoneyFlow.API/Dockerfile
+    depends_on:
+      - moneyflow-db
+
+  moneyflow-db:
+    image: postgres:latest
+    container_name: MoneyFlow.DB
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=moneyflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.containers/database:/var/lib/postgresql
