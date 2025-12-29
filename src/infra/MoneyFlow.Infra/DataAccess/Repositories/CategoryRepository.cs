@@ -1,21 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Categories;
 using MoneyFlow.Domain.General.Entities.Categories;
-using MoneyFlow.Domain.General.Entities.Markets;
 using MoneyFlow.Domain.General.Repositories.Categories;
 using MoneyFlow.Infra.DataAccess.Extensions;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 
-public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryReadRepository, ICategoryWriteRepository
+internal sealed class CategoryRepository : BaseRepository<Category>, ICategoryReadRepository, ICategoryWriteRepository
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
-
-    public async Task CreateAsync(Category category, CancellationToken cancellationToken = default)
+    /*public async Task CreateAsync(Category category, CancellationToken cancellationToken = default)
     {
         await _dbContext.Categories.AddAsync(category, cancellationToken);
-    }
+    }*/
+
+    public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext) {}
 
     public async Task<BaseQueryResponse<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
