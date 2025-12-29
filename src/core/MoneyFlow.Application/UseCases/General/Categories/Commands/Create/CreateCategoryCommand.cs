@@ -4,7 +4,7 @@ using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
 
-public class CreateCategoryCommand : IRequest<BaseResponse<string>>
+public record CreateCategoryCommand(string name) : IRequest<BaseResponse<string>>
 {
-    public CategoryCommandDTO Category { get; set; } = null!;
+    //public CategoryCommandDTO Category { get; set; } = null!;
 }

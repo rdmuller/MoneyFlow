@@ -16,4 +16,9 @@ public class Asset : BaseEntityTentant
     public Category? Category { get; set; }
     public Sector? Sector { get; set; }
     public Wallet? Wallet { get; set; }
+
+    protected override void CheckRequiredFields()
+    {
+        throw new NotImplementedException();
+    }
 }

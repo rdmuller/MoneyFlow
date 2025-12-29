@@ -30,4 +30,9 @@ public sealed class Sector : BaseEntity
     {
         return new Sector(name, categoryId, active);
     }
+
+    protected override void CheckRequiredFields()
+    {
+        throw new NotImplementedException();
+    }
 }

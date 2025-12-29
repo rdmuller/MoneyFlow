@@ -9,4 +9,9 @@ public class Operation : BaseEntityTentant
     public int AssetId { get; set; }
 
     public Asset? Asset { get; set; }
+
+    protected override void CheckRequiredFields()
+    {
+        throw new NotImplementedException();
+    }
 }

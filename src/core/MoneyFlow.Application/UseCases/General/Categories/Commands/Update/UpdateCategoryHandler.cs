@@ -15,7 +15,7 @@ internal class UpdateCategoryHandler(ICategoryWriteRepository categoryWriteRepos
     public async Task<BaseResponse<string>> HandleAsync(UpdateCategoryCommand request, CancellationToken cancellationToken = default)
     {
         if (request!.Category!.Id.Equals(0))
-            throw new RequiredFieldIsEmptyException("Category Id is required");
+            throw ErrorOnValidationException.RequiredFieldIsEmpty("Category Id is required");
 
         var category = await _categoryWriteRepository.GetByIdAsync(request.Category.Id, cancellationToken);
         if (category is null)

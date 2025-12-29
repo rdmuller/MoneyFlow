@@ -17,7 +17,7 @@ internal class UpdateMarketHandler(
     public async Task<BaseResponse<string>> HandleAsync(UpdateMarketCommand request, CancellationToken cancellationToken = default)
     {
         if (request!.Market!.Id == 0)
-            throw new RequiredFieldIsEmptyException("Market id is required");
+            throw ErrorOnValidationException.RequiredFieldIsEmpty("Market id is required");
 
         var market = await _marketWriteRepository.GetByIdAsync(request.Market.Id, cancellationToken);
         if (market is null)

@@ -16,7 +16,7 @@ internal class EmailService(EmailSettings emailSettings) : IEmailService
         Console.WriteLine(jsonSettings);
 
         if (string.IsNullOrWhiteSpace(emailMessage.Body))
-            throw new RequiredFieldIsEmptyException("Body of email is required");
+            throw ErrorOnValidationException.RequiredFieldIsEmpty("Body of email is required");
 
         using var email = new MailMessage
         {

@@ -17,7 +17,8 @@ public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepos
 
     public async Task<BaseQueryResponse<IEnumerable<Market>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Markets.AsNoTracking().AsQueryable();
+        var query = _dbContext.Markets.AsNoTracking().Select(m => new Market(m.Id, m.Name, m.Active, m.ExternalId)).AsQueryable();
+        //var query = _dbContext.Markets.AsNoTracking().AsQueryable();
         var querySpecification = new QuerySpecification<Market>(queryParams ?? new QueryParams());
 
         //query = querySpecification.ApplyFilters(query);

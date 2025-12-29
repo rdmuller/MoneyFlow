@@ -4,18 +4,15 @@ namespace MoneyFlow.Application.DTOs.General.Categories;
 
 public class CategoryQueryDTO
 {
-    [JsonPropertyName("id")]
-    public long Id { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("external_id")]
+    public Guid? ExternalId { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
 
     [JsonPropertyName("active")]
-    public bool Active { get; set; } = true;
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("external_id")]
-    public Guid? ExternalId { get; set; }
+    public bool Active { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("created_date")]

@@ -43,7 +43,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<CategoryCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateCategoryCommand { Category = request.Data! });
+        var result = await _mediator.SendAsync(new CreateCategoryCommand(request.Data!.Name));
 
         return Created("", result);
     }
