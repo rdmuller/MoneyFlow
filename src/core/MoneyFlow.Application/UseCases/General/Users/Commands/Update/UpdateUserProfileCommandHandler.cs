@@ -1,15 +1,14 @@
 ﻿using Mapster;
 using Mediator.Abstractions;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
+using MoneyFlow.Domain.Abstractions;
 using MoneyFlow.Domain.General.Entities.Users;
-using MoneyFlow.Domain.General.Repositories;
-using MoneyFlow.Domain.General.Repositories.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 
-public class UpdateUserProfileHandler(ILoggedUser loggedUser, IUserWriteOnlyRepository userWriteOnlyRepository, IUnitOfWork unitOfWork) : IHandler<UpdateUserProfileCommand, BaseResponse<string>>
+public class UpdateUserProfileCommandHandler(ILoggedUser loggedUser, IUserWriteOnlyRepository userWriteOnlyRepository, IUnitOfWork unitOfWork) : IHandler<UpdateUserProfileCommand, BaseResponse<string>>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository = userWriteOnlyRepository;
@@ -28,7 +27,7 @@ public class UpdateUserProfileHandler(ILoggedUser loggedUser, IUserWriteOnlyRepo
         if (request.user.Email is not null)
             user.Email = request.user.Email;
 
-        _userWriteOnlyRepository.UpdateUser(user, cancellationToken);
+        _userWriteOnlyRepository.Update(user, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return new BaseResponse<string>();

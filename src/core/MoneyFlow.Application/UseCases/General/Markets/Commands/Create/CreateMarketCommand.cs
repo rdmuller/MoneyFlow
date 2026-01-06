@@ -1,10 +1,7 @@
 ﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.Common.Markets;
+using MoneyFlow.Application.DTOs.General.Markets;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 
-public class CreateMarketCommand : IRequest<BaseResponse<string>>
-{
-    public MarketCommandDTO? Market { get; set; }
-}
+public sealed record CreateMarketCommand(string? Name) : IRequest<BaseResponse<string>>;

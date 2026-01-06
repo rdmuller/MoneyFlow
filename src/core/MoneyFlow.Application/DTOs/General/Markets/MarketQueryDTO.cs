@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Application.DTOs.Common.Markets;
+namespace MoneyFlow.Application.DTOs.General.Markets;
 
 public class MarketQueryDTO
 {

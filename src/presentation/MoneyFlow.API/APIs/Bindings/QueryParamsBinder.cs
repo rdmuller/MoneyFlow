@@ -16,11 +16,13 @@ public class QueryParamsBinder : IModelBinder
         {
             PageNum = TryGetInt(query, "pageNum"),
             PageRows = TryGetInt(query, "pageRows"),
+            Sort = query.TryGetValue("sort", out var sortValue) ? sortValue.ToString() : string.Empty,
             Status = query.TryGetValue("status", out var statusValue) ? statusValue.ToString() : null,
             ExtraParams = query
                 .Where(kv => !kv.Key.Equals("pageNum", StringComparison.OrdinalIgnoreCase) &&
                              !kv.Key.Equals("pageRows", StringComparison.OrdinalIgnoreCase) &&
-                             !kv.Key.Equals("status", StringComparison.OrdinalIgnoreCase))
+                             !kv.Key.Equals("status", StringComparison.OrdinalIgnoreCase) &&
+                             !kv.Key.Equals("sort", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(kv => kv.Key, kv => kv.Value.ToString())
         };
 

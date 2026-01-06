@@ -50,9 +50,10 @@ internal class QuerySpecification<T>
 
     public async Task<BaseQueryResponse<IEnumerable<T>>> ExecuteQueryAsync(
         IQueryable<T> query, 
-        bool? addFilters = true, 
-        bool? addPagination = true, 
+        bool addFilters = true, 
+        bool addPagination = true, 
         Expression<Func<T, T>>? selectorFields = null,
+        Expression<Func<T, object>>? orderBy = null,
         CancellationToken cancellationToken = default)
     {
         if (addFilters == true)
@@ -63,20 +64,26 @@ internal class QuerySpecification<T>
         int totalRows = 0;
         int totalPages = 0;
 
-        if (addPagination == true)
+        if (addPagination)
         {
             totalRows = await query.CountAsync(cancellationToken);
             totalPages = (int)Math.Ceiling(totalRows / (double)Take);
-            query = AddPagination(query);
         }
 
-        IEnumerable<T> resultQuery;
+        IEnumerable<T> resultQuery = [];
 
-        if (selectorFields is null)
-            resultQuery = await query.ToListAsync(cancellationToken);
-        else
-            resultQuery = await query.Select(selectorFields).ToListAsync(cancellationToken);
+        if (totalRows > 0 || !addPagination)
+        {
+            if (orderBy is not null)
+                query = query.OrderBy(orderBy);
 
+            query = AddPagination(query);
+
+            if (selectorFields is null)
+                resultQuery = await query.ToListAsync(cancellationToken);
+            else
+                resultQuery = await query.Select(selectorFields).ToListAsync(cancellationToken);
+        }
 
         return new BaseQueryResponse<IEnumerable<T>>
         {

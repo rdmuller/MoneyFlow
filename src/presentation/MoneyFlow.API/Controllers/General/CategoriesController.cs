@@ -6,7 +6,7 @@ using MoneyFlow.Application.DTOs.General.Categories;
 using MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
-using MoneyFlow.Application.UseCases.General.Categories.Queries.GetById;
+using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.API.Controllers.General;
@@ -28,12 +28,12 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
 
-    [HttpGet("{id}")]
+    [HttpGet("{externalId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<CategoryQueryDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetById(long id)
+    public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetCategoryByIdQuery { Id = id });
+        var result = await _mediator.SendAsync(new GetCategoryByExternalIdQuery(externalId));
 
         return Ok(result);
     }
@@ -43,19 +43,17 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<CategoryCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateCategoryCommand(request.Data!.Name));
+        var result = await _mediator.SendAsync(new CreateCategoryCommand(request.Data?.Name));
 
         return Created("", result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{externalId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(long id, [FromBody] BaseRequest<CategoryCommandDTO> request)
+    public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CategoryCommandDTO> request)
     {
-        request.Data!.Id = id;
-
-        await _mediator.SendAsync(new UpdateCategoryCommand { Category = request.Data! });
+        await _mediator.SendAsync(new UpdateCategoryCommand(externalId, request.Data?.Name, request.Data?.Active));
 
         return NoContent();
     }

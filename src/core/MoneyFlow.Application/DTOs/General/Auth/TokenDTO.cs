@@ -1,4 +1,4 @@
-﻿namespace MoneyFlow.Application.DTOs.Common.Auth;
+﻿namespace MoneyFlow.Application.DTOs.General.Auth;
 
 public class TokenDTO
 {

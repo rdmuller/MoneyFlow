@@ -1,13 +1,13 @@
 ﻿using Mapster;
 using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.Common.Markets;
-using MoneyFlow.Domain.General.Repositories.Markets;
+using MoneyFlow.Application.DTOs.General.Markets;
+using MoneyFlow.Domain.General.Entities.Markets;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 
-internal class GetAllMarketsHandler(IMarketReadRepository marketReadRepository) : IHandler<GetAllMarketsQuery, BaseQueryResponse<IEnumerable<MarketQueryDTO>>>
+internal class GetAllMarketsQueryHandler(IMarketReadRepository marketReadRepository) : IHandler<GetAllMarketsQuery, BaseQueryResponse<IEnumerable<MarketQueryDTO>>>
 {
     private readonly IMarketReadRepository _marketReadRepository = marketReadRepository;
 

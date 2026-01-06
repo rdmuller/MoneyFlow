@@ -1,13 +1,12 @@
-﻿using Mapster;
-using Mediator.Abstractions;
-using MoneyFlow.Domain.General.Repositories;
-using MoneyFlow.Domain.General.Repositories.Markets;
+﻿using Mediator.Abstractions;
+using MoneyFlow.Domain.Abstractions;
+using MoneyFlow.Domain.General.Entities.Markets;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 
-internal class UpdateMarketHandler(
+internal class UpdateMarketCommandHandler(
     IMarketWriteRepository marketWriteRepository,
     IUnitOfWork unitOfWork) : IHandler<UpdateMarketCommand, BaseResponse<string>>
 {
@@ -16,14 +15,14 @@ internal class UpdateMarketHandler(
 
     public async Task<BaseResponse<string>> HandleAsync(UpdateMarketCommand request, CancellationToken cancellationToken = default)
     {
-        if (request!.Market!.Id == 0)
+        if (request.ExternalId.HasValue == false)
             throw ErrorOnValidationException.RequiredFieldIsEmpty("Market id is required");
 
-        var market = await _marketWriteRepository.GetByIdAsync(request.Market.Id, cancellationToken);
+        var market = await _marketWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
         if (market is null)
             throw DataBaseException.RecordNotFound("Market not found");
 
-        request.Market.Adapt(market);
+        market.Update(request.Name!, request.Active);
 
         _marketWriteRepository.Update(market, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

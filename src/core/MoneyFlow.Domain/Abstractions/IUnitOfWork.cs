@@ -1,4 +1,4 @@
-﻿namespace MoneyFlow.Domain.General.Repositories;
+﻿namespace MoneyFlow.Domain.Abstractions;
 
 public interface IUnitOfWork
 {

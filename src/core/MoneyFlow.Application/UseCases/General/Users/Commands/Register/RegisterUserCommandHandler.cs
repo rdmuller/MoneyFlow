@@ -1,7 +1,7 @@
 using Mediator.Abstractions;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
+using MoneyFlow.Domain.Abstractions;
 using MoneyFlow.Domain.General.Entities.Users;
-using MoneyFlow.Domain.General.Repositories;
 using MoneyFlow.Domain.General.Repositories.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
@@ -9,7 +9,7 @@ using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 
-public class RegisterUserHandler(
+public class RegisterUserCommandHandler(
     IUserWriteOnlyRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserReadRepository userQueryRepository,
@@ -22,16 +22,13 @@ public class RegisterUserHandler(
 
     public async Task<BaseResponse<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        if (request.User is null)
-            throw ErrorOnValidationException.DataNotFound();
-
-        var user = request.User.DtoToEntity();
+        var user = User.Create(request.Name, request.Email, request.Password);
 
         await ValidateAsync(user);
 
         user.Password = _passwordHasher.Hash(user.Password);
 
-        await _userRepository.CreateUserAsync(user, cancellationToken);
+        await _userRepository.CreateAsync(user, cancellationToken);
         await _unitOfWork.CommitAsync();
 
         return new BaseResponse<string>()

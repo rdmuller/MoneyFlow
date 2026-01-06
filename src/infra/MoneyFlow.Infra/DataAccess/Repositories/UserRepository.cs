@@ -1,21 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Users;
-using MoneyFlow.Domain.General.Repositories.Users;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 
-public class UserRepository(ApplicationDbContext dbcontext) : IUserWriteOnlyRepository, IUserReadRepository
+internal sealed class UserRepository : BaseRepository<User>, IUserWriteOnlyRepository, IUserReadRepository
 {
-    private readonly ApplicationDbContext _dbContext = dbcontext;
-    public async Task CreateUserAsync(User user, CancellationToken cancellationToken = default)
-    {
-        await _dbContext.Users.AddAsync(user, cancellationToken);
-    }
-
-    public void UpdateUser(User user, CancellationToken cancellationToken = default)
-    {
-        _dbContext.Users.Update(user);
-    }
+    public UserRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
     public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {

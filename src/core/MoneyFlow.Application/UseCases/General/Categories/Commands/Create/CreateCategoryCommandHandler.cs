@@ -1,7 +1,6 @@
 ﻿using Mediator.Abstractions;
+using MoneyFlow.Domain.Abstractions;
 using MoneyFlow.Domain.General.Entities.Categories;
-using MoneyFlow.Domain.General.Repositories;
-using MoneyFlow.Domain.General.Repositories.Categories;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
@@ -13,15 +12,14 @@ internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWri
 
     public async Task<BaseResponse<string>> HandleAsync(CreateCategoryCommand request, CancellationToken cancellationToken = default)
     {
-        //var category = request.Category.Adapt<Category>();
-        var category = Category.Create(request.name);
+        var category = Category.Create(request.Name);
 
         await _categoryWriteRepository.CreateAsync(category, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return new BaseResponse<string>
         {
-            ObjectId = category.Id,
+            ObjectId = category.ExternalId,
         };
     }
 }

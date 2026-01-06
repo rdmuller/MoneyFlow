@@ -1,7 +1,7 @@
 using MoneyFlow.Domain.General.Entities.Users;
 using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Application.DTOs.Common.Users;
+namespace MoneyFlow.Application.DTOs.General.Users;
 
 public record RegisterUserCommandDTO
 {
@@ -14,15 +14,4 @@ public record RegisterUserCommandDTO
 
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
-
-
-    public User DtoToEntity()
-    {
-        return new User
-        {
-            Name = Name,
-            Password = Password,
-            Email = Email
-        };
-    }
 }

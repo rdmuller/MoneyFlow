@@ -1,19 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Markets;
-using MoneyFlow.Domain.General.Repositories.Markets;
 using MoneyFlow.Infra.DataAccess.Extensions;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 
-public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepository, IMarketWriteRepository
+internal sealed class MarketRepository : BaseRepository<Market>, IMarketReadRepository, IMarketWriteRepository
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
-
-    public async Task CreateAsync(Market market, CancellationToken cancellationToken = default)
-    {
-        await _dbContext.Markets.AddAsync(market, cancellationToken);
-    }
+    public MarketRepository(ApplicationDbContext dbContext) : base(dbContext) {}
 
     public async Task<BaseQueryResponse<IEnumerable<Market>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
@@ -33,20 +27,19 @@ public class MarketRepository(ApplicationDbContext dbContext) : IMarketReadRepos
         //    Data = await query.ToListAsync(cancellationToken)
         //};
 
-        return await querySpecification.ExecuteQueryAsync(query, selectorFields: selectorFields, cancellationToken: cancellationToken);
+        return await querySpecification.ExecuteQueryAsync(query, selectorFields: selectorFields, orderBy: (m => m.Name), cancellationToken: cancellationToken);
     }
 
     async Task<Market?> IMarketReadRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)
-    {
-        return await _dbContext.Markets.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(marketId), cancellationToken);
-    }
-    async Task<Market?> IMarketWriteRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)
-    {
-        return await _dbContext.Markets.FirstOrDefaultAsync(t => t.Id.Equals(marketId), cancellationToken);
-    }
+        => await _dbContext.Markets.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(marketId), cancellationToken);
 
-    public void Update(Market market, CancellationToken cancellationToken = default)
-    {
-        _dbContext.Markets.Update(market);
-    }
+    async Task<Market?> IMarketWriteRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)
+        => await _dbContext.Markets.FirstOrDefaultAsync(t => t.Id.Equals(marketId), cancellationToken);
+
+    async Task<Market?> IMarketReadRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => await _dbContext.Markets.AsNoTracking().FirstOrDefaultAsync(t => t.ExternalId.Equals(externalId), cancellationToken);
+
+    async Task<Market?> IMarketWriteRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) 
+        => await _dbContext.Markets.FirstOrDefaultAsync(t => t.ExternalId.Equals(externalId), cancellationToken);
+
 }

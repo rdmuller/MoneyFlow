@@ -5,7 +5,7 @@ namespace MoneyFlow.Application.DTOs.General.Categories;
 public class CategoryCommandDTO
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    public long Id { get; set; }
+    public Guid? ExternalId { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;

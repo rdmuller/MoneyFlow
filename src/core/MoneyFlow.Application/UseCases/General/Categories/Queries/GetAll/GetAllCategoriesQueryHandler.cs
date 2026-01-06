@@ -1,13 +1,13 @@
 ﻿using Mapster;
 using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.General.Categories;
-using MoneyFlow.Domain.General.Categories;
+using MoneyFlow.Domain.General.Entities.Categories;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 
-internal class GetAllCategoriesHandler(ICategoryReadRepository categoryReadRepository) : IHandler<GetAllCategoriesQuery, BaseQueryResponse<IEnumerable<CategoryQueryDTO>>>
+internal class GetAllCategoriesQueryHandler(ICategoryReadRepository categoryReadRepository) : IHandler<GetAllCategoriesQuery, BaseQueryResponse<IEnumerable<CategoryQueryDTO>>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
 

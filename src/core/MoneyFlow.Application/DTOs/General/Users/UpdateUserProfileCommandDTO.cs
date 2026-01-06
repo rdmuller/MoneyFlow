@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Application.DTOs.Common.Users;
+namespace MoneyFlow.Application.DTOs.General.Users;
 
 public record UpdateUserProfileCommandDTO
 {

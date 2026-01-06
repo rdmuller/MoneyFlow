@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
-using MoneyFlow.Application.DTOs.Common.Markets;
+using MoneyFlow.Application.DTOs.General.Markets;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
-using MoneyFlow.Application.UseCases.General.Markets.Queries.GetById;
+using MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.API.Controllers.General;
@@ -23,29 +23,27 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateMarket([FromBody] BaseRequest<MarketCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateMarketCommand { Market = request.Data });
+        var result = await _mediator.SendAsync(new CreateMarketCommand(request.Data?.Name));
 
         return Created("", result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{externalId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateMarket(long id, [FromBody] BaseRequest<MarketCommandDTO> request)
+    public async Task<IActionResult> UpdateMarket(Guid externalId, [FromBody] BaseRequest<MarketCommandDTO> request)
     {
-        request.Data!.Id = id;
-
-        var result = await _mediator.SendAsync(new UpdateMarketCommand { Market = request.Data });
+        var result = await _mediator.SendAsync(new UpdateMarketCommand(externalId, request.Data?.Name, request.Data?.Active));
 
         return NoContent();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{externalId}")]
     [ProducesResponseType(typeof(BaseResponse<MarketQueryDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetMarketById(long id)
+    public async Task<IActionResult> GetMarketById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetMarketByIdQuery { Id = id });
+        var result = await _mediator.SendAsync(new GetMarketByExternalIdQuery(externalId));
         return Ok(result);
     }
 

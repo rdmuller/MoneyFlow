@@ -1,6 +1,6 @@
 ﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.Common.Users;
-using MoneyFlow.Domain.General.Repositories.Users;
+using MoneyFlow.Application.DTOs.General.Users;
+using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
 

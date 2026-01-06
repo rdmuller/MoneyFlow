@@ -1,10 +1,9 @@
 ﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.General.Categories;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 
-public class UpdateCategoryCommand : IRequest<BaseResponse<string>>
-{
-    public CategoryCommandDTO? Category { get; set; }
-}
+public sealed record UpdateCategoryCommand(
+    Guid? ExternalId, 
+    string? Name, 
+    bool? Active) : IRequest<BaseResponse<string>>;

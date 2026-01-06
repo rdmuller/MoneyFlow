@@ -1,5 +1,5 @@
 ﻿using MoneyFlow.Application.Abstractions;
-using MoneyFlow.Application.DTOs.Common.Markets;
+using MoneyFlow.Application.DTOs.General.Markets;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 

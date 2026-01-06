@@ -10,4 +10,9 @@ abstract internal class BaseRepository<T>(ApplicationDbContext dbContext) where 
     {
         await _dbContext.Set<T>().AddAsync(entity, cancellationToken);
     }
+
+    public virtual void Update(T entity, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Set<T>().Update(entity);
+    }
 }

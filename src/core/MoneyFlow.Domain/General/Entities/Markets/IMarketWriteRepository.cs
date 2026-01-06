@@ -1,6 +1,4 @@
-﻿using MoneyFlow.Domain.General.Entities.Markets;
-
-namespace MoneyFlow.Domain.General.Repositories.Markets;
+﻿namespace MoneyFlow.Domain.General.Entities.Markets;
 
 public interface IMarketWriteRepository
 {
@@ -9,4 +7,6 @@ public interface IMarketWriteRepository
     void Update(Market market, CancellationToken cancellationToken = default);
 
     Task<Market?> GetByIdAsync(long marketId, CancellationToken cancellationToken = default);
+
+    Task<Market?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);
 }

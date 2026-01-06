@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MoneyFlow.Application.DTOs.Common.Markets;
+namespace MoneyFlow.Application.DTOs.General.Markets;
 
 public class MarketCommandDTO
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    public long Id { get; set; }
+    public Guid? ExternalId { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;

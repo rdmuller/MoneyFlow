@@ -1,6 +1,4 @@
-﻿using MoneyFlow.Domain.General.Entities.Categories;
-
-namespace MoneyFlow.Domain.General.Repositories.Categories;
+﻿namespace MoneyFlow.Domain.General.Entities.Categories;
 
 public interface ICategoryWriteRepository
 {
@@ -9,4 +7,6 @@ public interface ICategoryWriteRepository
     void Update(Category category, CancellationToken cancellationToken = default);
 
     Task<Category?> GetByIdAsync(long categoryId, CancellationToken cancellationToken = default);
+
+    Task<Category?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);
 }

@@ -13,6 +13,8 @@ public class QueryParams
     [Description("\"F\" - Full, \"A\" - Active, \"I\" - Inactive")]
     public string? Status { get; set; }
 
+    public string Sort { get; set; } = string.Empty;
+
     public Dictionary<string, string>? ExtraParams { get; set; }
 }
 

@@ -28,6 +28,16 @@ public sealed class Category : BaseEntity
         return category;
     }
 
+    public void Update(string name, bool? active)
+    {
+        Name = name;
+
+        if (active is not null)
+            Active = (bool)active;
+
+        CheckRequiredFields();
+    }
+
     protected override void CheckRequiredFields()
     {
         CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Category name must be provided");

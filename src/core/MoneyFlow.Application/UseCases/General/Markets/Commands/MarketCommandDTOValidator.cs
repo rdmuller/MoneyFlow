@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MoneyFlow.Application.Abstractions;
-using MoneyFlow.Application.DTOs.Common.Markets;
+using MoneyFlow.Application.DTOs.General.Markets;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands;
