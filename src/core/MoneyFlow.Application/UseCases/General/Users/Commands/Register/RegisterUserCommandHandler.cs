@@ -2,7 +2,6 @@ using Mediator.Abstractions;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
 using MoneyFlow.Domain.Abstractions;
 using MoneyFlow.Domain.General.Entities.Users;
-using MoneyFlow.Domain.General.Repositories.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
@@ -22,18 +21,18 @@ public class RegisterUserCommandHandler(
 
     public async Task<BaseResponse<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        var user = User.Create(request.Name, request.Email, request.Password);
+        var user = User.Create(request.Name, new Email(request.Email));
 
         await ValidateAsync(user);
 
-        user.Password = _passwordHasher.Hash(user.Password);
+        user.SetPassword(user.Password, _passwordHasher);
 
         await _userRepository.CreateAsync(user, cancellationToken);
         await _unitOfWork.CommitAsync();
 
         return new BaseResponse<string>()
         {
-            ObjectId = user.Id,
+            ObjectId = user.ExternalId,
         };
     }
 
@@ -41,9 +40,9 @@ public class RegisterUserCommandHandler(
     {
         var errors = await new UserValidator().ValidateWithErrorsAsync(user);
 
-        if (!string.IsNullOrWhiteSpace(user.Email))
+        if (!string.IsNullOrWhiteSpace(user.Email.Value))
         {
-            var emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email);
+            var emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email.Value);
 
             if (emailExist)
                 errors.Add(BaseError.RecordAlreadyExists("E-mail already exists"));

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Domain.Abstractions;
 using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Markets;
+using MoneyFlow.Domain.General.Entities.Sectors;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using MoneyFlow.Domain.General.Services.Email;
@@ -51,6 +52,7 @@ public static class DependencyInjection
         services.AddScoped<IMarketWriteRepository, MarketRepository>();
         services.AddScoped<ICategoryReadRepository, CategoryRepository>();
         services.AddScoped<ICategoryWriteRepository, CategoryRepository>();
+        services.AddScoped<ISectorWriteRepository, SectorRepository>();
     }
 
     private static void AddServices(IServiceCollection services)

@@ -1,7 +1,6 @@
 using SharedKernel.BusinessRules;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace SharedKernel.Entities;
 

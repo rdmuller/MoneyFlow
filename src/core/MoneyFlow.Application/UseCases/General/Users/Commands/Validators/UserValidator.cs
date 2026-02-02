@@ -14,9 +14,9 @@ internal class UserValidator : CommonValidator<User>
             .MinimumLength(5)
             .WithMessage("Name must be between 5 and 100 characters.");
 
-        RuleFor(x => x.Email)
+        RuleFor(x => x.Email.Value)
             .NotEmpty().WithMessage("E-mail is required.")
-            .When(x => !string.IsNullOrWhiteSpace(x.Email))
+            .When(x => !string.IsNullOrWhiteSpace(x.Email.Value))
             .EmailAddress()
             .WithMessage("E-mail must be valid.");
     }

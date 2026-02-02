@@ -51,4 +51,10 @@ public class BaseError
         ErrorCode = "ValidationError",
         ErrorMessage = errorMessage
     };
+
+    public static BaseError InactiveForeignKey(string errorMessage) => new BaseError()
+    {
+        ErrorCode = "InactiveForeignKey",
+        ErrorMessage = errorMessage
+    };
 }

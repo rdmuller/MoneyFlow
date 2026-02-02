@@ -16,16 +16,12 @@ public class UpdateUserProfileCommandHandler(ILoggedUser loggedUser, IUserWriteO
 
     public async Task<BaseResponse<string>> HandleAsync(UpdateUserProfileCommand request, CancellationToken cancellationToken = default)
     {
-        await Validate(request!.user.Adapt<User>());
+        await Validate(User.Create(request.Name, new Email(request.Email)));
 
         var userId = await _loggedUser.GetUserIdAsync();
         var user = await _userWriteOnlyRepository.GetUserByIdAsync(userId, cancellationToken);
 
-        if (request!.user!.Name is not null)
-            user.Name = request.user.Name;
-
-        if (request.user.Email is not null)
-            user.Email = request.user.Email;
+        user.Update(request.Name, new Email(request.Email));
 
         _userWriteOnlyRepository.Update(user, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

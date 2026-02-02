@@ -20,6 +20,7 @@ public class ErrorOnValidationException : BaseException
     {
     }
 
-    public static ErrorOnValidationException DataNotFound() => new ErrorOnValidationException("DataNotFound", "Tag 'Data' not found");
+    public static ErrorOnValidationException DataNotFound() => new ErrorOnValidationException("DataTagNotFound", "Tag 'Data' not found");
     public static ErrorOnValidationException RequiredFieldIsEmpty(string errorMessage) => new ErrorOnValidationException("RequiredFieldIsEmpty", errorMessage);
+    public static ErrorOnValidationException InactiveForeignKey(string errorMessage) => new ErrorOnValidationException("InactiveForeignKey", errorMessage);
 }

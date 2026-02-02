@@ -8,6 +8,7 @@ using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 using SharedKernel.Communications;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MoneyFlow.API.Controllers.General;
 
@@ -28,12 +29,17 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
 
+    [SwaggerOperation(
+        Summary = "Consultar uma categoria",
+        Description = "Retorna todos os dados de uma categoria",
+        Tags = new[] { "Categoria" }
+    )]
     [HttpGet("{externalId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<CategoryQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetCategoryByExternalIdQuery(externalId));
+        var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
 
         return Ok(result);
     }

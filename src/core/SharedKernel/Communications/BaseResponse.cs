@@ -12,4 +12,11 @@ public class BaseResponse<T> : BaseResponseGeneric<T>
             ObjectId = objectId,
         };
     }
+    public static BaseResponse<T> CreateNewObjectIdResponse(object? objectId = null)
+    {
+        return new BaseResponse<T>
+        {
+            ObjectId = objectId
+        };
+    }
 }

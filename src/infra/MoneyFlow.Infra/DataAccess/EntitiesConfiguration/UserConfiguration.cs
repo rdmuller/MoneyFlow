@@ -12,7 +12,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasAlternateKey(u => u.ExternalId);
         builder.HasIndex(u => u.Email).HasDatabaseName("iuser1");
 
-        builder.Property(u => u.Email).IsRequired().HasMaxLength(256);
+        builder.Property(u => u.Email).IsRequired().HasMaxLength(256)
+            .HasConversion(email => email.Value, value => new Email(value));
         builder.Property(u => u.Name).HasMaxLength(256);
         builder.Property(u => u.Password).HasMaxLength(100);
         builder.Property(u => u.Role).HasMaxLength(20).IsRequired();

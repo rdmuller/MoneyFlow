@@ -34,7 +34,7 @@ public class AuthLoginHandler(
         if (errors.Count > 0)
             throw new AuthorizationException(errors);
 
-        var user = await _userQueryRepository.GetUserByEmailAsync(request.Email);
+        var user = await _userQueryRepository.GetByEmailAsync(new Email(request.Email));
 
         if (user is null)
             throw AuthorizationException.InvalidData("Invalid e-mail");

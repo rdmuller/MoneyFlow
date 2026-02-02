@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Tenant\" />
-    <Folder Include="UseCases\General\Sectors\Commands\Create\" />
     <Folder Include="UseCases\Tenant\" />
   </ItemGroup>
 

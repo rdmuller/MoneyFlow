@@ -4,7 +4,4 @@ using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 
-public class UpdateUserProfileCommand : IRequest<BaseResponse<string>>
-{
-    public UpdateUserProfileCommandDTO? user { get; set; }
-}
+public sealed record UpdateUserProfileCommand(string Name, string Email) : IRequest<BaseResponse<string>>;

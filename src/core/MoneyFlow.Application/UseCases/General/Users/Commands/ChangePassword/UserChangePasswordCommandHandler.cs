@@ -9,7 +9,7 @@ using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 
-public class UserChangePasswordHandler(
+public class UserChangePasswordCommandHandler(
     ILoggedUser loggedUser,
     IUserWriteOnlyRepository userWriteOnlyRepository,
     IUnitOfWork unitOfWork,
@@ -32,7 +32,8 @@ public class UserChangePasswordHandler(
         if (!_passwordHasher.Verify(request.OldPassword!, user.Password))
             throw AuthorizationException.InvalidData("Old password does not match");
 
-        user.Password = _passwordHasher.Hash(request.NewPassword!);
+        user.SetPassword(request.NewPassword!, _passwordHasher);
+
         _userWriteOnlyRepository.Update(user, cancellationToken);
 
         Console.WriteLine($"User {userId} changed password at {DateTime.UtcNow}");

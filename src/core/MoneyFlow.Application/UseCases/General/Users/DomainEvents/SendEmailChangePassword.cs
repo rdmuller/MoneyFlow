@@ -14,7 +14,7 @@ internal sealed class SendEmailChangePassword(IEmailService emailService) : IDom
         await _emailService.SendEmailAsync(
             new EmailMessage
             {
-                To = [notification.User.Email],
+                To = [notification.User.Email.Value],
                 Subject = "Password Change Notification",
                 Body = $"Hello {notification.User.Name}, your password has been changed successfully."
             },

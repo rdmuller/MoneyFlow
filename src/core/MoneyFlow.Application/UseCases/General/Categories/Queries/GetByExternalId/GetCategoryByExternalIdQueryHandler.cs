@@ -7,11 +7,11 @@ using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 
-internal class GetCategoryByExternalIdQueryHandler(ICategoryReadRepository categoryReadRepository) : IHandler<GetCategoryByExternalIdQuery, BaseResponse<CategoryQueryDTO>>
+internal class GetCategoryByExternalIdQueryHandler(ICategoryReadRepository categoryReadRepository) : IHandler<GetSectorByExternalIdQuery, BaseResponse<CategoryQueryDTO>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
 
-    public async Task<BaseResponse<CategoryQueryDTO>> HandleAsync(GetCategoryByExternalIdQuery request, CancellationToken cancellationToken = default)
+    public async Task<BaseResponse<CategoryQueryDTO>> HandleAsync(GetSectorByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
         var category = await _categoryReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
 

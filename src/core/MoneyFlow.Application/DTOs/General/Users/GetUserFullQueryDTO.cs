@@ -11,7 +11,7 @@ public record GetUserFullQueryDTO
     {
         return new GetUserFullQueryDTO
         {
-            Email = user.Email,
+            Email = user.Email.Value,
             Name = user.Name
         };
     }

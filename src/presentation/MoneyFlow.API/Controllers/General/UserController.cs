@@ -29,7 +29,7 @@ public class UserController(IMediator mediator) : ControllerBase
     [HttpPut("profile")]
     public async Task<IActionResult> UpdateProfile([FromBody] BaseRequest<UpdateUserProfileCommandDTO> request)
     {
-        var command = new UpdateUserProfileCommand { user = request!.Data! };
+        var command = new UpdateUserProfileCommand(request?.Data?.Name, request?.Data?.Email);
         var result = await _mediator.SendAsync(command);
         return NoContent();
     }
@@ -50,7 +50,7 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser([FromBody] BaseRequest<RegisterUserCommandDTO> request)
     {
-        var command = new RegisterUserCommand { User = request.Data };
+        var command = new RegisterUserCommand(request?.Data?.Name, request?.Data?.Email, request?.Data?.Password);
         var result = await _mediator.SendAsync(command);
         return Created("", result);
     }

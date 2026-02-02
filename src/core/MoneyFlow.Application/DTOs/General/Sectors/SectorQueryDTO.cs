@@ -1,6 +1,6 @@
 ﻿namespace MoneyFlow.Application.DTOs.General.Sectors;
 
-public class GetSectorDTO
+public class SectorQueryDTO
 {
 
 }

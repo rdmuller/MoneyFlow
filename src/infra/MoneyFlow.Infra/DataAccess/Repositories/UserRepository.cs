@@ -7,7 +7,7 @@ internal sealed class UserRepository : BaseRepository<User>, IUserWriteOnlyRepos
 {
     public UserRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(email), cancellationToken);
     }
@@ -17,7 +17,7 @@ internal sealed class UserRepository : BaseRepository<User>, IUserWriteOnlyRepos
         return await _dbContext.Users.AsNoTracking().AnyAsync(u => u.Email.Equals(email), cancellationToken);
     }
 
-    async Task<User> IUserReadRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken)
+    async Task<User> IUserReadRepository.GetByIdAsync(long userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Users.AsNoTracking().FirstAsync(u => u.Id.Equals(userId), cancellationToken);
     }
