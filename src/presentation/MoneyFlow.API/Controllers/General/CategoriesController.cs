@@ -39,7 +39,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<CategoryQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
+        var result = await _mediator.SendAsync(new GetCategoryByExternalIdQuery(externalId));
 
         return Ok(result);
     }

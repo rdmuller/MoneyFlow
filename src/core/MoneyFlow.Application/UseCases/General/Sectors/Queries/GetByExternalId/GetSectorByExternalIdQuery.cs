@@ -2,6 +2,6 @@
 using MoneyFlow.Application.DTOs.General.Sectors;
 using SharedKernel.Communications;
 
-namespace MoneyFlow.Application.UseCases.General.Sector.Queries.GetByExternalId;
+namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 
 public sealed record GetSectorByExternalIdQuery(Guid ExternalId) : IRequest<BaseResponse<SectorQueryDTO>>;

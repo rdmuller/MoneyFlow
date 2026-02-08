@@ -4,4 +4,4 @@ using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 
-public sealed record GetSectorByExternalIdQuery(Guid ExternalId) : IRequest<BaseResponse<CategoryQueryDTO>>;
+public sealed record GetCategoryByExternalIdQuery(Guid ExternalId) : IRequest<BaseResponse<CategoryQueryDTO>>;

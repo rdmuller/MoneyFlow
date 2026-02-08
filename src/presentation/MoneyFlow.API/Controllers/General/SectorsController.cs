@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.General.Sectors;
 using MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
+using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 using SharedKernel.Communications;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -44,4 +45,13 @@ public class SectorsController(IMediator mediator) : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("{externalId}")]
+    [ProducesResponseType(typeof(BaseResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetByExternalId(Guid externalId)
+    {
+        var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
+        return Ok(result);
+}
 }

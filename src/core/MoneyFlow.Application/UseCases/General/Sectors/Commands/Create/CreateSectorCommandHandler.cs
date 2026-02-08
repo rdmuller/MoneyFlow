@@ -22,7 +22,7 @@ public class CreateSectorCommandHandler (
         if (category is null)
             throw DataBaseException.RecordNotFound($"Category not found.");
 
-        var sector = Sector.Create(request.Name, category);
+        var sector = Domain.General.Entities.Sectors.Sector.Create(request.Name, category);
 
         await _sectorWriteRepository.CreateAsync(sector, cancellationToken);
         await _unitOfWork.CommitAsync();
