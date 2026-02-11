@@ -10,13 +10,13 @@ namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
 public class CreateSectorCommandHandler (
     ICategoryReadRepository categoryReadRepository,
     ISectorWriteRepository sectorWriteRepository,
-    IUnitOfWork unitOfWork) : IHandler<CreateSectorCommand, BaseResponse<Guid>>
+    IUnitOfWork unitOfWork) : IHandler<CreateSectorCommand, BaseResponse<string>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
     private readonly ISectorWriteRepository _sectorWriteRepository = sectorWriteRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<BaseResponse<Guid>> HandleAsync(CreateSectorCommand request, CancellationToken cancellationToken = default)
+    public async Task<BaseResponse<string>> HandleAsync(CreateSectorCommand request, CancellationToken cancellationToken = default)
     {
         var category = await _categoryReadRepository.GetByExternalIdAsync(request.categoryExternalId, cancellationToken);
         if (category is null)
@@ -27,6 +27,6 @@ public class CreateSectorCommandHandler (
         await _sectorWriteRepository.CreateAsync(sector, cancellationToken);
         await _unitOfWork.CommitAsync();
 
-        return BaseResponse<Guid>.CreateNewObjectIdResponse(sector.ExternalId);
+        return BaseResponse<string>.CreateNewObjectIdResponse(sector.ExternalId);
     }
 }
