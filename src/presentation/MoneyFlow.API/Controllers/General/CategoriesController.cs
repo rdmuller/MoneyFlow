@@ -29,12 +29,11 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
 
-    [SwaggerOperation(
-        Summary = "Consultar uma categoria",
-        Description = "Retorna todos os dados de uma categoria",
-        Tags = new[] { "Categoria" }
-    )]
     [HttpGet("{externalId}")]
+    [SwaggerOperation(
+        Summary = "Get by id",
+        Description = "Retorna todos os dados de uma categoria"
+    )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<CategoryQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)

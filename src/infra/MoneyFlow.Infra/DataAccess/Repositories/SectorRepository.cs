@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Sectors;
+using MoneyFlow.Infra.DataAccess.Extensions;
 using SharedKernel.Communications;
 using System.Threading;
 
@@ -9,9 +10,17 @@ internal class SectorRepository : BaseRepository<Sector>, ISectorWriteRepository
 {
     public SectorRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public Task<BaseQueryResponse<IEnumerable<Sector>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken)
+    public async Task<BaseQueryResponse<IEnumerable<Sector>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var query = _dbContext.Sectors.AsNoTracking()
+            .Include(s => s.Category)
+            .OrderBy(s => s.Category.Name)
+            .ThenBy(s => s.Name)
+            .AsQueryable();
+
+        var querySpecification = new QuerySpecification<Sector>(queryParams ?? new QueryParams());
+
+        return await querySpecification.ExecuteQueryAsync(query);
     }
     async Task<Sector?> ISectorReadRepository.GetByIdAsync(long id, CancellationToken cancellationToken)
     => await _dbContext.Sectors.AsNoTracking()

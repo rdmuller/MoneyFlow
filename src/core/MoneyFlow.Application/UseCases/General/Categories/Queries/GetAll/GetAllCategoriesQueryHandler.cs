@@ -7,7 +7,8 @@ using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 
-internal class GetAllCategoriesQueryHandler(ICategoryReadRepository categoryReadRepository) : IHandler<GetAllCategoriesQuery, BaseQueryResponse<IEnumerable<CategoryQueryDTO>>>
+internal class GetAllCategoriesQueryHandler(ICategoryReadRepository categoryReadRepository) 
+    : IHandler<GetAllCategoriesQuery, BaseQueryResponse<IEnumerable<CategoryQueryDTO>>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
 

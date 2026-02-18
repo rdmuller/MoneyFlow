@@ -1,6 +1,7 @@
 using Mediator.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
@@ -24,7 +25,7 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<ExceptionFilter>();
 });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 
 
 var signingKey = builder.Configuration.GetValue<string>("Settings:jwt:SigningKey");
@@ -43,6 +44,22 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(config => 
+{
+    config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        Type = SecuritySchemeType.Http,
+        Description = "Bearer {token}"
+    });
+
+    config.EnableAnnotations();
+});
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -53,19 +70,22 @@ app.UseAuthorization();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference(options =>
+    app.UseSwagger(c => c.RouteTemplate = "openapi/{documentName}.json");
+//    app.MapOpenApi();
+    app.MapScalarApiReference(endpointPrefix: "/docs", options =>
     {
         options.WithTheme(ScalarTheme.BluePlanet)
             .WithTitle("MoneyFlow")
             .ForceDarkMode()
             //.ExpandAllTags()
             .SortOperationsByMethod()
-            .AddPreferredSecuritySchemes("BearerAuth")
-            .AddHttpAuthentication("BearerAuth", auth =>
-            {
-                auth.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
-            });
+            .WithOpenApiRoutePattern("/openapi/{documentName}.json")
+            //.AddPreferredSecuritySchemes("BearerAuth")
+            //.AddHttpAuthentication("BearerAuth", auth =>
+            //{
+            //    auth.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+            //})
+            ;
     });
 }
 
