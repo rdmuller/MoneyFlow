@@ -17,9 +17,6 @@ internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWri
         await _categoryWriteRepository.CreateAsync(category, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new BaseResponse<string>
-        {
-            ObjectId = category.ExternalId,
-        };
+        return BaseResponse<string>.CreateNewObjectIdResponse(category.ExternalId);
     }
 }

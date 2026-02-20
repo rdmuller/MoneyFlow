@@ -107,7 +107,7 @@ internal class QuerySpecification<T>
                     continue;
 
                 if (attributeProperties.Type.Contains("string"))
-                    AddStringExtraParamFilter(attributeProperties.RealName, condition, param.Value.ToLower());
+                    AddStringExtraParamFilter2(attributeProperties.RealName, condition, param.Value.ToLower());
 
                 else if (attributeProperties.Type.Contains("int") || attributeProperties.Type.Contains("short") || attributeProperties.Type.Contains("long"))
                     AddNumericWihtoutDecimalsExtraParamFilter(attributeProperties.RealName, condition, param.Value);
@@ -134,6 +134,68 @@ internal class QuerySpecification<T>
                 throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter.");
         }
     }
+
+    private void AddStringExtraParamFilter2(string attributeName, string condition, string value)
+    {
+        // attributeName may be dotted (e.g. "category.name")
+        var parameter = Expression.Parameter(typeof(T), "x");
+        Expression current = parameter;
+        var parts = attributeName.Split('.', StringSplitOptions.RemoveEmptyEntries);
+        var memberExpressions = new List<Expression>();
+
+        try
+        {
+            foreach (var part in parts)
+            {
+                current = Expression.PropertyOrField(current, part);
+                memberExpressions.Add(current);
+            }
+        }
+        catch (ArgumentException)
+        {
+            // property path invalid for T; ignore filter
+            return;
+        }
+
+        // Build ToLower() call on final member
+        var toLowerMethod = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
+        var finalToLower = Expression.Call(memberExpressions.Last(), toLowerMethod);
+
+        var constant = Expression.Constant(value, typeof(string));
+
+        Expression comparison;
+        var equalsMethod = typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string) })!;
+        var containsMethod = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
+
+        switch (condition)
+        {
+            case "eq":
+                comparison = Expression.Call(finalToLower, equalsMethod, constant);
+                break;
+            case "neq":
+                comparison = Expression.Not(Expression.Call(finalToLower, equalsMethod, constant));
+                break;
+            case "like":
+                comparison = Expression.Call(finalToLower, containsMethod, constant);
+                break;
+            default:
+                throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter.");
+        }
+
+        // Build null checks for navigation chain (e.g. x.Category != null && x.Category.Name != null)
+        Expression? nullChecks = null;
+        foreach (var member in memberExpressions)
+        {
+            var notNull = Expression.NotEqual(member, Expression.Constant(null, member.Type));
+            nullChecks = nullChecks is null ? notNull : Expression.AndAlso(nullChecks, notNull);
+        }
+
+        Expression body = nullChecks is not null ? Expression.AndAlso(nullChecks, comparison) : comparison;
+
+        var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+        Filters.Add(lambda);
+    }
+
 
     private void AddNumericWihtoutDecimalsExtraParamFilter(string attributeName, string condition, string stringValue)
     {

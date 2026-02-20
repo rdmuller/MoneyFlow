@@ -25,6 +25,16 @@ public sealed class Currency : BaseEntity
         return currency;
     }
 
+    public void Update(string name, bool? active)
+    {
+        Name = name;
+
+        if (active is not null)
+            Active = (bool)active;
+
+        CheckRequiredFields();
+    }
+
     protected override void CheckRequiredFields()
     {
         CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Currency name must be provided");
