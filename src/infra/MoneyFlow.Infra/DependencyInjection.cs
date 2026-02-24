@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Domain.Abstractions;
 using MoneyFlow.Domain.General.Entities.Categories;
+using MoneyFlow.Domain.General.Entities.Currencies;
 using MoneyFlow.Domain.General.Entities.Markets;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using MoneyFlow.Domain.General.Entities.Users;
@@ -54,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryWriteRepository, CategoryRepository>();
         services.AddScoped<ISectorWriteRepository, SectorRepository>();
         services.AddScoped<ISectorReadRepository, SectorRepository>();
+        services.AddScoped<ICurrencyWriteRepository, CurrencyRepository>();
     }
 
     private static void AddServices(IServiceCollection services)

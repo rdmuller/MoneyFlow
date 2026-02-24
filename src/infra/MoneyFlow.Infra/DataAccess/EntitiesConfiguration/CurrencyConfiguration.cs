@@ -14,5 +14,6 @@ internal class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
         builder.HasIndex(a => a.Name).HasDatabaseName("icurrency2");
 
         builder.Property(a => a.Name).IsRequired().HasMaxLength(256);
+        builder.Property(a => a.Symbol).IsRequired().HasMaxLength(10);
     }
 }

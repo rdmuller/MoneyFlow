@@ -2,4 +2,5 @@
 
 public interface ICurrencyWriteRepository
 {
+    Task CreateAsync(Currency currency, CancellationToken cancellationToken = default);
 }
