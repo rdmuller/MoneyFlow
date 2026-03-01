@@ -56,6 +56,7 @@ public static class DependencyInjection
         services.AddScoped<ISectorWriteRepository, SectorRepository>();
         services.AddScoped<ISectorReadRepository, SectorRepository>();
         services.AddScoped<ICurrencyWriteRepository, CurrencyRepository>();
+        services.AddScoped<ICurrencyReadRepository, CurrencyRepository>();
     }
 
     private static void AddServices(IServiceCollection services)

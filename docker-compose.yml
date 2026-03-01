@@ -5,6 +5,11 @@ services:
     build:
       context: .
       dockerfile: src/presentation/MoneyFlow.API/Dockerfile
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://moneyflow.dashboard:18889
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc   # ou http/protobuf se preferir 4318
+      # Header correto para ApiKey (NÃO é Bearer!)
+      - OTEL_EXPORTER_OTLP_HEADERS=x-otlp-api-key=meu-token-secreto-fixo-xyz123
     depends_on:
       - moneyflow-db
 
@@ -19,3 +24,18 @@ services:
       - "5432:5432"
     volumes:
       - ./.containers/database:/var/lib/postgresql
+ 
+  moneyflow.dashboard:
+    image: mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest
+    container_name: dashboard
+    environment:
+      # Login no browser (frontend) → token fixo correto
+      #- Dashboard__Frontend__AuthMode=BrowserToken
+      #- Dashboard__Frontend__BrowserToken=admin123
+      - DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS=true
+
+      # Proteção OTLP (já está correta)
+      - DASHBOARD__OTLP__AUTHMODE=ApiKey
+      - DASHBOARD__OTLP__PRIMARYAPIKEY=meu-token-secreto-fixo-xyz123
+    ports:
+      - 18888:18888

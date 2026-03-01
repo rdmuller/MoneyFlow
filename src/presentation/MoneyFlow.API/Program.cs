@@ -7,6 +7,10 @@ using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
 using MoneyFlow.Domain.General.Security;
 using MoneyFlow.Infra;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using System.Text;
 
@@ -60,6 +64,23 @@ builder.Services.AddSwaggerGen(config =>
     config.EnableAnnotations();
 });
 
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService(nameof(MoneyFlow.API)))
+    .WithMetrics(m => m
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddEntityFrameworkCoreInstrumentation()
+        .AddOtlpExporter()
+//.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
+//.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
+    );
+
+builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -71,20 +92,13 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger(c => c.RouteTemplate = "openapi/{documentName}.json");
-//    app.MapOpenApi();
     app.MapScalarApiReference(endpointPrefix: "/docs", options =>
     {
         options.WithTheme(ScalarTheme.BluePlanet)
             .WithTitle("MoneyFlow")
             .ForceDarkMode()
-            //.ExpandAllTags()
             .SortOperationsByMethod()
             .WithOpenApiRoutePattern("/openapi/{documentName}.json")
-            //.AddPreferredSecuritySchemes("BearerAuth")
-            //.AddHttpAuthentication("BearerAuth", auth =>
-            //{
-            //    auth.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
-            //})
             ;
     });
 }

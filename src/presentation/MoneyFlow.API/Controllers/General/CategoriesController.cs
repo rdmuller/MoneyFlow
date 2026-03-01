@@ -20,7 +20,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
-    [ProducesResponseType(typeof(BaseResponse<IEnumerable<CategoryQueryDTO>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseQueryResponse<IEnumerable<CategoryQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
