@@ -6,7 +6,9 @@ using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 
-internal class UpdateCategoryCommandHandler(ICategoryWriteRepository categoryWriteRepository, IUnitOfWork unitOfWork) : IHandler<UpdateCategoryCommand, BaseResponse<string>>
+internal class UpdateCategoryCommandHandler
+    (ICategoryWriteRepository categoryWriteRepository, IUnitOfWork unitOfWork)
+    : IHandler<UpdateCategoryCommand, BaseResponse<string>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICategoryWriteRepository _categoryWriteRepository = categoryWriteRepository;

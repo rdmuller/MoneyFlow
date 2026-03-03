@@ -19,13 +19,15 @@ internal class CurrencyRepository : BaseRepository<Currency>, ICurrencyWriteRepo
         return await querySpecification.ExecuteQueryAsync(query, selectorFields: selectorFields, orderBy: c => c.Name, cancellationToken: cancellationToken);
     }
 
-    public Task<Currency?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    async Task<Currency?> ICurrencyReadRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) 
+        => await _dbContext.Currencies.AsNoTracking().FirstOrDefaultAsync(c => c.ExternalId == externalId, cancellationToken);
 
-    public Task<Currency?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+    async Task<Currency?> ICurrencyWriteRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => await _dbContext.Currencies.FirstOrDefaultAsync(c => c.ExternalId == externalId, cancellationToken);
+
+    async Task<Currency?> ICurrencyReadRepository.GetByIdAsync(long id, CancellationToken cancellationToken)
+        => await _dbContext.Currencies.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+
+    async Task<Currency?> ICurrencyWriteRepository.GetByIdAsync(long id, CancellationToken cancellationToken) 
+        => await _dbContext.Currencies.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
     }
-}

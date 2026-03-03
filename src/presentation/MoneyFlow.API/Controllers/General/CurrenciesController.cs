@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
+using MoneyFlow.Application.UseCases.General.Currencies.Commands.Update;
+using MoneyFlow.Application.UseCases.General.Currencies.GetByExternalId;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 using SharedKernel.Communications;
 using Swashbuckle.AspNetCore.Annotations;
@@ -32,6 +34,20 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
         return Created("", result);
     }
 
+    [HttpPut("{externalId}")]
+    [SwaggerOperation(
+        Summary = "Alterar moeda",
+        Description = "Alterar moeda",
+        OperationId = "Update")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update(Guid externalId, [FromBody]BaseRequest<CurrencyCommandDTO> request)
+    {
+        var result = await _mediator.SendAsync(new UpdateCurrencyCommand(externalId, request.Data?.Name, request.Data?.Symbol, request.Data?.Active ?? false));
+        return NoContent();
+    }
+
+
     [HttpGet]
     [SwaggerOperation(
         Summary = "Listar moedas",
@@ -47,6 +63,22 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
         {
             Query = queryParams
         });
+
+        return Ok(result);
+    }
+
+    [HttpGet("{externalId}")]
+    [SwaggerOperation(
+        Summary = "Dados de uma moeda",
+        Description = "Consultar dados de uma moeda",
+        OperationId = "Get"
+    //Tags = new[] { "Setor" }
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(BaseQueryResponse<CurrencyQueryDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetById(Guid externalId)
+    {
+        var result = await _mediator.SendAsync(new GetCurrencyByExternalIdQuery(externalId));
 
         return Ok(result);
     }
