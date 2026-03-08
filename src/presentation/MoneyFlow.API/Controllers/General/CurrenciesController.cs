@@ -5,7 +5,7 @@ using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Update;
-using MoneyFlow.Application.UseCases.General.Currencies.GetByExternalId;
+using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 using SharedKernel.Communications;
 using Swashbuckle.AspNetCore.Annotations;

@@ -5,7 +5,7 @@ using MoneyFlow.Domain.General.Entities.Currencies;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
-namespace MoneyFlow.Application.UseCases.General.Currencies.GetByExternalId;
+namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 
 internal class GetCurrencyByExternalIdQueryHandler(
     ICurrencyReadRepository currencyReadRepository)

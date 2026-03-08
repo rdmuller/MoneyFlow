@@ -31,7 +31,8 @@ builder.Services.AddControllers(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 
-
+# region Authentication
+builder.Services.AddScoped<JwtBearerEventsHandler>();
 var signingKey = builder.Configuration.GetValue<string>("Settings:jwt:SigningKey");
 builder.Services.AddAuthentication(config =>
 {
@@ -46,7 +47,10 @@ builder.Services.AddAuthentication(config =>
         ClockSkew = new TimeSpan(0),
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey!))
     };
+
+    config.EventsType = typeof(JwtBearerEventsHandler);
 });
+# endregion
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config => 
@@ -64,6 +68,7 @@ builder.Services.AddSwaggerGen(config =>
     config.EnableAnnotations();
 });
 
+# region Observability
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(r => r.AddService(nameof(MoneyFlow.API)))
     .WithMetrics(m => m
@@ -75,11 +80,13 @@ builder.Services.AddOpenTelemetry()
         .AddHttpClientInstrumentation()
         .AddEntityFrameworkCoreInstrumentation()
         .AddOtlpExporter()
-//.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
-//.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
+        //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
+        //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
     );
 
 builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
+# endregion
+
 
 var app = builder.Build();
 
