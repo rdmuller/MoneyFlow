@@ -1,4 +1,5 @@
-﻿using Mediator.Abstractions;
+﻿using Mapster;
+using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Domain.General.Entities.Users;
 using SharedKernel.Communications;
@@ -11,12 +12,13 @@ internal class GetUserByExternalIdQueryHandler(IUserReadRepository userReadRepos
     private readonly IUserReadRepository _userReadRepository = userReadRepository;
     public async Task<BaseResponse<GetUserFullQueryDTO>> HandleAsync(GetUserByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
-        if (request.ExternalId.HasValue)
-            throw new NoContentException();
+        if (!request.ExternalId.HasValue)
+            throw ErrorOnValidationException.RequiredFieldIsEmpty($"ExternalId is required.");
 
         var user = await _userReadRepository.GetByExternalIdAsync((Guid)request.ExternalId!, cancellationToken);
+        if (user is null)
+            throw DataBaseException.RecordNotFound($"User with ExternalId {request.ExternalId} not found.");
 
-
-        return BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(null);
+        return BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(GetUserFullQueryDTO.EntityToDTO(user));
     }
 }

@@ -1,18 +1,20 @@
 ﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Update;
-using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
+using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
+using MoneyFlow.Domain.General.Enums;
 using SharedKernel.Communications;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MoneyFlow.API.Controllers.General;
 
 [Route("api/[controller]")]
+[Authorize(Roles = Roles.ADMIN)]
 [ApiController]
 public class CurrenciesController(IMediator mediator) : ControllerBase
 {
@@ -49,6 +51,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
 
 
     [HttpGet]
+    [Authorize(Roles = Roles.ADMIN_OR_USER)]
     [SwaggerOperation(
         Summary = "Listar moedas",
         Description = "Listar moedas",
@@ -68,6 +71,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{externalId}")]
+    [Authorize(Roles = Roles.ADMIN_OR_USER)]
     [SwaggerOperation(
         Summary = "Dados de uma moeda",
         Description = "Consultar dados de uma moeda",
