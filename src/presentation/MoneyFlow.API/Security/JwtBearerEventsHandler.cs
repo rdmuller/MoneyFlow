@@ -33,7 +33,7 @@ internal class JwtBearerEventsHandler : JwtBearerEvents
 
         var identity = context.Principal!.Identity as ClaimsIdentity;
 
-        identity!.AddClaim(new Claim(ClaimTypes.Role, userDTO.Data.Role!));
+        identity?.AddClaim(new Claim(ClaimTypes.Role, userDTO.Data.Role!));
         
         //foreach (var role in roles)
         //{

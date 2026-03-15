@@ -12,6 +12,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,12 +45,16 @@ builder.Services.AddAuthentication(config =>
     {
         ValidateIssuer = false,
         ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ClockSkew = new TimeSpan(0),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey!)),
     };
 
     config.EventsType = typeof(JwtBearerEventsHandler);
 });
+
+builder.Services.AddAuthorizationPolicies();
 # endregion
 
 builder.Services.AddEndpointsApiExplorer();

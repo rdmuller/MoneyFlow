@@ -4,5 +4,5 @@ public class Roles
 {
     public const string ADMIN = "admin";
     public const string USER = "user";
-    public const string ADMIN_OR_USER = "admin,user";
+    public const string ADMIN_OR_USER = "AdminOrUser";
 }
