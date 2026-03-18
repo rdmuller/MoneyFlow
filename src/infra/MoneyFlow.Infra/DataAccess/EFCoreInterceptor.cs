@@ -59,6 +59,12 @@ public class EFCoreInterceptor(IDateTimeProvider timeProvider) : SaveChangesInte
                 case EntityState.Modified:
                     entry.Entity.UpdatedDate = utcNow;
                     break;
+
+                case EntityState.Deleted:
+                    entry.Entity.IsDeleted = true;
+                    entry.Entity.DeletedOn = utcNow;
+                    entry.State = EntityState.Modified;
+                    break;
             }
         }
 

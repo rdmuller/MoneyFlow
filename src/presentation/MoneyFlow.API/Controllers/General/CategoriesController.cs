@@ -7,6 +7,7 @@ using MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
+using MoneyFlow.Domain.General.Enums;
 using SharedKernel.Communications;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -14,7 +15,7 @@ namespace MoneyFlow.API.Controllers.General;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Policy = Roles.ADMIN_OR_USER)]
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -44,6 +45,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<CategoryCommandDTO> request)
@@ -54,6 +56,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{externalId}")]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CategoryCommandDTO> request)

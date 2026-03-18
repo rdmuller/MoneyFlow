@@ -2,12 +2,15 @@
 using Mediator.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
+using MoneyFlow.Domain.Tenant.Services;
 using System.Security.Claims;
 
 namespace MoneyFlow.API.Security;
 
-internal class JwtBearerEventsHandler : JwtBearerEvents
+internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBearerEvents
 {
+    private readonly ITenantProvider _tenantProvider = tenantProvider;
+
     public override async Task TokenValidated(TokenValidatedContext context)
     {
         var userExternalIdClaim = context.Principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
@@ -34,6 +37,8 @@ internal class JwtBearerEventsHandler : JwtBearerEvents
         var identity = context.Principal!.Identity as ClaimsIdentity;
 
         identity?.AddClaim(new Claim(ClaimTypes.Role, userDTO.Data.Role!));
+
+        _tenantProvider.Set(userDTO.Data.Id);
         
         //foreach (var role in roles)
         //{

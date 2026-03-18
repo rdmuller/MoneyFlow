@@ -23,6 +23,11 @@ public abstract class BaseEntity
     public DateTimeOffset? CreatedDate { get; set; }
     public DateTimeOffset? UpdatedDate { get; set; }
 
+    #region Soft Delete
+    public bool IsDeleted { get; set; } = false;
+    public DateTimeOffset? DeletedOn { get; set; }
+    #endregion
+
     protected void CheckRule(IBusinessRule rule)
     {
         if (rule.IsBroken())

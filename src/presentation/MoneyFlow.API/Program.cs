@@ -2,6 +2,7 @@ using Mediator.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using MoneyFlow.API;
 using MoneyFlow.API.Security;
 using MoneyFlow.Application;
 using MoneyFlow.Application.Common.Behaviors;
@@ -22,6 +23,7 @@ builder.Services.AddDependencyInjectionApplication();
 builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).Assembly);
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddDependencyInjectionAPI();
 
 builder.Services.AddControllers(options =>
 {
@@ -33,7 +35,6 @@ builder.Services.AddControllers(options =>
 //builder.Services.AddOpenApi();
 
 # region Authentication
-builder.Services.AddScoped<JwtBearerEventsHandler>();
 var signingKey = builder.Configuration.GetValue<string>("Settings:jwt:SigningKey");
 builder.Services.AddAuthentication(config =>
 {

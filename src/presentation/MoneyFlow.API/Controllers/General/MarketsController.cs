@@ -7,18 +7,20 @@ using MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
+using MoneyFlow.Domain.General.Enums;
 using SharedKernel.Communications;
 
 namespace MoneyFlow.API.Controllers.General;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Policy = Roles.ADMIN_OR_USER)]
 public class MarketsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateMarket([FromBody] BaseRequest<MarketCommandDTO> request)
@@ -29,6 +31,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{externalId}")]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateMarket(Guid externalId, [FromBody] BaseRequest<MarketCommandDTO> request)

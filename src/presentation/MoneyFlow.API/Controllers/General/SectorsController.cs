@@ -7,6 +7,7 @@ using MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
+using MoneyFlow.Domain.General.Enums;
 using SharedKernel.Communications;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -14,12 +15,13 @@ namespace MoneyFlow.API.Controllers.General;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Policy = Roles.ADMIN_OR_USER)]
 public class SectorsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
+    [Authorize(Policy = Roles.ADMIN)]
     [SwaggerOperation(
         Summary = "Incluir setor",
         Description = "Incluir um novo setor vinculado a categoria",
@@ -35,6 +37,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{externalId}")]
+    [Authorize(Policy = Roles.ADMIN)]
     [SwaggerOperation(
         Summary = "Alterar setor",
         Description = "Alterar um setor",
