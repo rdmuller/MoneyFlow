@@ -12,7 +12,6 @@ internal class AssetConfiguration : IEntityTypeConfiguration<Asset>
         builder.HasAlternateKey(a => a.ExternalId);
 
         builder.HasIndex(a => new { a.TenantId, a.Ticker })
-            .IsUnique()
             .HasFilter(sql: $"{nameof(Asset.Ticker)} is not null and {nameof(Asset.Ticker)} <> ''")
             .HasDatabaseName("iasset1");
         builder.HasIndex(a => new { a.TenantId, a.Name }).HasDatabaseName("iasset2");
@@ -39,5 +38,7 @@ internal class AssetConfiguration : IEntityTypeConfiguration<Asset>
         builder.ToTable(tb => tb.HasCheckConstraint(
             "ck_ticker_with_empty_space",
             sql: $"rtrim({nameof(Asset.Ticker)})={nameof(Asset.Ticker)}"));
+
+        builder.HasQueryFilter("SoftDeletionFilter", t => !t.IsDeleted);
     }
 }

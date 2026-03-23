@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: src/presentation/MoneyFlow.API/Dockerfile
     environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=moneyflow-db;Port=5432;Database=moneyflow;Username=postgres;Password=postgres
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://moneyflow.dashboard:18889
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc   # ou http/protobuf se preferir 4318
       # Header correto para ApiKey (NÃO é Bearer!)

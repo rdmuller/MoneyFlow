@@ -6,12 +6,18 @@ using MoneyFlow.Domain.General.Entities.Sectors;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.Tenant.Entities.Assets;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
+using MoneyFlow.Domain.Tenant.Services;
 
 namespace MoneyFlow.Infra.DataAccess;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options) { }
+    private readonly ITenantProvider _tenantProvider;
+
+    public ApplicationDbContext(DbContextOptions options, ITenantProvider tenantProvider) : base(options)
+    {
+        _tenantProvider = tenantProvider;
+    }
 
     #region Common entities
     public DbSet<User> Users { get; set; }
@@ -32,6 +38,17 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         modelBuilder.HasDefaultSchema(DbSchemas.Application);
+
+        modelBuilder.Entity<Category>().HasQueryFilter(DefaultFilters.SoftDeletionFilter, e => !e.IsDeleted);
+        modelBuilder.Entity<Sector>().HasQueryFilter(DefaultFilters.SoftDeletionFilter, e => !e.IsDeleted);
+        modelBuilder.Entity<Market>().HasQueryFilter(DefaultFilters.SoftDeletionFilter, e => !e.IsDeleted);
+        modelBuilder.Entity<Currency>().HasQueryFilter(DefaultFilters.SoftDeletionFilter, e => !e.IsDeleted);
+
+        modelBuilder.Entity<Asset>().HasQueryFilter(DefaultFilters.SoftDeletionFilter, e => !e.IsDeleted)
+            .HasQueryFilter(DefaultFilters.TenantFilter, e => e.TenantId == _tenantProvider.Get());
+
+        modelBuilder.Entity<Wallet>().HasQueryFilter(DefaultFilters.SoftDeletionFilter, e => !e.IsDeleted)
+            .HasQueryFilter(DefaultFilters.TenantFilter, e => e.TenantId == _tenantProvider.Get());
 
         base.OnModelCreating(modelBuilder);
     }
