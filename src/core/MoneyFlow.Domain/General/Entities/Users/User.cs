@@ -1,3 +1,4 @@
+using MoneyFlow.Domain.General.Entities.Users.Events;
 using MoneyFlow.Domain.General.Enums;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Entities;
@@ -22,11 +23,14 @@ public sealed class User : BaseEntity
         Role = role ?? string.Empty;
     }
 
-    public static User Create(string name, Email email)
+    public static User Create(string name, Email email, string? password = null, IPasswordHasher? passwordHasher = null)
     {
         User user = new User(0, email, name, "", "", Guid.CreateVersion7());
 
         user.CheckRequiredFields();
+
+        if (password is not null && passwordHasher is not null)
+            user.SetPassword(password, passwordHasher);
 
         return user;
     }
@@ -39,10 +43,15 @@ public sealed class User : BaseEntity
         CheckRequiredFields();
     }
 
-    public void SetPassword(string password, IPasswordHasher passwordHasher)
+    public void ChangePassword(string newPassword, IPasswordHasher passwordHasher)
     {
-        Password = passwordHasher.Hash(password);
+        SetPassword(newPassword, passwordHasher);
+
+        RaiseDomainEvent(new UserChangePasswordDomainEvent(this));
     }
+
+    private void SetPassword(string password, IPasswordHasher passwordHasher) 
+        => Password = passwordHasher.Hash(password);
 
     protected override void CheckRequiredFields()
     {

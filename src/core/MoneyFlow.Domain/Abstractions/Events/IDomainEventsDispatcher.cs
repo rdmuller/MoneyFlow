@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Abstractions;
 
-namespace MoneyFlow.Application.Common.Events;
+namespace MoneyFlow.Domain.Abstractions.Events;
 
 public interface IDomainEventsDispatcher
 {

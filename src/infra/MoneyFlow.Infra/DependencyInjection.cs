@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.Domain.Abstractions;
+using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Currencies;
 using MoneyFlow.Domain.General.Entities.Markets;

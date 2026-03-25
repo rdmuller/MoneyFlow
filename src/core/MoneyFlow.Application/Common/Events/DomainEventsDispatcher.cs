@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MoneyFlow.Domain.Abstractions.Events;
 using SharedKernel.Abstractions;
 using System.Collections.Concurrent;
 

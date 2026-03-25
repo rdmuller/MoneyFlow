@@ -1,5 +1,5 @@
 ﻿using Mediator.Abstractions;
-using MoneyFlow.Domain.Abstractions;
+using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Markets;
 using SharedKernel.Communications;
 

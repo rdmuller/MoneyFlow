@@ -1,6 +1,6 @@
 using Mediator.Abstractions;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
-using MoneyFlow.Domain.Abstractions;
+using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
@@ -21,11 +21,9 @@ public class RegisterUserCommandHandler(
 
     public async Task<BaseResponse<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        var user = User.Create(request.Name, new Email(request.Email));
+        var user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
 
         await ValidateAsync(user);
-
-        user.SetPassword(user.Password, _passwordHasher);
 
         await _userRepository.CreateAsync(user, cancellationToken);
         await _unitOfWork.CommitAsync();

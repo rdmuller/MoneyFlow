@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.Common.Events;
-using MoneyFlow.Domain.General.Entities.Users;
+using MoneyFlow.Domain.Abstractions.Events;
+using MoneyFlow.Domain.General.Entities.Users.Events;
 using MoneyFlow.Domain.General.Services.Email;
 
 namespace MoneyFlow.Application.UseCases.General.Users.DomainEvents;

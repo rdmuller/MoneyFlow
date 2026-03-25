@@ -1,3 +1,4 @@
+using SharedKernel.Abstractions;
 using SharedKernel.BusinessRules;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
@@ -6,6 +7,8 @@ namespace SharedKernel.Entities;
 
 public abstract class BaseEntity
 {
+    private readonly List<IDomainEvent> _domainEvents = new();
+
     protected BaseEntity()
     {
     }
@@ -28,6 +31,7 @@ public abstract class BaseEntity
     public DateTimeOffset? DeletedOn { get; set; }
     #endregion
 
+    #region Check integrity
     protected void CheckRule(IBusinessRule rule)
     {
         if (rule.IsBroken())
@@ -47,4 +51,12 @@ public abstract class BaseEntity
     }
 
     protected abstract void CheckRequiredFields();
+    #endregion
+
+    #region Domain Events
+    public IReadOnlyList<IDomainEvent> GetDomainEvents() => _domainEvents.ToList();
+    public void ClearDomainEvents() => _domainEvents.Clear();
+    protected void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+    #endregion
+
 }

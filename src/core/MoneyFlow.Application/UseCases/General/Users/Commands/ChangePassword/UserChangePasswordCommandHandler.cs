@@ -1,7 +1,8 @@
 ﻿using Mediator.Abstractions;
 using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
-using MoneyFlow.Domain.Abstractions;
+using MoneyFlow.Domain.Abstractions.DataAccess;
+using MoneyFlow.Domain.Abstractions.Events;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
@@ -32,14 +33,14 @@ public class UserChangePasswordCommandHandler(
         if (!_passwordHasher.Verify(request.OldPassword!, user.Password))
             throw AuthorizationException.InvalidData("Old password does not match");
 
-        user.SetPassword(request.NewPassword!, _passwordHasher);
+        user.ChangePassword(request.NewPassword!, _passwordHasher);
 
         _userWriteOnlyRepository.Update(user, cancellationToken);
 
         Console.WriteLine($"User {userId} changed password at {DateTime.UtcNow}");
 
         await _unitOfWork.CommitAsync(cancellationToken);
-        await _domainEvents.DispatchAsync([new UserChangePasswordDomainEvent(user)], cancellationToken);
+        //await _domainEvents.DispatchAsync([new UserChangePasswordDomainEvent(user)], cancellationToken);
 
         return new BaseResponse<string>();
     }

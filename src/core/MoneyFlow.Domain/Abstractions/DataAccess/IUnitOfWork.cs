@@ -1,4 +1,4 @@
-﻿namespace MoneyFlow.Domain.Abstractions;
+﻿namespace MoneyFlow.Domain.Abstractions.DataAccess;
 
 public interface IUnitOfWork
 {
