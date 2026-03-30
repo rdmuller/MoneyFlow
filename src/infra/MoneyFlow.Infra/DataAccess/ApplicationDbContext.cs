@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MoneyFlow.Domain.Abstractions.Events;
 using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Currencies;
 using MoneyFlow.Domain.General.Entities.Markets;
@@ -7,16 +8,23 @@ using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.Tenant.Entities.Assets;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
 using MoneyFlow.Domain.Tenant.Services;
+using SharedKernel.Abstractions;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Infra.DataAccess;
 
 public class ApplicationDbContext : DbContext
 {
     private readonly ITenantProvider _tenantProvider;
+    private readonly IDomainEventsDispatcher _domainEvents;
 
-    public ApplicationDbContext(DbContextOptions options, ITenantProvider tenantProvider) : base(options)
+    public ApplicationDbContext(
+        DbContextOptions options, 
+        ITenantProvider tenantProvider,
+        IDomainEventsDispatcher domainEvents) : base(options)
     {
         _tenantProvider = tenantProvider;
+        _domainEvents = domainEvents;
     }
 
     #region Common entities
@@ -51,5 +59,26 @@ public class ApplicationDbContext : DbContext
             .HasQueryFilter(DefaultFilters.TenantFilter, e => e.TenantId == _tenantProvider.Get());
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        await PublishDomainEventsAsync(cancellationToken);
+
+        return result;
+    }
+
+    private async Task PublishDomainEventsAsync(CancellationToken cancellationToken)
+    {
+        var domainEvents = ChangeTracker.Entries<BaseEntity>()
+            .Select(e => e.Entity)
+            .SelectMany(e => e.GetDomainEvents());
+
+        foreach (var domainEvent in domainEvents)
+        {
+            await _domainEvents.DispatchAsync([domainEvent], cancellationToken);
+        }
     }
 }

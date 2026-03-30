@@ -14,14 +14,12 @@ public class UserChangePasswordCommandHandler(
     ILoggedUser loggedUser,
     IUserWriteOnlyRepository userWriteOnlyRepository,
     IUnitOfWork unitOfWork,
-    IPasswordHasher passwordHasher,
-    IDomainEventsDispatcher domainEvents) : IHandler<UserChangePasswordCommand, BaseResponse<string>>
+    IPasswordHasher passwordHasher) : IHandler<UserChangePasswordCommand, BaseResponse<string>>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository = userWriteOnlyRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IDomainEventsDispatcher _domainEvents = domainEvents;
 
     public async Task<BaseResponse<string>> HandleAsync(UserChangePasswordCommand request, CancellationToken cancellationToken = default)
     {
