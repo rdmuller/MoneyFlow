@@ -32,25 +32,31 @@ public abstract class BaseEntity
     #endregion
 
     #region Check integrity
-    protected void CheckRule(IBusinessRule rule)
+    protected Result CheckRule(IBusinessRule rule)
     {
         if (rule.IsBroken())
-            throw new ErrorOnValidationException([rule!.Error!]);
+            return Result.Failure(rule!.Error!);
+            
+        return Result.Success();
     }
 
-    protected void CheckRule(bool conditionFailed, BaseError error)
+    protected Result CheckRule(bool conditionFailed, Error error)
     {
         if (conditionFailed)
-            throw new ErrorOnValidationException([error]);
+            return Result.Failure(error);
+
+        return Result.Success();
     }
 
-    protected void CheckRequiredField(bool fieldIsEmptyOrNull, string errorMessage)
+    protected Result CheckRequiredField(bool fieldIsEmptyOrNull, string errorMessage)
     {
         if (fieldIsEmptyOrNull)
-            throw ErrorOnValidationException.RequiredFieldIsEmpty(errorMessage);
+            return Result.Failure(Error.RequiredFieldisEmpty(errorMessage));
+
+        return Result.Success();
     }
 
-    protected abstract void CheckRequiredFields();
+    protected abstract Result CheckRequiredFields();
     #endregion
 
     #region Domain Events

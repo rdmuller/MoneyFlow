@@ -1,4 +1,5 @@
-﻿using SharedKernel.Communications;
+﻿using SharedKernel.Abstractions;
+using SharedKernel.Communications;
 
 namespace SharedKernel.BusinessRules;
 
@@ -6,5 +7,5 @@ public interface IBusinessRule
 {
     bool IsBroken();
 
-    BaseError? Error { get; }
+    Error? Error { get; }
 }

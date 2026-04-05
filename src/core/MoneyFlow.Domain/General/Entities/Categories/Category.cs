@@ -1,4 +1,5 @@
-﻿using SharedKernel.Entities;
+﻿using SharedKernel.Abstractions;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Categories;
 
@@ -19,16 +20,19 @@ public sealed class Category : BaseEntity
         Active = active;
     }
 
-    public static Category Create(string name)
+    public static Result<Category> Create(string name)
     {
         Category category = new Category(0, name, true, Guid.NewGuid());
 
-        category.CheckRequiredFields();
+        var result = category.CheckRequiredFields();
 
-        return category;
+        if (result.IsFailure)
+            return (Result<Category>)result;
+
+        return Result.Success(category);
     }
 
-    public void Update(string name, bool? active)
+    public Result Update(string name, bool? active)
     {
         Name = name;
 
@@ -36,10 +40,14 @@ public sealed class Category : BaseEntity
             Active = (bool)active;
 
         CheckRequiredFields();
+
+        return Result.Success();
     }
 
-    protected override void CheckRequiredFields()
+    protected override Result CheckRequiredFields()
     {
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Category name must be provided");
-    } 
+        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Category name must be provided");
+
+        return result;
+    }
 }
