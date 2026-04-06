@@ -1,4 +1,5 @@
 ﻿using MoneyFlow.Domain.General.Entities.Categories;
+using SharedKernel.Abstractions;
 using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Sectors;
@@ -25,34 +26,49 @@ public sealed class Sector : BaseEntity
         Active = active;
     }
 
-    public static Sector Create(string name, Category category)
+    public static Result<Sector> Create(string name, Category category)
     {
         Sector sector = new Sector(0, name, category.Id, true, Guid.CreateVersion7());
 
-        sector.CheckRequiredFields();
-        sector.CheckForeignKeys(category);
+        var result = sector.CheckRequiredFields();
+        if (result.IsFailure)
+            return Result.Failure<Sector>(result.Error);
 
-        return sector;
+        result = sector.CheckForeignKeys(category);
+        if (result.IsFailure)
+            return Result.Failure<Sector>(result.Error);
+
+        return Result.Success(sector);
     }
 
-    public void Update(string name, Category category, bool active = true)
+    public Result Update(string name, Category category, bool active = true)
     {
         Name = name;
         Active = active;
         CategoryId = category is not null ? category.Id : 0;
 
-        this.CheckRequiredFields();
-        this.CheckForeignKeys(category!);
+        var result = this.CheckRequiredFields();
+        if (result.IsFailure)
+            return result;
+
+        result = this.CheckForeignKeys(category!);
+        if (result.IsFailure)
+            return result;
+
+        return Result.Success();
     }
 
-    private void CheckForeignKeys(Category category)
+    private Result CheckForeignKeys(Category category)
     {
-        CheckRule(new CategoryMustBeActiveBusinessRule(category));
+        return CheckRule(new CategoryMustBeActiveBusinessRule(category));
     }
 
-    protected override void CheckRequiredFields()
+    protected override Result CheckRequiredFields()
     {
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Sector name is required");
-        CheckRequiredField((this.CategoryId.Equals(0)), "Category is required");
+        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Sector name is required");
+        if (result.IsFailure)
+            return result;
+
+        return CheckRequiredField((this.CategoryId.Equals(0)), "Category is required");
     }
 }

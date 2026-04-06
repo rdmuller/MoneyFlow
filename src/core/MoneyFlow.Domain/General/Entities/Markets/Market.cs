@@ -1,4 +1,5 @@
-﻿using SharedKernel.Entities;
+﻿using SharedKernel.Abstractions;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Markets;
 
@@ -19,27 +20,29 @@ public sealed class Market : BaseEntity
         Active = active;
     }
 
-    public static Market Create(string name)
+    public static Result<Market> Create(string name)
     {
         Market market = new Market(0, name, true, Guid.NewGuid());
 
-        market.CheckRequiredFields();
+        var result = market.CheckRequiredFields();
+        if (result.IsFailure)
+            return Result.Failure<Market>(result.Error);
 
-        return market;
+        return Result.Success(market);
     }
 
-    public void Update(string name, bool? active)
+    public Result Update(string name, bool? active)
     {
         Name = name;
 
         if (active is not null)
             Active = (bool)active;
 
-        CheckRequiredFields();
+        return CheckRequiredFields();
     }
 
-    protected override void CheckRequiredFields()
+    protected override Result CheckRequiredFields()
     {
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Market name must be provided");
+        return CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Market name must be provided");
     }
 }

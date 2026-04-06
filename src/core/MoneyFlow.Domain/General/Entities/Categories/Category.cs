@@ -27,7 +27,7 @@ public sealed class Category : BaseEntity
         var result = category.CheckRequiredFields();
 
         if (result.IsFailure)
-            return (Result<Category>)result;
+            return Result.Failure<Category>(result.Error);
 
         return Result.Success(category);
     }

@@ -1,6 +1,7 @@
 ﻿using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
+using SharedKernel.Abstractions;
 using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Assets;
@@ -17,8 +18,8 @@ public class Asset : BaseEntityTentant
     public Sector? Sector { get; set; }
     public Wallet? Wallet { get; set; }
 
-    protected override void CheckRequiredFields()
+    protected override Result CheckRequiredFields()
     {
-        throw new NotImplementedException();
+        return Result.Failure(new Error("NotImplemented", "MoneyFlow.Domain.Tenant.Entities.Assets"));
     }
 }

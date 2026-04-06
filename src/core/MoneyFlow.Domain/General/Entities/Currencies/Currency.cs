@@ -1,4 +1,5 @@
-﻿using SharedKernel.Entities;
+﻿using SharedKernel.Abstractions;
+using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Currencies;
 
@@ -20,14 +21,18 @@ public sealed class Currency : BaseEntity
         Active = active;
     }
 
-    public static Currency Create(string name, string symbol)
+    public static Result<Currency> Create(string name, string symbol)
     {
         Currency currency = new Currency(0, name, symbol, true, Guid.NewGuid());
-        currency.CheckRequiredFields();
-        return currency;
+
+        var result = currency.CheckRequiredFields();
+        if (result.IsFailure)
+            return Result.Failure<Currency>(result.Error);
+
+        return Result.Success(currency);
     }
 
-    public void Update(string name, string symbol, bool? active)
+    public Result Update(string name, string symbol, bool? active)
     {
         Name = name;
         Symbol = symbol;
@@ -35,12 +40,16 @@ public sealed class Currency : BaseEntity
         if (active is not null)
             Active = (bool)active;
 
-        CheckRequiredFields();
+        return CheckRequiredFields();
     }
 
-    protected override void CheckRequiredFields()
+    protected override Result CheckRequiredFields()
     {
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Currency name must be provided");
+        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Currency name must be provided");
+        if (result.IsFailure)
+            return result;
+
         CheckRequiredField(string.IsNullOrWhiteSpace(this.Symbol), "Currency symbol must be provided");
+        return result;
     }
 }
