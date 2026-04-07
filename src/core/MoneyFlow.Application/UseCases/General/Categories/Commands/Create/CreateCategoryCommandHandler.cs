@@ -14,9 +14,12 @@ internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWri
     {
         var category = Category.Create(request.Name);
 
-        await _categoryWriteRepository.CreateAsync(category, cancellationToken);
+        if (category.IsFailure)
+            return BaseResponse<string>.CreateFailureResponse(category.Error);
+
+        await _categoryWriteRepository.CreateAsync(category.Value, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return BaseResponse<string>.CreateNewObjectIdResponse(category.ExternalId);
+        return BaseResponse<string>.CreateNewObjectIdResponse(category.Value.ExternalId);
     }
 }

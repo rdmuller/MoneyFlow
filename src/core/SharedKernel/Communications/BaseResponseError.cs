@@ -10,13 +10,8 @@ public class BaseResponseError : BaseResponseGeneric<string>
         Data = null;
     }
 
-    public BaseResponseError(string errorCode, string errorMessage)
+    public BaseResponseError(Error error)
     {
-        Errors = [new BaseError(errorCode, errorMessage)];
-    }
-
-    public BaseResponseError(string errorCode, string errorMessage, string errorDescription)
-    {
-        Errors = [new BaseError(errorCode, errorMessage, errorDescription)];
+        Errors = [BaseError.CreateError(error)];
     }
 }

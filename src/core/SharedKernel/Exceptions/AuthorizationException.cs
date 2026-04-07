@@ -1,14 +1,11 @@
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 
 namespace SharedKernel.Exceptions;
 
 public class AuthorizationException : BaseException
 {
-    public AuthorizationException() : base()
-    {
-    }
-
-    public AuthorizationException(string errorCode, string errorMessage) : base(errorCode, errorMessage)
+    public AuthorizationException(Error error) : base(error)
     {
     }
 

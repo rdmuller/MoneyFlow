@@ -19,4 +19,9 @@ public class BaseResponse<T> : BaseResponseGeneric<T>
             ObjectId = objectId
         };
     }
+
+    public static BaseResponse<T> CreateFailureResponse(Error error) => new BaseResponse<T>
+    {
+        Errors = [BaseError.CreateError(error)]
+    };
 }

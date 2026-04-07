@@ -1,6 +1,7 @@
 using MoneyFlow.Domain.General.Entities.Users.Events;
 using MoneyFlow.Domain.General.Enums;
 using MoneyFlow.Domain.General.Security;
+using SharedKernel.Abstractions;
 using SharedKernel.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Users;
@@ -23,24 +24,26 @@ public sealed class User : BaseEntity
         Role = role ?? string.Empty;
     }
 
-    public static User Create(string name, Email email, string? password = null, IPasswordHasher? passwordHasher = null)
+    public static Result<User> Create(string name, Email email, string? password = null, IPasswordHasher? passwordHasher = null)
     {
         User user = new User(0, email, name, "", "", Guid.CreateVersion7());
 
-        user.CheckRequiredFields();
+        var result = user.CheckRequiredFields();
+        if (result.IsFailure)
+            return Result.Failure<User>(result.Error);
 
         if (password is not null && passwordHasher is not null)
             user.SetPassword(password, passwordHasher);
 
-        return user;
+        return Result.Success(user);
     }
 
-    public void Update(string name, Email email)
+    public Result Update(string name, Email email)
     {
         Name = name;
         Email = email;
 
-        CheckRequiredFields();
+        return CheckRequiredFields();
     }
 
     public void ChangePassword(string newPassword, IPasswordHasher passwordHasher)
@@ -53,9 +56,14 @@ public sealed class User : BaseEntity
     private void SetPassword(string password, IPasswordHasher passwordHasher) 
         => Password = passwordHasher.Hash(password);
 
-    protected override void CheckRequiredFields()
+    protected override Result CheckRequiredFields()
     {
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "User name must be provided");
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Email.Value), "Email must be provided");
+        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "User name must be provided");
+        if (result.IsFailure)
+            return result;
+
+        result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Email.Value), "Email must be provided");
+
+        return result;
     }
 }

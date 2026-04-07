@@ -1,3 +1,4 @@
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 
 namespace SharedKernel.Exceptions;
@@ -6,30 +7,13 @@ public abstract class BaseException : Exception
 {
     public IEnumerable<BaseError> Errors { get; protected set; } = [];
 
-    public BaseException()
+    public BaseException(IEnumerable<Error> errors)
     {
+        Errors = errors.Select(BaseError.CreateError);
     }
 
-    public BaseException(IEnumerable<BaseError> errors)
+    public BaseException(Error error)
     {
-        Errors = errors;
+        Errors = [BaseError.CreateError(error)];
     }
-
-    public BaseException(BaseError error)
-    {
-        Errors = [error];
-    }
-
-    public BaseException(string errorCode, string errorMessage)
-    {
-        Errors = new List<BaseError>
-        {
-            new BaseError
-            {
-                ErrorCode = errorCode,
-                ErrorMessage = errorMessage
-            }
-        };
-    }
-
 }

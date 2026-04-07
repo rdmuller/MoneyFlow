@@ -1,3 +1,4 @@
+using SharedKernel.Abstractions;
 using System.Text.Json.Serialization;
 
 namespace SharedKernel.Communications;
@@ -6,55 +7,21 @@ public class BaseError
 {
     [JsonPropertyName("error_code")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? ErrorCode { get; set; }
+    public string? ErrorCode { get; private set; }
 
     [JsonPropertyName("error_message")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? ErrorMessage { get; set; }
+    public string? ErrorMessage { get; private set; }
 
-    [JsonPropertyName("error_description")]
+    /*[JsonPropertyName("error_description")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? ErrorDescription { get; set; }
+    public string? ErrorDescription { get; private set; }*/
 
-    public BaseError()
+    public BaseError(Error error)
     {
-
+        ErrorCode = error.Code;
+        ErrorMessage = error.Message;
     }
 
-    public BaseError(string errorCode, string errorMessage, string errorDescription)
-    {
-        ErrorCode = errorCode;
-        ErrorMessage = errorMessage;
-        ErrorDescription = errorDescription;
-    }
-
-    public BaseError(string errorCode, string errorMessage)
-    {
-        ErrorCode = errorCode;
-        ErrorMessage = errorMessage;
-    }
-
-    public static BaseError RecordAlreadyExists(string errorMessage) => new BaseError()
-    {
-        ErrorCode = "RecordAlreadyExists",
-        ErrorMessage = errorMessage
-    };
-
-    public static BaseError Unauthorized(string errorMessage) => new BaseError()
-    {
-        ErrorCode = "Unauthorized",
-        ErrorMessage = errorMessage
-    };
-
-    public static BaseError ValidationError(string errorMessage) => new BaseError()
-    {
-        ErrorCode = "ValidationError",
-        ErrorMessage = errorMessage
-    };
-
-    public static BaseError InactiveForeignKey(string errorMessage) => new BaseError()
-    {
-        ErrorCode = "InactiveForeignKey",
-        ErrorMessage = errorMessage
-    };
+    public static BaseError CreateError(Error error) => new BaseError(error);
 }
