@@ -3,6 +3,7 @@ using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
 using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 
@@ -34,7 +35,7 @@ public class RegisterUserCommandHandler(
         };
     }
 
-    private async Task ValidateAsync(User user)
+    private async Task<Result> ValidateAsync(User user)
     {
         var errors = await new UserValidator().ValidateWithErrorsAsync(user);
 
@@ -43,14 +44,16 @@ public class RegisterUserCommandHandler(
             var emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email.Value);
 
             if (emailExist)
-                errors.Add(BaseError.RecordAlreadyExists("E-mail already exists"));
+                errors.Add(Error.RecordAlreadyExists("E-mail already exists"));
         }
 
         var passwordError = await new UserPasswordValidator().ValidateWithErrorsAsync(user.Password);
         if (passwordError.Count > 0)
             errors.AddRange(passwordError);
 
-        if (errors.Count > 0)
-            throw new ErrorOnValidationException(errors);
+        if (errors.Count > 0) aqui precisa pensar em retornar vários erros
+            return Result.Failure(Error.ValidationError(string.Join(Environment.NewLine, errors.Select(e => e.Message))));
+
+        return Result.Success();
     }
 }

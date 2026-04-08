@@ -9,27 +9,19 @@ public class AuthorizationException : BaseException
     {
     }
 
-    public AuthorizationException(IEnumerable<BaseError> errors) : base(errors)
+    public AuthorizationException(IEnumerable<Error> errors) : base(errors)
     {
     }
 
     public static AuthorizationException NotAuthorized()
-    {
-        return new AuthorizationException("NotAuthorized", "User not authorized");
-    }
+        => new AuthorizationException(Error.NotAuthorized("User not authorized"));
 
-    public static AuthorizationException InvalidToken()
-    {
-        return new AuthorizationException("InvalidToken", "Token is invalid");
-    }
+    public static AuthorizationException InvalidToken() 
+        => new AuthorizationException(Error.NotAuthorized("Token is invalid"));
 
-    public static AuthorizationException TokenExpired()
-    {
-        return new AuthorizationException("TokenExpired", "Token is expired");
-    }
+    public static AuthorizationException TokenExpired() 
+        => new AuthorizationException(Error.NotAuthorized("Token is expired"));
 
-    public static AuthorizationException InvalidData(string errorMessage)
-    {
-        return new AuthorizationException("InvalidAuthorizationData", errorMessage);
-    }
+    public static AuthorizationException InvalidData(string errorMessage) 
+        => new AuthorizationException(Error.NotAuthorized(errorMessage));
 }

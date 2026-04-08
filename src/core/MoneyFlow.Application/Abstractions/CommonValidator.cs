@@ -1,20 +1,20 @@
 using FluentValidation;
-using SharedKernel.Communications;
+using SharedKernel.Abstractions;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.Abstractions;
 
 public abstract class CommonValidator<T> : AbstractValidator<T>
 {
-    public async Task<List<BaseError>> ValidateWithErrorsAsync(T context, CancellationToken cancellation = default)
+    public async Task<List<Error>> ValidateWithErrorsAsync(T context, CancellationToken cancellation = default)
     {
         var result = await base.ValidateAsync(context, cancellation);
 
         if (result.IsValid)
-            return new List<BaseError>();
+            return new List<Error>();
 
         return result.Errors
-            .Select(e => new BaseError() { ErrorCode = e.ErrorCode, ErrorMessage = e.ErrorMessage })
+            .Select(e => new Error(e.ErrorCode, e.ErrorMessage))
             .ToList();
     }
 

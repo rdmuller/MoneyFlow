@@ -1,26 +1,23 @@
-using SharedKernel.Communications;
+using SharedKernel.Abstractions;
 
 namespace SharedKernel.Exceptions;
 
 public class ErrorOnValidationException : BaseException
 {
-    public ErrorOnValidationException() : base()
+    public ErrorOnValidationException(Error error) : base(error)
     {
     }
 
-    public ErrorOnValidationException(string errorCode, string errorMessage) : base(errorCode, errorMessage)
+    public ErrorOnValidationException(IEnumerable<Error> errors) : base(errors)
     {
     }
 
-    public ErrorOnValidationException(IEnumerable<BaseError> errors) : base(errors)
-    {
-    }
+    public static ErrorOnValidationException DataNotFound() 
+        => new ErrorOnValidationException(Error.DataTagNotFound);
 
-    public ErrorOnValidationException(BaseError error) : base(error)
-    {
-    }
+    public static ErrorOnValidationException RequiredFieldIsEmpty(string errorMessage) 
+        => new ErrorOnValidationException(Error.RequiredFieldisEmpty(errorMessage));
 
-    public static ErrorOnValidationException DataNotFound() => new ErrorOnValidationException("DataTagNotFound", "Tag 'Data' not found");
-    public static ErrorOnValidationException RequiredFieldIsEmpty(string errorMessage) => new ErrorOnValidationException("RequiredFieldIsEmpty", errorMessage);
-    public static ErrorOnValidationException InactiveForeignKey(string errorMessage) => new ErrorOnValidationException("InactiveForeignKey", errorMessage);
+    public static ErrorOnValidationException InactiveForeignKey(string errorMessage) 
+        => new ErrorOnValidationException(Error.InactiveForeignKey(errorMessage));
 }
