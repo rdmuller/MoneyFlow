@@ -1,6 +1,6 @@
-﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.API.Controllers.General;
 

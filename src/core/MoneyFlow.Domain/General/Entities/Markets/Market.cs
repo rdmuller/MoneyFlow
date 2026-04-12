@@ -26,7 +26,7 @@ public sealed class Market : BaseEntity
 
         var result = market.CheckRequiredFields();
         if (result.IsFailure)
-            return Result.Failure<Market>(result.Error);
+            return Result.Failure<Market>(result.Errors!);
 
         return Result.Success(market);
     }

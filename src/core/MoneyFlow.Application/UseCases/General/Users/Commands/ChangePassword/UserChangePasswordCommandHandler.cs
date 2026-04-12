@@ -1,12 +1,10 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Application.Common.Events;
-using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
+﻿using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
 using MoneyFlow.Domain.Abstractions.DataAccess;
-using MoneyFlow.Domain.Abstractions.Events;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 

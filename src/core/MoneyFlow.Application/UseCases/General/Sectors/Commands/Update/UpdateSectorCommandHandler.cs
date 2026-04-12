@@ -1,9 +1,9 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Domain.Abstractions.DataAccess;
+﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
 

@@ -1,7 +1,7 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Domain.Abstractions.DataAccess;
+﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Markets;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 
@@ -16,12 +16,15 @@ internal class CreateMarketCommandHandler(
     {
         var market = Market.Create(request.Name ?? "");
 
-        await _marketWriteRepository.CreateAsync(market, cancellationToken);
+        if (market.IsFailure)
+            return BaseResponse<string>.CreateFailureResponse(market.Errors!);
+
+        await _marketWriteRepository.CreateAsync(market.Value, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return new BaseResponse<string>
         {
-            ObjectId = market.ExternalId
+            ObjectId = market.Value.ExternalId
         };
     }
 }

@@ -1,8 +1,8 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.General.Users;
+﻿using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 

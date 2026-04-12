@@ -1,9 +1,9 @@
 ﻿using Mapster;
-using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Domain.General.Entities.Currencies;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 

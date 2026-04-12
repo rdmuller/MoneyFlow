@@ -1,6 +1,5 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.General.Categories;
-using SharedKernel.Communications;
+﻿using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
 

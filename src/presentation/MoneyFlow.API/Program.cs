@@ -20,7 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddDependencyInjectionApplication();
-builder.Services.AddMediator(typeof(MoneyFlow.Application.DependencyInjection).Assembly);
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDependencyInjectionAPI();

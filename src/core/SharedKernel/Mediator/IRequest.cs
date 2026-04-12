@@ -1,4 +1,4 @@
-namespace Mediator.Abstractions;
+namespace SharedKernel.Mediator;
 
 public interface IRequest<TResponse>
 {

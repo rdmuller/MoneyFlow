@@ -7,6 +7,7 @@ using MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.API.Controllers.General;
 

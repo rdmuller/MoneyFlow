@@ -1,10 +1,8 @@
-﻿using MoneyFlow.Application.DTOs.General.Categories;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.DTOs.General.Currencies;
 
-public class CurrencyQueryDTO 
+public class CurrencyQueryDTO
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("external_id")]

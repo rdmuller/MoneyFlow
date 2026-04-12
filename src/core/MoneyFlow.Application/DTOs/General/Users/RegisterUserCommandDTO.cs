@@ -1,4 +1,3 @@
-using MoneyFlow.Domain.General.Entities.Users;
 using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.DTOs.General.Users;

@@ -1,13 +1,13 @@
 ﻿using Mapster;
-using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.General.Sectors;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 
-internal class GetSectorByExternalIdQueryHandler(ISectorReadRepository sectorReadRepository) : 
+internal class GetSectorByExternalIdQueryHandler(ISectorReadRepository sectorReadRepository) :
     IHandler<GetSectorByExternalIdQuery, BaseResponse<SectorQueryDTO>>
 {
     private readonly ISectorReadRepository _sectorReadRepository = sectorReadRepository;

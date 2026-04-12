@@ -4,15 +4,15 @@ namespace SharedKernel.Abstractions;
 
 public class Result
 {
-    public Result(bool isSuccess, Error error)
+    protected Result(bool isSuccess, List<Error>? errors)
     {
-        if (isSuccess && error != Error.None)
+        if (isSuccess && errors?.Count != 0)
             throw new InvalidOperationException("A successful result cannot have an error.");
 
-        if (!isSuccess && error == Error.None)
+        if (!isSuccess && errors?.Count == 0)
             throw new InvalidOperationException("A failure result must have an error.");
 
-        Error = error;
+        Errors = errors;
         IsSuccess = isSuccess;
     }
 
@@ -20,15 +20,19 @@ public class Result
 
     public bool IsFailure => !IsSuccess;
 
-    public Error Error { get; }
+    public List<Error>? Errors { get; }
 
-    public static Result Success() => new(true, Error.None);
+    public static Result Success() => new(true, null);
 
-    public static Result Failure(Error error) => new(false, error);
+    public static Result Failure(Error error) => new(false, [error]);
 
-    public static Result<T> Success<T>(T value) => new(value, true, Error.None);
+    public static Result Failure(List<Error> errors) => new(false, errors);
+
+    public static Result<T> Success<T>(T value) => new(value, true);
 
     public static Result<T> Failure<T>(Error error) => new(default!, false, error);
+
+    public static Result<T> Failure<T>(List<Error> errors) => new(default!, false, errors);
 
     public static Result<T> Create<T>(T? value) => value is not null 
         ? Success(value)
@@ -39,7 +43,12 @@ public sealed class Result<T> : Result
 {
     private readonly T? _value;
 
-    public Result(T? value, bool isSuccess, Error error) : base(isSuccess, error)
+    public Result(T? value, bool isSuccess, List<Error>? errors) : base(isSuccess, errors)
+    {
+        _value = value;
+    }
+
+    public Result(T? value, bool isSuccess, Error? error = null) : base(isSuccess, error is not null ? [error] : null)
     {
         _value = value;
     }

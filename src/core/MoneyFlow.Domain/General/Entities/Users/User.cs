@@ -30,7 +30,7 @@ public sealed class User : BaseEntity
 
         var result = user.CheckRequiredFields();
         if (result.IsFailure)
-            return Result.Failure<User>(result.Error);
+            return Result.Failure<User>(result.Errors!);
 
         if (password is not null && passwordHasher is not null)
             user.SetPassword(password, passwordHasher);

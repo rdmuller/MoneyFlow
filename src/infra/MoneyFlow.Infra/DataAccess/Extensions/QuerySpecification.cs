@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 using System.Linq.Expressions;
@@ -131,7 +132,7 @@ internal class QuerySpecification<T>
                 Filters.Add(x => EF.Property<string>(x!, attributeName).ToLower().Contains(value));
                 break;
             default:
-                throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter.");
+                throw new DataBaseException(new Error("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter."));
         }
     }
 
@@ -179,7 +180,7 @@ internal class QuerySpecification<T>
                 comparison = Expression.Call(finalToLower, containsMethod, constant);
                 break;
             default:
-                throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter.");
+                throw new DataBaseException(new Error("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter."));
         }
 
         // Build null checks for navigation chain (e.g. x.Category != null && x.Category.Name != null)
@@ -224,11 +225,11 @@ internal class QuerySpecification<T>
                     Filters.Add(x => EF.Property<long>(x!, attributeName).Equals(value));
                     break;
                 default:
-                    throw new DataBaseException("InvalidFilterCondition", $"Invalid condition ({condition}) for numeric attribute filter.");
+                    throw new DataBaseException(new Error("InvalidFilterCondition", $"Invalid condition ({condition}) for numeric attribute filter."));
             }
         }
         else
-            throw new DataBaseException("InvalidFilterValue", $"The value '{stringValue}' is not valid for numeric attribute filter.");
+            throw new DataBaseException(new Error("InvalidFilterValue", $"The value '{stringValue}' is not valid for numeric attribute filter."));
     }
 
     private static void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out AttributeProperties? attributeProperties, out string condition)

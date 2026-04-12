@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Application.Common.Mappings;
 using MoneyFlow.Domain.Abstractions.Events;
@@ -11,6 +12,7 @@ public static class DependencyInjection
 {
     public static void AddDependencyInjectionApplication(this IServiceCollection services)
     {
+        services.AddMediator(typeof(DependencyInjection).Assembly);
         AddValidators(services);
         AddDomainEvents(services);
 

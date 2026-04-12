@@ -1,6 +1,4 @@
-using Mediator.Abstractions;
-
-namespace Mediator;
+namespace SharedKernel.Mediator;
 
 public class Mediator(IServiceProvider serviceProvider) : IMediator
 {

@@ -1,5 +1,5 @@
-using Mediator.Abstractions;
 using MoneyFlow.Application.DTOs.General.Auth;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
 

@@ -1,13 +1,13 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Domain.Abstractions.DataAccess;
+﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
 
-public class CreateSectorCommandHandler (
+public class CreateSectorCommandHandler(
     ICategoryReadRepository categoryReadRepository,
     ISectorWriteRepository sectorWriteRepository,
     IUnitOfWork unitOfWork) : IHandler<CreateSectorCommand, BaseResponse<string>>
@@ -22,11 +22,14 @@ public class CreateSectorCommandHandler (
         if (category is null)
             throw DataBaseException.RecordNotFound($"Category not found.");
 
-        var sector = Domain.General.Entities.Sectors.Sector.Create(request.Name, category);
+        var sector = Sector.Create(request.Name, category);
 
-        await _sectorWriteRepository.CreateAsync(sector, cancellationToken);
-        await _unitOfWork.CommitAsync();
+        if (sector.IsFailure)
+            return BaseResponse<string>.CreateFailureResponse(sector.Errors!);
 
-        return BaseResponse<string>.CreateNewObjectIdResponse(sector.ExternalId);
+        await _sectorWriteRepository.CreateAsync(sector.Value, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
+
+        return BaseResponse<string>.CreateNewObjectIdResponse(sector.Value.ExternalId);
     }
 }

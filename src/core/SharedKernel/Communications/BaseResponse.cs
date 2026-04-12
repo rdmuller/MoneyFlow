@@ -20,8 +20,8 @@ public class BaseResponse<T> : BaseResponseGeneric<T>
         };
     }
 
-    public static BaseResponse<T> CreateFailureResponse(Error error) => new BaseResponse<T>
+    public static BaseResponse<T> CreateFailureResponse(List<Error> errors) => new BaseResponse<T>
     {
-        Errors = [BaseError.CreateError(error)]
+        Errors = errors.Select(e => BaseError.CreateError(e)).ToList()
     };
 }

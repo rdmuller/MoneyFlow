@@ -1,5 +1,5 @@
-﻿using Mediator.Abstractions;
-using SharedKernel.Communications;
+﻿using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
 

@@ -1,5 +1,4 @@
 ﻿using MoneyFlow.Domain.General.Entities.Users;
-using MoneyFlow.Domain.General.Enums;
 using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.DTOs.General.Users;

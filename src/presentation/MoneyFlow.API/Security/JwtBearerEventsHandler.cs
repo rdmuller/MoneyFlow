@@ -3,6 +3,7 @@ using Mediator.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 using MoneyFlow.Domain.Tenant.Services;
+using SharedKernel.Mediator;
 using System.Security.Claims;
 
 namespace MoneyFlow.API.Security;

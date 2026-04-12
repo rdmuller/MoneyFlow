@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SharedKernel.Communications;
+using SharedKernel.Abstractions;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.Common.Behaviors;
@@ -42,7 +42,7 @@ public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFi
 
                     var failures = validationResult
                         .Errors
-                        .Select(e => new BaseError() { ErrorCode = e.ErrorCode, ErrorMessage = e.ErrorMessage })
+                        .Select(e => new Error(e.ErrorCode, e.ErrorMessage))
                         .ToList();
 
                     throw new ErrorOnValidationException(failures);

@@ -32,11 +32,11 @@ public sealed class Sector : BaseEntity
 
         var result = sector.CheckRequiredFields();
         if (result.IsFailure)
-            return Result.Failure<Sector>(result.Error);
+            return Result.Failure<Sector>(result.Errors!);
 
         result = sector.CheckForeignKeys(category);
         if (result.IsFailure)
-            return Result.Failure<Sector>(result.Error);
+            return Result.Failure<Sector>(result.Errors!);
 
         return Result.Success(sector);
     }

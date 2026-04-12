@@ -9,6 +9,7 @@ using MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.API.Controllers.General;
 

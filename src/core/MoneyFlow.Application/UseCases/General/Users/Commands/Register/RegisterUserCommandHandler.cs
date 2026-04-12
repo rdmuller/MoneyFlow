@@ -1,11 +1,10 @@
-using Mediator.Abstractions;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Validators;
 using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Abstractions;
 using SharedKernel.Communications;
-using SharedKernel.Exceptions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 
@@ -24,14 +23,14 @@ public class RegisterUserCommandHandler(
     {
         var user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
 
-        await ValidateAsync(user);
+        await ValidateAsync(user.Value);
 
-        await _userRepository.CreateAsync(user, cancellationToken);
+        await _userRepository.CreateAsync(user.Value, cancellationToken);
         await _unitOfWork.CommitAsync();
 
         return new BaseResponse<string>()
         {
-            ObjectId = user.ExternalId,
+            ObjectId = user.Value.ExternalId,
         };
     }
 
@@ -51,8 +50,8 @@ public class RegisterUserCommandHandler(
         if (passwordError.Count > 0)
             errors.AddRange(passwordError);
 
-        if (errors.Count > 0) aqui precisa pensar em retornar vários erros
-            return Result.Failure(Error.ValidationError(string.Join(Environment.NewLine, errors.Select(e => e.Message))));
+        if (errors.Count > 0)
+            return Result.Failure(errors);
 
         return Result.Success();
     }

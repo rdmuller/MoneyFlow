@@ -1,5 +1,5 @@
-﻿using Mediator.Abstractions;
-using SharedKernel.Communications;
+﻿using SharedKernel.Communications;
+using SharedKernel.Mediator;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\mediator\Mediator.Abstractions\Mediator.Abstractions.csproj" />
     <ProjectReference Include="..\MoneyFlow.Domain\MoneyFlow.Domain.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Domain.Abstractions.DataAccess;
+﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Categories;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
 
@@ -15,7 +15,7 @@ internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWri
         var category = Category.Create(request.Name);
 
         if (category.IsFailure)
-            return BaseResponse<string>.CreateFailureResponse(category.Error);
+            return BaseResponse<string>.CreateFailureResponse(category.Errors!);
 
         await _categoryWriteRepository.CreateAsync(category.Value, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

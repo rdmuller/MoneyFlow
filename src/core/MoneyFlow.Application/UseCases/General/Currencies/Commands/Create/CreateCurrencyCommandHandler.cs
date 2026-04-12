@@ -1,7 +1,7 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Domain.Abstractions.DataAccess;
+﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Currencies;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
 
@@ -14,9 +14,12 @@ internal class CreateCurrencyCommandHandler(IUnitOfWork unitOfWork, ICurrencyWri
     {
         var currency = Currency.Create(request.name, request.symbol);
 
-        await _currencyWriteRepository.CreateAsync(currency, cancellationToken);
+        if (currency.IsFailure)
+            return BaseResponse<string>.CreateFailureResponse(currency.Errors!);
+
+        await _currencyWriteRepository.CreateAsync(currency.Value, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return BaseResponse<string>.CreateNewObjectIdResponse(currency.ExternalId);
+        return BaseResponse<string>.CreateNewObjectIdResponse(currency.Value.ExternalId);
     }
 }

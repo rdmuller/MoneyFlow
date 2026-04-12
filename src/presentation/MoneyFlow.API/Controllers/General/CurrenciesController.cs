@@ -1,5 +1,4 @@
-﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Currencies;
@@ -9,8 +8,8 @@ using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Security.Claims;
 
 namespace MoneyFlow.API.Controllers.General;
 
@@ -31,7 +30,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     )]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody]BaseRequest<CurrencyCommandDTO> request)
+    public async Task<IActionResult> Create([FromBody] BaseRequest<CurrencyCommandDTO> request)
     {
         var result = await _mediator.SendAsync(new CreateCurrencyCommand(request.Data?.Name, request.Data?.Symbol));
 
@@ -46,7 +45,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
         OperationId = "Update")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(Guid externalId, [FromBody]BaseRequest<CurrencyCommandDTO> request)
+    public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CurrencyCommandDTO> request)
     {
         var result = await _mediator.SendAsync(new UpdateCurrencyCommand(externalId, request.Data?.Name, request.Data?.Symbol, request.Data?.Active ?? false));
         return NoContent();
@@ -62,7 +61,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     )]
     [ProducesResponseType(typeof(BaseQueryResponse<IEnumerable<CurrencyQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAll([FromQuery]BoundQueryParams queryParams)
+    public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
         var result = await _mediator.SendAsync(new GetAllCurrenciesQuery()
         {

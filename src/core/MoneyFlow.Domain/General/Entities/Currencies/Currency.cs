@@ -27,7 +27,7 @@ public sealed class Currency : BaseEntity
 
         var result = currency.CheckRequiredFields();
         if (result.IsFailure)
-            return Result.Failure<Currency>(result.Error);
+            return Result.Failure<Currency>(result.Errors!);
 
         return Result.Success(currency);
     }

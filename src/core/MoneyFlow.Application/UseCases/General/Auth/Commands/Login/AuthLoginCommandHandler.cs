@@ -1,25 +1,28 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.General.Auth;
+﻿using MoneyFlow.Application.DTOs.General.Auth;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
-using SharedKernel.Exceptions;
+using SharedKernel.Abstractions;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
 
-public class AuthLoginHandler(
+public class AuthLoginCommandHandler(
     IUserReadRepository userQueryRepository,
     IPasswordHasher passwordHasher,
-    IAccessTokenGenerator accessTokenGenerator) : IHandler<AuthLoginCommand, TokenDTO>
+    IAccessTokenGenerator accessTokenGenerator) : IHandler<AuthLoginCommand, Result<TokenDTO>>
 {
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IAccessTokenGenerator _accessTokenGenerator = accessTokenGenerator;
 
-    public async Task<TokenDTO> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result<TokenDTO>> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken = default)
     {
         var user = await ValidateLogin(request);
 
-        var token = _accessTokenGenerator.GenerateAccessToken(user);
+        if (user.IsFailure)
+            return Result.Failure<TokenDTO>(user.Errors!);
+
+        var token = _accessTokenGenerator.GenerateAccessToken(user.Value);
         return new TokenDTO
         {
             Token = token.Token,
@@ -27,21 +30,21 @@ public class AuthLoginHandler(
         };
     }
 
-    private async Task<User> ValidateLogin(AuthLoginCommand request)
+    private async Task<Result<User>> ValidateLogin(AuthLoginCommand request)
     {
         var errors = await new AuthLoginValidator().ValidateWithErrorsAsync(request);
 
         if (errors.Count > 0)
-            throw new AuthorizationException(errors);
+            return Result.Failure<User>(errors);
 
         var user = await _userQueryRepository.GetByEmailAsync(new Email(request.Email));
 
         if (user is null)
-            throw AuthorizationException.InvalidData("Invalid e-mail");
+            return Result.Failure<User>(Error.NotAuthorized("Invalid e-mail"));
 
         if (!_passwordHasher.Verify(request.Password, user.Password))
-            throw AuthorizationException.InvalidData("Invalid password");
+            return Result.Failure<User>(Error.NotAuthorized("Invalid password"));
 
-        return user;
+        return Result.Success(user);
     }
 }

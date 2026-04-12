@@ -1,6 +1,6 @@
-﻿using Mediator.Abstractions;
-using MoneyFlow.Application.DTOs.General.Sectors;
+﻿using MoneyFlow.Application.DTOs.General.Sectors;
 using SharedKernel.Communications;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 

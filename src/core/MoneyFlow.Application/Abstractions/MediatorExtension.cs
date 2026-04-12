@@ -1,10 +1,10 @@
-using Mediator.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Mediator;
 using System.Reflection;
 
-namespace Mediator.Extensions;
+namespace MoneyFlow.Application.Abstractions;
 
-public static class MediatorExtension
+internal static class MediatorExtension
 {
     public static IServiceCollection AddMediator(this IServiceCollection services, params Assembly[] assemblies)
     {
