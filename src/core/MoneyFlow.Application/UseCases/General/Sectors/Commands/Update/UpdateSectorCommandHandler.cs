@@ -10,7 +10,7 @@ namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
 internal class UpdateSectorCommandHandler(
     ISectorWriteRepository sectorWriteRepository,
     ICategoryReadRepository categoryReadRepository,
-    IUnitOfWork unitOfWork) : IHandler<UpdateSectorCommand, BaseResponse<string>>
+    IUnitOfWork unitOfWork) : IRequestHandler<UpdateSectorCommand, BaseResponse<string>>
 {
     private readonly ISectorWriteRepository _sectorWriteRepository = sectorWriteRepository;
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;

@@ -8,7 +8,7 @@ using SharedKernel.Mediator;
 namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 
 internal class GetAllSectorsQueryHandler(ISectorReadRepository sectorReadRepository)
-    : IHandler<GetAllSectorsQuery, BaseQueryResponse<IEnumerable<SectorQueryDTO>>>
+    : IRequestHandler<GetAllSectorsQuery, BaseQueryResponse<IEnumerable<SectorQueryDTO>>>
 {
     private readonly ISectorReadRepository _sectorReadRepository = sectorReadRepository;
 

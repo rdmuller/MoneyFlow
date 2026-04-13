@@ -6,7 +6,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 
-public class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRepository, ILoggedUser loggedUser) : IHandler<GetLoggedUserProfileQuery, BaseResponse<GetUserFullQueryDTO>>
+public class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRepository, ILoggedUser loggedUser) : IRequestHandler<GetLoggedUserProfileQuery, BaseResponse<GetUserFullQueryDTO>>
 {
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly ILoggedUser _loggedUser = loggedUser;

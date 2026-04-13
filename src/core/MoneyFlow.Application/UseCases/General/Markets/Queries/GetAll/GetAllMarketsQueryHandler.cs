@@ -7,7 +7,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 
-internal class GetAllMarketsQueryHandler(IMarketReadRepository marketReadRepository) : IHandler<GetAllMarketsQuery, BaseQueryResponse<IEnumerable<MarketQueryDTO>>>
+internal class GetAllMarketsQueryHandler(IMarketReadRepository marketReadRepository) : IRequestHandler<GetAllMarketsQuery, BaseQueryResponse<IEnumerable<MarketQueryDTO>>>
 {
     private readonly IMarketReadRepository _marketReadRepository = marketReadRepository;
 

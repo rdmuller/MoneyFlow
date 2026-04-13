@@ -5,7 +5,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
 
-internal class CreateCurrencyCommandHandler(IUnitOfWork unitOfWork, ICurrencyWriteRepository currencyWriteRepository) : IHandler<CreateCurrencyCommand, BaseResponse<string>>
+internal class CreateCurrencyCommandHandler(IUnitOfWork unitOfWork, ICurrencyWriteRepository currencyWriteRepository) : IRequestHandler<CreateCurrencyCommand, BaseResponse<string>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICurrencyWriteRepository _currencyWriteRepository = currencyWriteRepository;

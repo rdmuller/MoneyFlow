@@ -8,7 +8,7 @@ namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 
 internal class UpdateCategoryCommandHandler
     (ICategoryWriteRepository categoryWriteRepository, IUnitOfWork unitOfWork)
-    : IHandler<UpdateCategoryCommand, BaseResponse<string>>
+    : IRequestHandler<UpdateCategoryCommand, BaseResponse<string>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICategoryWriteRepository _categoryWriteRepository = categoryWriteRepository;

@@ -1,6 +1,4 @@
-﻿using Mediator;
-using Mediator.Abstractions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 using MoneyFlow.Domain.Tenant.Services;
 using SharedKernel.Mediator;
@@ -40,7 +38,7 @@ internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBeare
         identity?.AddClaim(new Claim(ClaimTypes.Role, userDTO.Data.Role!));
 
         _tenantProvider.Set(userDTO.Data.Id);
-        
+
         //foreach (var role in roles)
         //{
         //    if (!identity!.HasClaim(ClaimTypes.Role, role))
@@ -48,5 +46,5 @@ internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBeare
         //}
         //// Additional validation logic can be added here, such as checking if the user exists in the database.
         //return Task.CompletedTask;
-        }
     }
+}

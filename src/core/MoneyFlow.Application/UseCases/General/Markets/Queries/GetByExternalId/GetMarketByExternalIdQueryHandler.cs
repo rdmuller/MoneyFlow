@@ -7,7 +7,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 
-internal class GetMarketByExternalIdQueryHandler(IMarketReadRepository marketRepository) : IHandler<GetMarketByExternalIdQuery, BaseResponse<MarketQueryDTO>>
+internal class GetMarketByExternalIdQueryHandler(IMarketReadRepository marketRepository) : IRequestHandler<GetMarketByExternalIdQuery, BaseResponse<MarketQueryDTO>>
 {
     private readonly IMarketReadRepository _marketRepository = marketRepository;
 

@@ -3,7 +3,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
 
-public class AuthLoginCommand : IRequest<TokenDTO>
+public class AuthLoginCommand : ICommand<TokenDTO>
 {
     public string Email { get; set; } = string.Empty;
 

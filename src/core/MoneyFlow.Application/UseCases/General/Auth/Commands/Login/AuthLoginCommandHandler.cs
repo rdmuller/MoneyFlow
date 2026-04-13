@@ -9,7 +9,7 @@ namespace MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
 public class AuthLoginCommandHandler(
     IUserReadRepository userQueryRepository,
     IPasswordHasher passwordHasher,
-    IAccessTokenGenerator accessTokenGenerator) : IHandler<AuthLoginCommand, Result<TokenDTO>>
+    IAccessTokenGenerator accessTokenGenerator) : ICommandHandler<AuthLoginCommand, TokenDTO>
 {
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;

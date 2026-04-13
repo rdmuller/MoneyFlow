@@ -8,7 +8,7 @@ using SharedKernel.Mediator;
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 
 internal class GetCategoryByExternalIdQueryHandler(ICategoryReadRepository categoryReadRepository) :
-    IHandler<GetCategoryByExternalIdQuery, BaseResponse<CategoryQueryDTO>>
+    IRequestHandler<GetCategoryByExternalIdQuery, BaseResponse<CategoryQueryDTO>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
 

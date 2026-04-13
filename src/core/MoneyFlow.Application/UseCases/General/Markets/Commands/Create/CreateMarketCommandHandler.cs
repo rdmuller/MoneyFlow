@@ -7,7 +7,7 @@ namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 
 internal class CreateMarketCommandHandler(
     IMarketWriteRepository marketWriteRepository,
-    IUnitOfWork unitOfWork) : IHandler<CreateMarketCommand, BaseResponse<string>>
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateMarketCommand, BaseResponse<string>>
 {
     private readonly IMarketWriteRepository _marketWriteRepository = marketWriteRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

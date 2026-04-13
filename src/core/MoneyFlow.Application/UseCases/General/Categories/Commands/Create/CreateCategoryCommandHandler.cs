@@ -5,7 +5,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
 
-internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWriteRepository, IUnitOfWork unitOfWork) : IHandler<CreateCategoryCommand, BaseResponse<string>>
+internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWriteRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCategoryCommand, BaseResponse<string>>
 {
     private readonly ICategoryWriteRepository _categoryWriteRepository = categoryWriteRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

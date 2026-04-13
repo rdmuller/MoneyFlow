@@ -6,7 +6,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 
-internal class GetUserByExternalIdQueryHandler(IUserReadRepository userReadRepository) : IHandler<GetUserByExternalIdQuery, BaseResponse<GetUserFullQueryDTO>>
+internal class GetUserByExternalIdQueryHandler(IUserReadRepository userReadRepository) : IRequestHandler<GetUserByExternalIdQuery, BaseResponse<GetUserFullQueryDTO>>
 {
     private readonly IUserReadRepository _userReadRepository = userReadRepository;
     public async Task<BaseResponse<GetUserFullQueryDTO>> HandleAsync(GetUserByExternalIdQuery request, CancellationToken cancellationToken = default)

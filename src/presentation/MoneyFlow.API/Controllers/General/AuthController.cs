@@ -15,6 +15,10 @@ public class AuthController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Login([FromBody] AuthLoginCommand authLoginCommand)
     {
         var result = await _mediator.SendAsync(authLoginCommand);
-        return Ok(result);
+
+        if (result.IsSuccess)
+            return Ok(result);
+
+        return BadRequest("");
     }
 }

@@ -1,5 +1,4 @@
-﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;

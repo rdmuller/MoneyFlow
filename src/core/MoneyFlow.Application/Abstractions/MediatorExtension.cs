@@ -10,7 +10,7 @@ internal static class MediatorExtension
     {
         services.AddTransient<IMediator, Mediator>();
 
-        var handlerType = typeof(IHandler<,>);
+        var handlerType = typeof(IRequestHandler<,>);
 
         foreach (var assembly in assemblies)
         {

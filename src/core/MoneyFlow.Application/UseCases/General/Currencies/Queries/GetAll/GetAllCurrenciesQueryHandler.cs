@@ -8,7 +8,7 @@ using SharedKernel.Mediator;
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 
 internal class GetAllCurrenciesQueryHandler(ICurrencyReadRepository currencyReadRepository)
-    : IHandler<GetAllCurrenciesQuery, BaseQueryResponse<IEnumerable<CurrencyQueryDTO>>>
+    : IRequestHandler<GetAllCurrenciesQuery, BaseQueryResponse<IEnumerable<CurrencyQueryDTO>>>
 {
     private readonly ICurrencyReadRepository _currencyReadRepository = currencyReadRepository;
 

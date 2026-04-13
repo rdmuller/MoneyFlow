@@ -1,4 +1,3 @@
-using Mediator.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -13,7 +12,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
-using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +56,7 @@ builder.Services.AddAuthorizationPolicies();
 # endregion
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(config => 
+builder.Services.AddSwaggerGen(config =>
 {
     config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -85,8 +83,8 @@ builder.Services.AddOpenTelemetry()
         .AddHttpClientInstrumentation()
         .AddEntityFrameworkCoreInstrumentation()
         .AddOtlpExporter()
-        //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
-        //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
+    //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
+    //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
     );
 
 builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());

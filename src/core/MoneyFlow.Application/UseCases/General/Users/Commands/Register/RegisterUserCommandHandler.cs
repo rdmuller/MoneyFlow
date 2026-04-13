@@ -12,7 +12,7 @@ public class RegisterUserCommandHandler(
     IUserWriteOnlyRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserReadRepository userQueryRepository,
-    IPasswordHasher passwordHasher) : IHandler<RegisterUserCommand, BaseResponse<string>>
+    IPasswordHasher passwordHasher) : IRequestHandler<RegisterUserCommand, BaseResponse<string>>
 {
     private readonly IUserWriteOnlyRepository _userRepository = userRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

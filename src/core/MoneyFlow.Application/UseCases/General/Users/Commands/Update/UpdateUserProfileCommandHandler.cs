@@ -8,7 +8,7 @@ using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 
-public class UpdateUserProfileCommandHandler(ILoggedUser loggedUser, IUserWriteOnlyRepository userWriteOnlyRepository, IUnitOfWork unitOfWork) : IHandler<UpdateUserProfileCommand, BaseResponse<string>>
+public class UpdateUserProfileCommandHandler(ILoggedUser loggedUser, IUserWriteOnlyRepository userWriteOnlyRepository, IUnitOfWork unitOfWork) : IRequestHandler<UpdateUserProfileCommand, BaseResponse<string>>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository = userWriteOnlyRepository;

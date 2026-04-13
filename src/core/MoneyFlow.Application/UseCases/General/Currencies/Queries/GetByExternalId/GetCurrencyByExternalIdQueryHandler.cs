@@ -9,7 +9,7 @@ namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExterna
 
 internal class GetCurrencyByExternalIdQueryHandler(
     ICurrencyReadRepository currencyReadRepository)
-    : IHandler<GetCurrencyByExternalIdQuery, BaseQueryResponse<CurrencyQueryDTO>>
+    : IRequestHandler<GetCurrencyByExternalIdQuery, BaseQueryResponse<CurrencyQueryDTO>>
 {
     private readonly ICurrencyReadRepository _currencyReadRepository = currencyReadRepository;
 

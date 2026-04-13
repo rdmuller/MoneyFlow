@@ -10,7 +10,7 @@ namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
 public class CreateSectorCommandHandler(
     ICategoryReadRepository categoryReadRepository,
     ISectorWriteRepository sectorWriteRepository,
-    IUnitOfWork unitOfWork) : IHandler<CreateSectorCommand, BaseResponse<string>>
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateSectorCommand, BaseResponse<string>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
     private readonly ISectorWriteRepository _sectorWriteRepository = sectorWriteRepository;

@@ -8,7 +8,7 @@ namespace MoneyFlow.Application.UseCases.General.Currencies.Commands.Update;
 
 internal class UpdateCurrencyCommandHandler(
     IUnitOfWork unitOfWork, ICurrencyWriteRepository currencyWriteRepository)
-    : IHandler<UpdateCurrencyCommand, BaseResponse<string>>
+    : IRequestHandler<UpdateCurrencyCommand, BaseResponse<string>>
 {
     private readonly ICurrencyWriteRepository _currencyWriteRepository = currencyWriteRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

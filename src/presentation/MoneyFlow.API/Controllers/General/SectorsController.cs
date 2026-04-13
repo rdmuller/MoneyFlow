@@ -1,5 +1,4 @@
-﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Sectors;
@@ -27,7 +26,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
         Summary = "Incluir setor",
         Description = "Incluir um novo setor vinculado a categoria",
         OperationId = "Insert"
-        //Tags = new[] { "Setor" }
+    //Tags = new[] { "Setor" }
     )]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
@@ -43,7 +42,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
         Summary = "Alterar setor",
         Description = "Alterar um setor",
         OperationId = "Update"
-        //Tags = new[] { "Setor" }
+    //Tags = new[] { "Setor" }
     )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
@@ -59,7 +58,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
         Summary = "Listar dados de um setor",
         Description = "Listar todos os dados de um setor",
         OperationId = "Get by id"
-        //Tags = new[] { "Setor" }
+    //Tags = new[] { "Setor" }
     )]
     [ProducesResponseType(typeof(BaseResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -74,11 +73,11 @@ public class SectorsController(IMediator mediator) : ControllerBase
         Summary = "Listar setores",
         Description = "Listar todos setores",
         OperationId = "Get all"
-        //Tags = new[] { "Setor" }
+    //Tags = new[] { "Setor" }
     )]
     [ProducesResponseType(typeof(BaseQueryResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAll([FromQuery]BoundQueryParams queryParams)
+    public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
         var result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
         return Ok(result);

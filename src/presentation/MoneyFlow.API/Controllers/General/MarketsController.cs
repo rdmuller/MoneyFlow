@@ -1,5 +1,4 @@
-﻿using Mediator.Abstractions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Markets;

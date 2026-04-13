@@ -12,7 +12,7 @@ public class UserChangePasswordCommandHandler(
     ILoggedUser loggedUser,
     IUserWriteOnlyRepository userWriteOnlyRepository,
     IUnitOfWork unitOfWork,
-    IPasswordHasher passwordHasher) : IHandler<UserChangePasswordCommand, BaseResponse<string>>
+    IPasswordHasher passwordHasher) : IRequestHandler<UserChangePasswordCommand, BaseResponse<string>>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository = userWriteOnlyRepository;
