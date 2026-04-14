@@ -32,10 +32,10 @@ public class AuthLoginCommandHandler(
 
     private async Task<Result<User>> ValidateLogin(AuthLoginCommand request)
     {
-        var errors = await new AuthLoginValidator().ValidateWithErrorsAsync(request);
+        /* var errors = await new AuthLoginValidator().ValidateWithErrorsAsync(request);
 
-        if (errors.Count > 0)
-            return Result.Failure<User>(errors);
+         if (errors.Count > 0)
+             return Result.Failure<User>(errors);*/
 
         var user = await _userQueryRepository.GetByEmailAsync(new Email(request.Email));
 

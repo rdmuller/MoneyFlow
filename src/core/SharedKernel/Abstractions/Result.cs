@@ -6,10 +6,10 @@ public class Result
 {
     protected Result(bool isSuccess, List<Error>? errors)
     {
-        if (isSuccess && errors?.Count != 0)
+        if (isSuccess && errors is not null && errors.Count != 0)
             throw new InvalidOperationException("A successful result cannot have an error.");
 
-        if (!isSuccess && errors?.Count == 0)
+        if (!isSuccess && (errors is null || errors.Count == 0))
             throw new InvalidOperationException("A failure result must have an error.");
 
         Errors = errors;
@@ -34,7 +34,7 @@ public class Result
 
     public static Result<T> Failure<T>(List<Error> errors) => new(default!, false, errors);
 
-    public static Result<T> Create<T>(T? value) => value is not null 
+    public static Result<T> Create<T>(T? value) => value is not null
         ? Success(value)
         : Failure<T>(Error.NullValue);
 }
