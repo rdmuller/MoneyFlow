@@ -1,24 +1,21 @@
 ﻿using Mapster;
 using MoneyFlow.Application.DTOs.General.Categories;
 using MoneyFlow.Domain.General.Entities.Categories;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
-using SharedKernel.Exceptions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 
 internal class GetAllCategoriesQueryHandler(ICategoryReadRepository categoryReadRepository)
-    : IRequestHandler<GetAllCategoriesQuery, BaseQueryResponse<IEnumerable<CategoryQueryDTO>>>
+    : IQueryHandler<GetAllCategoriesQuery, BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
 
-    public async Task<BaseQueryResponse<IEnumerable<CategoryQueryDTO>>> HandleAsync(GetAllCategoriesQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>> HandleAsync(GetAllCategoriesQuery request, CancellationToken cancellationToken = default)
     {
         var categories = await _categoryReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        if (categories.TotalRows == 0)
-            throw new NoContentException();
-
-        return categories.Adapt<BaseQueryResponse<IEnumerable<CategoryQueryDTO>>>();
+        return Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>.Create(categories.Adapt<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>());
     }
 }

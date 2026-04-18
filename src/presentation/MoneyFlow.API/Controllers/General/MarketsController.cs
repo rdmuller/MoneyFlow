@@ -27,7 +27,10 @@ public class MarketsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.SendAsync(new CreateMarketCommand(request.Data?.Name));
 
-        return Created("", result);
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
+        return Created("", BaseResponse<string>.CreateNewObjectIdResponse(result.Value));
     }
 
     [HttpPut("{externalId}")]
@@ -37,6 +40,9 @@ public class MarketsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateMarket(Guid externalId, [FromBody] BaseRequest<MarketCommandDTO> request)
     {
         var result = await _mediator.SendAsync(new UpdateMarketCommand(externalId, request.Data?.Name, request.Data?.Active));
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
 
         return NoContent();
     }

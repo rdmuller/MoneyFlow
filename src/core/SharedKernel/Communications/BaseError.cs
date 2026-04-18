@@ -17,6 +17,8 @@ public class BaseError
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ErrorDescription { get; private set; }*/
 
+    public BaseError() { }
+
     public BaseError(Error error)
     {
         ErrorCode = error.Code;

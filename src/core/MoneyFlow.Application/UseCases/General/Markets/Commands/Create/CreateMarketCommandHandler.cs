@@ -1,30 +1,27 @@
 ﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Markets;
-using SharedKernel.Communications;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 
 internal class CreateMarketCommandHandler(
     IMarketWriteRepository marketWriteRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateMarketCommand, BaseResponse<string>>
+    IUnitOfWork unitOfWork) : ICommandHandler<CreateMarketCommand, Guid>
 {
     private readonly IMarketWriteRepository _marketWriteRepository = marketWriteRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<BaseResponse<string>> HandleAsync(CreateMarketCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> HandleAsync(CreateMarketCommand request, CancellationToken cancellationToken = default)
     {
         var market = Market.Create(request.Name ?? "");
 
         if (market.IsFailure)
-            return BaseResponse<string>.CreateFailureResponse(market.Errors!);
+            return Result.Failure<Guid>(market.Errors!);
 
         await _marketWriteRepository.CreateAsync(market.Value, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new BaseResponse<string>
-        {
-            ObjectId = market.Value.ExternalId
-        };
+        return Result<Guid>.Success(market.Value.ExternalId!.Value);
     }
 }

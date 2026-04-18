@@ -1,25 +1,25 @@
 ﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Currencies;
-using SharedKernel.Communications;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
 
-internal class CreateCurrencyCommandHandler(IUnitOfWork unitOfWork, ICurrencyWriteRepository currencyWriteRepository) : IRequestHandler<CreateCurrencyCommand, BaseResponse<string>>
+internal class CreateCurrencyCommandHandler(IUnitOfWork unitOfWork, ICurrencyWriteRepository currencyWriteRepository) : ICommandHandler<CreateCurrencyCommand, Guid>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICurrencyWriteRepository _currencyWriteRepository = currencyWriteRepository;
 
-    public async Task<BaseResponse<string>> HandleAsync(CreateCurrencyCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> HandleAsync(CreateCurrencyCommand request, CancellationToken cancellationToken = default)
     {
-        var currency = Currency.Create(request.name, request.symbol);
+        var currency = Currency.Create(request.Name, request.Symbol);
 
         if (currency.IsFailure)
-            return BaseResponse<string>.CreateFailureResponse(currency.Errors!);
+            return Result.Failure<Guid>(currency.Errors!);
 
         await _currencyWriteRepository.CreateAsync(currency.Value, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return BaseResponse<string>.CreateNewObjectIdResponse(currency.Value.ExternalId);
+        return Result<Guid>.Success(currency.Value.ExternalId!.Value);
     }
 }

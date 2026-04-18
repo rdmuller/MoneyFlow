@@ -27,10 +27,16 @@ public class UserController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("profile")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfile([FromBody] BaseRequest<UpdateUserProfileCommandDTO> request)
     {
         var command = new UpdateUserProfileCommand(request?.Data?.Name, request?.Data?.Email);
         var result = await _mediator.SendAsync(command);
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
         return NoContent();
     }
 
@@ -46,12 +52,16 @@ public class UserController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser([FromBody] BaseRequest<RegisterUserCommandDTO> request)
     {
         var command = new RegisterUserCommand(request?.Data?.Name, request?.Data?.Email, request?.Data?.Password);
         var result = await _mediator.SendAsync(command);
-        return Created("", result);
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
+        return Created("", BaseResponse<string>.CreateNewObjectIdResponse(result.Value));
     }
 }

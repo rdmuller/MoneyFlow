@@ -16,7 +16,7 @@ public class ErrorOnValidationException : BaseException
         => new ErrorOnValidationException(Error.DataTagNotFound);
 
     public static ErrorOnValidationException RequiredFieldIsEmpty(string errorMessage) 
-        => new ErrorOnValidationException(Error.RequiredFieldisEmpty(errorMessage));
+        => new ErrorOnValidationException(Error.RequiredFieldIsEmpty(errorMessage));
 
     public static ErrorOnValidationException InactiveForeignKey(string errorMessage) 
         => new ErrorOnValidationException(Error.InactiveForeignKey(errorMessage));

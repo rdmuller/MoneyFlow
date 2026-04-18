@@ -8,7 +8,7 @@ public record Error(string Code, string Message)
 
     public static Error DataTagNotFound => new("DataTagNotFound", "Tag 'Data' not found");
 
-    public static Error RequiredFieldisEmpty(string message) => new("RequiredFieldIsEmpty", message);
+    public static Error RequiredFieldIsEmpty(string message) => new("RequiredFieldIsEmpty", message);
 
     public static Error InactiveForeignKey(string message) => new("InactiveForeignKey", message);
 

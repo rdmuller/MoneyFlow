@@ -3,35 +3,36 @@ using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using SharedKernel.Abstractions;
-using SharedKernel.Communications;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 
-public class RegisterUserCommandHandler(
+internal class RegisterUserCommandHandler(
     IUserWriteOnlyRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserReadRepository userQueryRepository,
-    IPasswordHasher passwordHasher) : IRequestHandler<RegisterUserCommand, BaseResponse<string>>
+    IPasswordHasher passwordHasher) : ICommandHandler<RegisterUserCommand, Guid>
 {
     private readonly IUserWriteOnlyRepository _userRepository = userRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
 
-    public async Task<BaseResponse<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
         var user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
 
-        await ValidateAsync(user.Value);
+        if (user.IsFailure)
+            return Result.Failure<Guid>(user.Errors!);
+
+        var validationResult = await ValidateAsync(user.Value);
+        if (validationResult.IsFailure)
+            return Result.Failure<Guid>(validationResult.Errors!);
 
         await _userRepository.CreateAsync(user.Value, cancellationToken);
-        await _unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new BaseResponse<string>()
-        {
-            ObjectId = user.Value.ExternalId,
-        };
+        return Result<Guid>.Success(user.Value.ExternalId!.Value);
     }
 
     private async Task<Result> ValidateAsync(User user)

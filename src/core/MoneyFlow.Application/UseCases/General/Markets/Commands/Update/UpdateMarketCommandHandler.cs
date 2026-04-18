@@ -1,32 +1,33 @@
 ﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Markets;
-using SharedKernel.Communications;
-using SharedKernel.Exceptions;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 
 internal class UpdateMarketCommandHandler(
     IMarketWriteRepository marketWriteRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<UpdateMarketCommand, BaseResponse<string>>
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateMarketCommand>
 {
     private readonly IMarketWriteRepository _marketWriteRepository = marketWriteRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<BaseResponse<string>> HandleAsync(UpdateMarketCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(UpdateMarketCommand request, CancellationToken cancellationToken = default)
     {
         if (request.ExternalId.HasValue == false)
-            throw ErrorOnValidationException.RequiredFieldIsEmpty("Market id is required");
+            return Result.Failure(Error.RequiredFieldIsEmpty("Market id is required"));
 
         var market = await _marketWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
         if (market is null)
-            throw DataBaseException.RecordNotFound("Market not found");
+            return Result.Failure(Error.RecordNotFound("Market not found"));
 
-        market.Update(request.Name!, request.Active);
+        var result = market.Update(request.Name!, request.Active);
+        if (result.IsFailure)
+            return Result.Failure(result.Errors!);
 
         _marketWriteRepository.Update(market, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new BaseResponse<string>();
+        return Result.Success();
     }
 }

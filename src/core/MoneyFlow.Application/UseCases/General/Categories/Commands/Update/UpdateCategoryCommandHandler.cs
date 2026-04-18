@@ -1,32 +1,33 @@
 ﻿using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Categories;
-using SharedKernel.Communications;
-using SharedKernel.Exceptions;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 
 internal class UpdateCategoryCommandHandler
     (ICategoryWriteRepository categoryWriteRepository, IUnitOfWork unitOfWork)
-    : IRequestHandler<UpdateCategoryCommand, BaseResponse<string>>
+    : ICommandHandler<UpdateCategoryCommand>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICategoryWriteRepository _categoryWriteRepository = categoryWriteRepository;
 
-    public async Task<BaseResponse<string>> HandleAsync(UpdateCategoryCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(UpdateCategoryCommand request, CancellationToken cancellationToken = default)
     {
         if (!request.ExternalId.HasValue)
-            throw ErrorOnValidationException.RequiredFieldIsEmpty("Category is required");
+            return Result.Failure(Error.RequiredFieldIsEmpty("Category is required"));
 
         var category = await _categoryWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
         if (category is null)
-            throw DataBaseException.RecordNotFound("Category not found");
+            return Result.Failure(Error.RecordNotFound("Category not found"));
 
-        category.Update(request.Name!, request.Active);
+        var result = category.Update(request.Name!, request.Active);
+        if (result.IsFailure)
+            return Result.Failure(result.Errors!);
 
         _categoryWriteRepository.Update(category, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
-        return new BaseResponse<string>();
+        return Result.Success();
     }
 }

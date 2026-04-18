@@ -1,6 +1,5 @@
-﻿using SharedKernel.Communications;
-using SharedKernel.Mediator;
+﻿using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 
-public sealed record UpdateUserProfileCommand(string Name, string Email) : IRequest<BaseResponse<string>>;
+public sealed record UpdateUserProfileCommand(string Name, string Email) : ICommand;

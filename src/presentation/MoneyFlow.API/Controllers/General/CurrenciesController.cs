@@ -34,7 +34,10 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.SendAsync(new CreateCurrencyCommand(request.Data?.Name, request.Data?.Symbol));
 
-        return Created("", result);
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
+        return Created("", BaseResponse<string>.CreateNewObjectIdResponse(result.Value));
     }
 
     [HttpPut("{externalId}")]
@@ -47,7 +50,11 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CurrencyCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new UpdateCurrencyCommand(externalId, request.Data?.Name, request.Data?.Symbol, request.Data?.Active ?? false));
+        var result = await _mediator.SendAsync(new UpdateCurrencyCommand(externalId, request.Data?.Name, request.Data?.Symbol, request.Data?.Active));
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
         return NoContent();
     }
 

@@ -33,7 +33,11 @@ public class SectorsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Create([FromBody] BaseRequest<SectorCommandDTO> request)
     {
         var result = await _mediator.SendAsync(new CreateSectorCommand(request.Data?.Name ?? string.Empty, request.Data!.CategoryExternalId));
-        return Created("", result);
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
+        return Created("", BaseResponse<string>.CreateNewObjectIdResponse(result.Value));
     }
 
     [HttpPut("{externalId}")]
@@ -49,6 +53,9 @@ public class SectorsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<SectorCommandDTO> request)
     {
         var result = await _mediator.SendAsync(new UpdateSectorCommand(externalId, request.Data?.Name, request.Data?.CategoryExternalId, request.Data?.Active));
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
 
         return NoContent();
     }

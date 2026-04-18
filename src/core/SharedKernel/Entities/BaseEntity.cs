@@ -51,7 +51,7 @@ public abstract class BaseEntity
     protected Result CheckRequiredField(bool fieldIsEmptyOrNull, string errorMessage)
     {
         if (fieldIsEmptyOrNull)
-            return Result.Failure(Error.RequiredFieldisEmpty(errorMessage));
+            return Result.Failure(Error.RequiredFieldIsEmpty(errorMessage));
 
         return Result.Success();
     }

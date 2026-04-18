@@ -39,9 +39,7 @@ public sealed class Category : BaseEntity
         if (active is not null)
             Active = (bool)active;
 
-        CheckRequiredFields();
-
-        return Result.Success();
+        return CheckRequiredFields();
     }
 
     protected override Result CheckRequiredFields()
