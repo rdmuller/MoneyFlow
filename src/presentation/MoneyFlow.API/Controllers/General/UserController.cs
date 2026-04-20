@@ -19,11 +19,12 @@ public class UserController(IMediator mediator) : ControllerBase
 
     [HttpGet("profile")]
     [ProducesResponseType(typeof(BaseResponse<GetUserFullQueryDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetProfile()
     {
         var result = await _mediator.SendAsync(new GetLoggedUserProfileQuery());
 
-        return Ok(result);
+        return result.IsSuccess ? Ok(BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
 
     [HttpPut("profile")]

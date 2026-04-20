@@ -1,23 +1,25 @@
 ﻿using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Domain.General.Entities.Users;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
-using SharedKernel.Exceptions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 
-internal class GetUserByExternalIdQueryHandler(IUserReadRepository userReadRepository) : IRequestHandler<GetUserByExternalIdQuery, BaseResponse<GetUserFullQueryDTO>>
+internal class GetUserByExternalIdQueryHandler(IUserReadRepository userReadRepository)
+    : IQueryHandler<GetUserByExternalIdQuery, GetUserFullQueryDTO>
 {
     private readonly IUserReadRepository _userReadRepository = userReadRepository;
-    public async Task<BaseResponse<GetUserFullQueryDTO>> HandleAsync(GetUserByExternalIdQuery request, CancellationToken cancellationToken = default)
+
+    public async Task<Result<GetUserFullQueryDTO>> HandleAsync(GetUserByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
         if (!request.ExternalId.HasValue)
-            throw ErrorOnValidationException.RequiredFieldIsEmpty($"ExternalId is required.");
+            return Result.Failure<GetUserFullQueryDTO>(Error.RequiredFieldIsEmpty("ExternalId is required."));
 
         var user = await _userReadRepository.GetByExternalIdAsync((Guid)request.ExternalId!, cancellationToken);
         if (user is null)
-            throw DataBaseException.RecordNotFound($"User with ExternalId {request.ExternalId} not found.");
+            return Result.Failure<GetUserFullQueryDTO>(Error.RecordNotFound($"User with ExternalId {request.ExternalId} not found."));
 
-        return BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(GetUserFullQueryDTO.EntityToDTO(user));
+        return Result<GetUserFullQueryDTO>.Create(GetUserFullQueryDTO.EntityToDTO(user));
     }
 }

@@ -1,22 +1,23 @@
 ﻿using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
-using SharedKernel.Communications;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 
-public class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRepository, ILoggedUser loggedUser) : IRequestHandler<GetLoggedUserProfileQuery, BaseResponse<GetUserFullQueryDTO>>
+internal class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRepository, ILoggedUser loggedUser)
+    : IQueryHandler<GetLoggedUserProfileQuery, GetUserFullQueryDTO>
 {
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly ILoggedUser _loggedUser = loggedUser;
 
-    public async Task<BaseResponse<GetUserFullQueryDTO>> HandleAsync(GetLoggedUserProfileQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<GetUserFullQueryDTO>> HandleAsync(GetLoggedUserProfileQuery request, CancellationToken cancellationToken = default)
     {
         var userId = await _loggedUser.GetUserIdAsync();
         var user = await _userQueryRepository.GetByIdAsync(userId);
         var userDTO = GetUserFullQueryDTO.EntityToDTO(user);
 
-        return BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(userDTO);
+        return Result<GetUserFullQueryDTO>.Create(userDTO);
     }
 }

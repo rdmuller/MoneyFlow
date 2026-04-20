@@ -72,7 +72,8 @@ public class SectorsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetByExternalId(Guid externalId)
     {
         var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
-        return Ok(result);
+
+        return result.IsSuccess ? Ok(BaseResponse<SectorQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
 
     [HttpGet]
@@ -87,6 +88,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
         var result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
-        return Ok(result);
+
+        return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
 }

@@ -53,7 +53,8 @@ public class MarketsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetMarketById(Guid externalId)
     {
         var result = await _mediator.SendAsync(new GetMarketByExternalIdQuery(externalId));
-        return Ok(result);
+
+        return result.IsSuccess ? Ok(BaseResponse<MarketQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
 
     [HttpGet]
@@ -62,6 +63,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetAllMarkets([FromQuery] BoundQueryParams query)
     {
         var result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = query });
-        return Ok(result);
+
+        return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
 }

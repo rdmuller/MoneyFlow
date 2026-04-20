@@ -70,12 +70,9 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        var result = await _mediator.SendAsync(new GetAllCurrenciesQuery()
-        {
-            Query = queryParams
-        });
+        var result = await _mediator.SendAsync(new GetAllCurrenciesQuery { Query = queryParams });
 
-        return Ok(result);
+        return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
 
     [HttpGet("{externalId}")]
@@ -86,11 +83,11 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     //Tags = new[] { "Setor" }
     )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(BaseQueryResponse<CurrencyQueryDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<CurrencyQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
         var result = await _mediator.SendAsync(new GetCurrencyByExternalIdQuery(externalId));
 
-        return Ok(result);
+        return result.IsSuccess ? Ok(BaseResponse<CurrencyQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
 }

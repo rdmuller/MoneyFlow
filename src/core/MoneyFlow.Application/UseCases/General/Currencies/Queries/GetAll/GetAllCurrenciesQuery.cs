@@ -1,8 +1,6 @@
-﻿using MoneyFlow.Application.Abstractions;
-using MoneyFlow.Application.DTOs.General.Currencies;
+﻿using MoneyFlow.Application.DTOs.General.Currencies;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 
-public sealed class GetAllCurrenciesQuery : GetAllRecordsFromDTO<CurrencyQueryDTO>
-{
-}
+public sealed class GetAllCurrenciesQuery : QueryList<CurrencyQueryDTO>;

@@ -27,7 +27,7 @@ internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBeare
 
         var mediator = context.HttpContext.RequestServices.GetRequiredService<IMediator>();
         var userDTO = await mediator.SendAsync(new GetUserByExternalIdQuery(userExternalId));
-        if (userDTO is null || userDTO.Data is null)
+        if (userDTO.IsFailure || userDTO.Value is null)
         {
             context.Fail("Invalid token user");
             return;
@@ -35,9 +35,9 @@ internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBeare
 
         var identity = context.Principal!.Identity as ClaimsIdentity;
 
-        identity?.AddClaim(new Claim(ClaimTypes.Role, userDTO.Data.Role!));
+        identity?.AddClaim(new Claim(ClaimTypes.Role, userDTO.Value.Role!));
 
-        _tenantProvider.Set(userDTO.Data.Id);
+        _tenantProvider.Set(userDTO.Value.Id);
 
         //foreach (var role in roles)
         //{

@@ -1,26 +1,20 @@
 ﻿using Mapster;
 using MoneyFlow.Application.DTOs.General.Markets;
 using MoneyFlow.Domain.General.Entities.Markets;
-using SharedKernel.Communications;
-using SharedKernel.Exceptions;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 
-internal class GetMarketByExternalIdQueryHandler(IMarketReadRepository marketRepository) : IRequestHandler<GetMarketByExternalIdQuery, BaseResponse<MarketQueryDTO>>
+internal class GetMarketByExternalIdQueryHandler(IMarketReadRepository marketRepository)
+    : IQueryHandler<GetMarketByExternalIdQuery, MarketQueryDTO>
 {
     private readonly IMarketReadRepository _marketRepository = marketRepository;
 
-    public async Task<BaseResponse<MarketQueryDTO>> HandleAsync(GetMarketByExternalIdQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<MarketQueryDTO>> HandleAsync(GetMarketByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
         var market = await _marketRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
 
-        if (market is null)
-            throw new NoContentException();
-
-        return new BaseResponse<MarketQueryDTO>
-        {
-            Data = market.Adapt<MarketQueryDTO>()
-        };
+        return Result<MarketQueryDTO>.Create(market.Adapt<MarketQueryDTO>());
     }
 }

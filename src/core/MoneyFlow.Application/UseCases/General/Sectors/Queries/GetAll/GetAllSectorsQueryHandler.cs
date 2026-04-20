@@ -1,24 +1,21 @@
 ﻿using Mapster;
 using MoneyFlow.Application.DTOs.General.Sectors;
 using MoneyFlow.Domain.General.Entities.Sectors;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
-using SharedKernel.Exceptions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 
 internal class GetAllSectorsQueryHandler(ISectorReadRepository sectorReadRepository)
-    : IRequestHandler<GetAllSectorsQuery, BaseQueryResponse<IEnumerable<SectorQueryDTO>>>
+    : IQueryHandler<GetAllSectorsQuery, BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>
 {
     private readonly ISectorReadRepository _sectorReadRepository = sectorReadRepository;
 
-    public async Task<BaseQueryResponse<IEnumerable<SectorQueryDTO>>> HandleAsync(GetAllSectorsQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>> HandleAsync(GetAllSectorsQuery request, CancellationToken cancellationToken = default)
     {
         var sectors = await _sectorReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        if (sectors.TotalRows == 0)
-            throw new NoContentException();
-
-        return sectors.Adapt<BaseQueryResponse<IEnumerable<SectorQueryDTO>>>();
+        return Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>.Create(sectors.Adapt<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>());
     }
 }

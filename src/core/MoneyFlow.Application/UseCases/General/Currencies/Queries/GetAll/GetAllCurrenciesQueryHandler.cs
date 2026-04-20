@@ -1,24 +1,21 @@
 ﻿using Mapster;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Domain.General.Entities.Currencies;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
-using SharedKernel.Exceptions;
 using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 
 internal class GetAllCurrenciesQueryHandler(ICurrencyReadRepository currencyReadRepository)
-    : IRequestHandler<GetAllCurrenciesQuery, BaseQueryResponse<IEnumerable<CurrencyQueryDTO>>>
+    : IQueryHandler<GetAllCurrenciesQuery, BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>
 {
     private readonly ICurrencyReadRepository _currencyReadRepository = currencyReadRepository;
 
-    public async Task<BaseQueryResponse<IEnumerable<CurrencyQueryDTO>>> HandleAsync(GetAllCurrenciesQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>> HandleAsync(GetAllCurrenciesQuery request, CancellationToken cancellationToken = default)
     {
         var currencies = await _currencyReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        if (currencies.TotalRows == 0)
-            throw new NoContentException();
-
-        return currencies.Adapt<BaseQueryResponse<IEnumerable<CurrencyQueryDTO>>>();
+        return Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>.Create(currencies.Adapt<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>());
     }
 }

@@ -1,8 +1,6 @@
-﻿using MoneyFlow.Application.Abstractions;
-using MoneyFlow.Application.DTOs.General.Markets;
+﻿using MoneyFlow.Application.DTOs.General.Markets;
+using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 
-public class GetAllMarketsQuery : GetAllRecordsFromDTO<MarketQueryDTO>
-{
-}
+public sealed class GetAllMarketsQuery : QueryList<MarketQueryDTO>;
