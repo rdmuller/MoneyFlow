@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Categories;
 using MoneyFlow.Application.UseCases.General.Categories.Commands.Create;
+using MoneyFlow.Application.UseCases.General.Categories.Commands.Delete;
 using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
@@ -21,6 +22,10 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get list",
+        Description = "Retorna lista de categorias"
+    )]
     [ProducesResponseType(typeof(BaseQueryResponse<IEnumerable<CategoryQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
@@ -46,6 +51,10 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [SwaggerOperation(
+        Summary = "Create",
+        Description = "Cria uma nova categoria"
+    )]
     [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
@@ -60,12 +69,34 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{externalId}")]
+    [SwaggerOperation(
+        Summary = "Update",
+        Description = "Atualiza os dados de uma categoria"
+    )]
     [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CategoryCommandDTO> request)
     {
         var result = await _mediator.SendAsync(new UpdateCategoryCommand(externalId, request.Data?.Name, request.Data?.Active));
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
+        return NoContent();
+    }
+
+    [HttpDelete("{externalId}")]
+    [SwaggerOperation(
+        Summary = "Delete",
+        Description = "Exclui uma categoria"
+    )]
+    [Authorize(Policy = Roles.ADMIN)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(Guid externalId)
+    {
+        var result = await _mediator.SendAsync(new DeleteCategoryCommand(externalId));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));

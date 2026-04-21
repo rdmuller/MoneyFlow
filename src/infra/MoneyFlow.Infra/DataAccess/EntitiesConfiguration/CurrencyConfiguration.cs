@@ -11,7 +11,10 @@ internal class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
         builder.HasKey(a => a.Id);
         builder.HasAlternateKey(a => a.ExternalId);
 
-        builder.HasIndex(a => a.Name).HasDatabaseName("icurrency2");
+        builder.HasIndex(a => a.Name)
+            .IsUnique()
+            .HasFilter(sql: "is_deleted = false")
+            .HasDatabaseName("icurrency2");
 
         builder.Property(a => a.Name).IsRequired().HasMaxLength(256);
         builder.Property(a => a.Symbol).IsRequired().HasMaxLength(10);

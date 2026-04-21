@@ -47,7 +47,7 @@ public class EFCoreInterceptor(IDateTimeProvider timeProvider) : SaveChangesInte
         var utcNow = _timeProvider.UtcNow;
 
         foreach (var entry in context.ChangeTracker.Entries<BaseEntity>()
-            .Where(e => e.Entity is BaseEntity && (e.State == EntityState.Added || e.State == EntityState.Modified)))
+            .Where(e => e.Entity is BaseEntity && (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)))
         {
 
             switch (entry.State)

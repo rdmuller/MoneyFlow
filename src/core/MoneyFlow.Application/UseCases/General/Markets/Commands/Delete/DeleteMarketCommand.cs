@@ -1,6 +1,5 @@
-﻿using SharedKernel.Communications;
-using SharedKernel.Mediator;
+﻿using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Commands.Delete;
 
-public sealed record DeleteMarketCommand(long Id) : IRequest<BaseResponse<string>>;
+public sealed record DeleteMarketCommand(Guid ExternalId) : ICommand;

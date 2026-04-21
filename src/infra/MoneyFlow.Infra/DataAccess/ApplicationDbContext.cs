@@ -8,7 +8,6 @@ using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.Tenant.Entities.Assets;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
 using MoneyFlow.Domain.Tenant.Services;
-using SharedKernel.Abstractions;
 using SharedKernel.Entities;
 using System.Data;
 
@@ -20,7 +19,7 @@ public class ApplicationDbContext : DbContext
     private readonly IDomainEventsDispatcher _domainEvents;
 
     public ApplicationDbContext(
-        DbContextOptions options, 
+        DbContextOptions options,
         ITenantProvider tenantProvider,
         IDomainEventsDispatcher domainEvents) : base(options)
     {
@@ -64,22 +63,22 @@ public class ApplicationDbContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var result = await base.SaveChangesAsync(cancellationToken);
+        //try
+        //{
+        var result = await base.SaveChangesAsync(cancellationToken);
 
-            await PublishDomainEventsAsync(cancellationToken);
+        await PublishDomainEventsAsync(cancellationToken);
 
-            return result;
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            throw new DBConcurrencyException("Concurrency exception ocurred.", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("An error occurred while saving changes to the database.", ex);
-        }
+        return result;
+        //}
+        //catch (DbUpdateConcurrencyException ex)
+        //{
+        //    throw new DBConcurrencyException("Concurrency exception ocurred.", ex);
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw new Exception("An error occurred while saving changes to the database.", ex);
+        //}
     }
 
     private async Task PublishDomainEventsAsync(CancellationToken cancellationToken)

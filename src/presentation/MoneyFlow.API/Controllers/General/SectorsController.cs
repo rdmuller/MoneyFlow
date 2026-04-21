@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Models;
 using MoneyFlow.Application.DTOs.General.Sectors;
 using MoneyFlow.Application.UseCases.General.Sectors.Commands.Create;
+using MoneyFlow.Application.UseCases.General.Sectors.Commands.Delete;
 using MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
@@ -20,14 +21,40 @@ public class SectorsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
-    [HttpPost]
-    [Authorize(Policy = Roles.ADMIN)]
+    [HttpGet]
     [SwaggerOperation(
-        Summary = "Incluir setor",
-        Description = "Incluir um novo setor vinculado a categoria",
-        OperationId = "Insert"
-    //Tags = new[] { "Setor" }
+        Summary = "Get list",
+        Description = "Retorna lista de setores"
     )]
+    [ProducesResponseType(typeof(BaseQueryResponse<IEnumerable<SectorQueryDTO>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
+    {
+        var result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
+
+        return result.IsSuccess ? Ok(result.Value) : NoContent();
+    }
+
+    [HttpGet("{externalId}")]
+    [SwaggerOperation(
+        Summary = "Get by id",
+        Description = "Retorna todos os dados de um setor"
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(BaseResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetById(Guid externalId)
+    {
+        var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
+
+        return result.IsSuccess ? Ok(BaseResponse<SectorQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
+    }
+
+    [HttpPost]
+    [SwaggerOperation(
+        Summary = "Create",
+        Description = "Cria um novo setor"
+    )]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<SectorCommandDTO> request)
@@ -41,13 +68,11 @@ public class SectorsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{externalId}")]
-    [Authorize(Policy = Roles.ADMIN)]
     [SwaggerOperation(
-        Summary = "Alterar setor",
-        Description = "Alterar um setor",
-        OperationId = "Update"
-    //Tags = new[] { "Setor" }
+        Summary = "Update",
+        Description = "Atualiza os dados de um setor"
     )]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<SectorCommandDTO> request)
@@ -60,35 +85,21 @@ public class SectorsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{externalId}")]
+    [HttpDelete("{externalId}")]
     [SwaggerOperation(
-        Summary = "Listar dados de um setor",
-        Description = "Listar todos os dados de um setor",
-        OperationId = "Get by id"
-    //Tags = new[] { "Setor" }
+        Summary = "Delete",
+        Description = "Exclui um setor"
     )]
-    [ProducesResponseType(typeof(BaseResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
+    [Authorize(Policy = Roles.ADMIN)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetByExternalId(Guid externalId)
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
+        var result = await _mediator.SendAsync(new DeleteSectorCommand(externalId));
 
-        return result.IsSuccess ? Ok(BaseResponse<SectorQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
-    }
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
 
-    [HttpGet]
-    [SwaggerOperation(
-        Summary = "Listar setores",
-        Description = "Listar todos setores",
-        OperationId = "Get all"
-    //Tags = new[] { "Setor" }
-    )]
-    [ProducesResponseType(typeof(BaseQueryResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
-    {
-        var result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
-
-        return result.IsSuccess ? Ok(result.Value) : NoContent();
+        return NoContent();
     }
 }

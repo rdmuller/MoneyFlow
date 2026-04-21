@@ -11,7 +11,10 @@ internal class SectorConfiguration : IEntityTypeConfiguration<Sector>
         builder.HasKey(a => a.Id);
         builder.HasAlternateKey(a => a.ExternalId);
 
-        builder.HasIndex(a => a.Name).HasDatabaseName("Isector2");
+        builder.HasIndex(a => a.Name)
+            .IsUnique()
+            .HasFilter(sql: "is_deleted = false")
+            .HasDatabaseName("Isector2");
 
         builder.Property(a => a.Name).IsRequired().HasMaxLength(256);
 

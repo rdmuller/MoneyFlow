@@ -9,4 +9,6 @@ public interface ICategoryWriteRepository
     Task<Category?> GetByIdAsync(long categoryId, CancellationToken cancellationToken = default);
 
     Task<Category?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);
+
+    void Delete(Category category, CancellationToken cancellationToken = default);
 }

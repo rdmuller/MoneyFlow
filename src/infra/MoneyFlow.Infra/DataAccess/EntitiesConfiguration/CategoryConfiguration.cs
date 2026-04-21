@@ -16,7 +16,7 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder.HasIndex(a => a.Name)
             .IsUnique()
-            .HasFilter(sql: $"{nameof(Category.Active)} = true")
+            .HasFilter(sql: $"is_deleted = false")
             .HasDatabaseName("icategory3");
     }
 }

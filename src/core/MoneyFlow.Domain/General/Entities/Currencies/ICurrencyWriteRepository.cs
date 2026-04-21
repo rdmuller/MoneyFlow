@@ -6,6 +6,8 @@ public interface ICurrencyWriteRepository
 
     void Update(Currency currency, CancellationToken cancellationToken = default);
 
+    void Delete(Currency currency, CancellationToken cancellationToken = default);
+
     Task<Currency?> GetByIdAsync(long id, CancellationToken cancellationToken = default);
 
     Task<Currency?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);

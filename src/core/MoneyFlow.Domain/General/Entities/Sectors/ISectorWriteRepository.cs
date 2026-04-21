@@ -4,6 +4,8 @@ public interface ISectorWriteRepository
 {
     void Update(Sector sector, CancellationToken cancellationToken = default);
 
+    void Delete(Sector sector, CancellationToken cancellationToken = default);
+
     Task CreateAsync(Sector sector, CancellationToken cancellationToken = default);
 
     Task<Sector?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);

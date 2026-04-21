@@ -15,4 +15,9 @@ abstract internal class BaseRepository<T>(ApplicationDbContext dbContext) where 
     {
         _dbContext.Set<T>().Update(entity);
     }
+
+    public virtual void Delete(T entity, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Set<T>().Remove(entity);
+    }
 }

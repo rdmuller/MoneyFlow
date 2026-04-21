@@ -7,7 +7,7 @@ namespace MoneyFlow.Infra.DataAccess.Repositories;
 
 internal sealed class CategoryRepository : BaseRepository<Category>, ICategoryReadRepository, ICategoryWriteRepository
 {
-    public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext) {}
+    public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
     public async Task<BaseQueryResponse<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
@@ -19,7 +19,7 @@ internal sealed class CategoryRepository : BaseRepository<Category>, ICategoryRe
         return await querySpecifications.ExecuteQueryAsync(query, selectorFields: selectorFields, cancellationToken: cancellationToken);
     }
 
-    async Task<Category?> ICategoryReadRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) 
+    async Task<Category?> ICategoryReadRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.ExternalId.Equals(externalId), cancellationToken);
 
     async Task<Category?> ICategoryWriteRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)

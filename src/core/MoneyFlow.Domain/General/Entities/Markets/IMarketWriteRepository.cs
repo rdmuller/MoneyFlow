@@ -6,6 +6,8 @@ public interface IMarketWriteRepository
 
     void Update(Market market, CancellationToken cancellationToken = default);
 
+    void Delete(Market market, CancellationToken cancellationToken = default);
+
     Task<Market?> GetByIdAsync(long marketId, CancellationToken cancellationToken = default);
 
     Task<Market?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);
