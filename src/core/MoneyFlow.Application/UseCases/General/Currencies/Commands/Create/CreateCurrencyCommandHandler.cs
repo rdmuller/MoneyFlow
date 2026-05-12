@@ -12,13 +12,13 @@ internal class CreateCurrencyCommandHandler(IUnitOfWork unitOfWork, ICurrencyWri
 
     public async Task<Result<Guid>> HandleAsync(CreateCurrencyCommand request, CancellationToken cancellationToken = default)
     {
-        var currency = Currency.Create(request.Name, request.Symbol);
+        Result<Currency> currency = Currency.Create(request.Name, request.Symbol);
 
         if (currency.IsFailure)
             return Result.Failure<Guid>(currency.Errors!);
 
         await _currencyWriteRepository.CreateAsync(currency.Value, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<Guid>.Success(currency.Value.ExternalId!.Value);
     }

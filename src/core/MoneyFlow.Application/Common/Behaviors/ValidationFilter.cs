@@ -12,7 +12,7 @@ public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFi
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         // Obtém os argumentos da action (os comandos)
-        foreach (var argument in context.ActionArguments.Values)
+        foreach (object? argument in context.ActionArguments.Values)
         {
             if (argument == null)
             {
@@ -20,26 +20,16 @@ public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFi
             }
 
             // Obtém o validador para o tipo do argumento
-            var validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType());
+            Type validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType());
             var validator = _serviceProvider.GetService(validatorType) as IValidator;
 
             if (validator is not null)
             {
-                var validationContext = new ValidationContext<object>(argument);
-                var validationResult = await validator.ValidateAsync(validationContext);
+                ValidationContext<object> validationContext = new(argument);
+                FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(validationContext);
 
                 if (!validationResult.IsValid)
                 {
-                    /*foreach (var error in validationResult.Errors)
-                    {
-                        context.ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                    }
-                    context.Result = new BadRequestObjectResult(new
-                    {
-                        Erros = validationResult.Errors.Select(e => new { ErrorCode = e.ErrorCode, ErrorMessage = $"{e.PropertyName}: {e.ErrorMessage}" })
-                    });
-                    return;*/
-
                     var failures = validationResult
                         .Errors
                         .Select(e => new Error(e.ErrorCode, e.ErrorMessage))

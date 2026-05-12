@@ -12,7 +12,7 @@ internal sealed class CategoryRepository : BaseRepository<Category>, ICategoryRe
     public async Task<BaseQueryResponse<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
         System.Linq.Expressions.Expression<Func<Category, Category>> selectorFields = m => new Category(m.Id, m.Name, m.Active, m.ExternalId);
-        var query = _dbContext.Categories.AsNoTracking().OrderBy(c => c.Name).AsQueryable();
+        IQueryable<Category> query = _dbContext.Categories.AsNoTracking().OrderBy(c => c.Name).AsQueryable();
 
         var querySpecifications = new QuerySpecification<Category>(queryParams ?? new QueryParams());
 

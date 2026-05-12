@@ -31,7 +31,7 @@ public static class DependencyInjection
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
         //services.AddScoped<IDomainEventHandler<UserChangePasswordDomainEvent>, SendEmailChangePassword>();
 
-        var domainEventHandlerType = typeof(IDomainEventHandler<>);
+        Type domainEventHandlerType = typeof(IDomainEventHandler<>);
         var domainEventHandlers = Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(type => !type.IsAbstract && !type.IsInterface)

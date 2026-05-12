@@ -15,12 +15,12 @@ internal class DeleteCategoryCommandHandler(
 
     public async Task<Result> HandleAsync(DeleteCategoryCommand request, CancellationToken cancellationToken = default)
     {
-        var category = await _categoryWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Category? category = await _categoryWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
         if (category is null)
             return Result.Failure(Error.RecordNotFound("Category not found."));
 
         _categoryWriteRepository.Delete(category, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

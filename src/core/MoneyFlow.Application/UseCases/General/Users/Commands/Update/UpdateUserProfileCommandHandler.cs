@@ -15,27 +15,27 @@ public class UpdateUserProfileCommandHandler(ILoggedUser loggedUser, IUserWriteO
 
     public async Task<Result> HandleAsync(UpdateUserProfileCommand request, CancellationToken cancellationToken = default)
     {
-        var validationResult = await Validate(User.Create(request.Name, new Email(request.Email)).Value);
+        Result validationResult = await Validate(User.Create(request.Name, new Email(request.Email)).Value);
 
         if (validationResult.IsFailure)
             return Result.Failure(validationResult.Errors!);
 
-        var userId = await _loggedUser.GetUserIdAsync();
-        var user = await _userWriteOnlyRepository.GetUserByIdAsync(userId, cancellationToken);
+        long userId = await _loggedUser.GetUserIdAsync();
+        User user = await _userWriteOnlyRepository.GetUserByIdAsync(userId, cancellationToken);
 
-        var result = user.Update(request.Name, new Email(request.Email));
+        Result result = user.Update(request.Name, new Email(request.Email));
         if (result.IsFailure)
             return Result.Failure(result.Errors!);
 
         _userWriteOnlyRepository.Update(user, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }
 
     private async Task<Result> Validate(User user)
     {
-        var errors = await new UserValidator().ValidateWithErrorsAsync(user);
+        List<Error> errors = await new UserValidator().ValidateWithErrorsAsync(user);
 
         return errors.Count == 0 ? Result.Success() : Result.Failure(errors);
     }

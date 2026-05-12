@@ -23,9 +23,9 @@ public sealed class Currency : BaseEntity
 
     public static Result<Currency> Create(string name, string symbol)
     {
-        Currency currency = new Currency(0, name, symbol, true, Guid.NewGuid());
+        var currency = new Currency(0, name, symbol, true, Guid.NewGuid());
 
-        var result = currency.CheckRequiredFields();
+        Result result = currency.CheckRequiredFields();
         if (result.IsFailure)
             return Result.Failure<Currency>(result.Errors!);
 
@@ -45,11 +45,11 @@ public sealed class Currency : BaseEntity
 
     protected override Result CheckRequiredFields()
     {
-        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Currency name must be provided");
+        Result result = CheckRequiredField(string.IsNullOrWhiteSpace(Name), "Currency name must be provided");
         if (result.IsFailure)
             return result;
 
-        CheckRequiredField(string.IsNullOrWhiteSpace(this.Symbol), "Currency symbol must be provided");
+        CheckRequiredField(string.IsNullOrWhiteSpace(Symbol), "Currency symbol must be provided");
         return result;
     }
 }

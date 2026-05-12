@@ -22,9 +22,9 @@ public sealed class Category : BaseEntity
 
     public static Result<Category> Create(string name)
     {
-        Category category = new Category(0, name, true, Guid.NewGuid());
+        var category = new Category(0, name, true, Guid.NewGuid());
 
-        var result = category.CheckRequiredFields();
+        Result result = category.CheckRequiredFields();
 
         if (result.IsFailure)
             return Result.Failure<Category>(result.Errors!);
@@ -44,7 +44,7 @@ public sealed class Category : BaseEntity
 
     protected override Result CheckRequiredFields()
     {
-        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Category name must be provided");
+        Result result = CheckRequiredField(string.IsNullOrWhiteSpace(Name), "Category name must be provided");
 
         return result;
     }

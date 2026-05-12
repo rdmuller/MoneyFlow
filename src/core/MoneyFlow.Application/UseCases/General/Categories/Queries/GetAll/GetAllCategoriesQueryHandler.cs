@@ -14,7 +14,7 @@ internal class GetAllCategoriesQueryHandler(ICategoryReadRepository categoryRead
 
     public async Task<Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>> HandleAsync(GetAllCategoriesQuery request, CancellationToken cancellationToken = default)
     {
-        var categories = await _categoryReadRepository.GetAllAsync(request.Query, cancellationToken);
+        BaseQueryResponse<IEnumerable<Category>> categories = await _categoryReadRepository.GetAllAsync(request.Query, cancellationToken);
 
         return Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>.Create(categories.Adapt<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>());
     }

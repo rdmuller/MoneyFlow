@@ -8,6 +8,7 @@ using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
@@ -30,7 +31,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        var result = await _mediator.SendAsync(new GetAllCategoriesQuery { Query = queryParams });
+        Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>> result = await _mediator.SendAsync(new GetAllCategoriesQuery { Query = queryParams });
 
         return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
@@ -45,7 +46,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<CategoryQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetCategoryByExternalIdQuery(externalId));
+        Result<CategoryQueryDTO> result = await _mediator.SendAsync(new GetCategoryByExternalIdQuery(externalId));
 
         return result.IsSuccess ? Ok(BaseResponse<CategoryQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
@@ -60,7 +61,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<CategoryCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateCategoryCommand(request.Data?.Name));
+        Result<Guid> result = await _mediator.SendAsync(new CreateCategoryCommand(request.Data?.Name));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -78,7 +79,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CategoryCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new UpdateCategoryCommand(externalId, request.Data?.Name, request.Data?.Active));
+        Result result = await _mediator.SendAsync(new UpdateCategoryCommand(externalId, request.Data?.Name, request.Data?.Active));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -96,7 +97,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new DeleteCategoryCommand(externalId));
+        Result result = await _mediator.SendAsync(new DeleteCategoryCommand(externalId));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));

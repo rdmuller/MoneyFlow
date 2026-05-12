@@ -17,17 +17,17 @@ internal class CreateSectorCommandHandler(
 
     public async Task<Result<Guid>> HandleAsync(CreateSectorCommand request, CancellationToken cancellationToken = default)
     {
-        var category = await _categoryReadRepository.GetByExternalIdAsync(request.CategoryExternalId, cancellationToken);
+        Category? category = await _categoryReadRepository.GetByExternalIdAsync(request.CategoryExternalId, cancellationToken);
         if (category is null)
             return Result.Failure<Guid>(Error.RecordNotFound("Category not found."));
 
-        var sector = Sector.Create(request.Name, category);
+        Result<Sector> sector = Sector.Create(request.Name, category);
 
         if (sector.IsFailure)
             return Result.Failure<Guid>(sector.Errors!);
 
         await _sectorWriteRepository.CreateAsync(sector.Value, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<Guid>.Success(sector.Value.ExternalId!.Value);
     }

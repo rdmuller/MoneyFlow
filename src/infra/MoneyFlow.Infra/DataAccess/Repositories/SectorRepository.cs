@@ -12,7 +12,7 @@ internal class SectorRepository : BaseRepository<Sector>, ISectorWriteRepository
 
     public async Task<BaseQueryResponse<IEnumerable<Sector>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken)
     {
-        var query = _dbContext.Sectors.AsNoTracking()
+        IQueryable<Sector> query = _dbContext.Sectors.AsNoTracking()
             .Include(s => s.Category)
             .OrderBy(s => s.Category.Name)
             .ThenBy(s => s.Name)

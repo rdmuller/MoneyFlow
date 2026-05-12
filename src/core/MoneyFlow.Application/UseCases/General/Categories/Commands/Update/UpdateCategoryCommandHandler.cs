@@ -17,16 +17,16 @@ internal class UpdateCategoryCommandHandler
         if (!request.ExternalId.HasValue)
             return Result.Failure(Error.RequiredFieldIsEmpty("Category is required"));
 
-        var category = await _categoryWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
+        Category? category = await _categoryWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
         if (category is null)
             return Result.Failure(Error.RecordNotFound("Category not found"));
 
-        var result = category.Update(request.Name!, request.Active);
+        Result result = category.Update(request.Name!, request.Active);
         if (result.IsFailure)
             return Result.Failure(result.Errors!);
 
         _categoryWriteRepository.Update(category, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

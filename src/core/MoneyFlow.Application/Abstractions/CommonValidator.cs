@@ -1,4 +1,5 @@
 using FluentValidation;
+using FluentValidation.Results;
 using SharedKernel.Abstractions;
 using SharedKernel.Exceptions;
 
@@ -8,7 +9,7 @@ public abstract class CommonValidator<T> : AbstractValidator<T>
 {
     public async Task<List<Error>> ValidateWithErrorsAsync(T context, CancellationToken cancellation = default)
     {
-        var result = await base.ValidateAsync(context, cancellation);
+        ValidationResult result = await base.ValidateAsync(context, cancellation);
 
         if (result.IsValid)
             return new List<Error>();
@@ -20,7 +21,7 @@ public abstract class CommonValidator<T> : AbstractValidator<T>
 
     public async Task ValidateAndThrowWhenErrorAsync(T context, CancellationToken cancellationToken = default)
     {
-        var errors = await ValidateWithErrorsAsync(context, cancellationToken);
+        List<Error> errors = await ValidateWithErrorsAsync(context, cancellationToken);
         if (errors.Count > 0)
             throw new ErrorOnValidationException(errors);
     }

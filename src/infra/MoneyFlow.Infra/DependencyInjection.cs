@@ -37,16 +37,14 @@ public static class DependencyInjection
 
     private static void AddToken(IServiceCollection services, IConfiguration config)
     {
-        var expirationTimeMinutes = config.GetValue<uint>("Settings:jwt:ExpiresMinutes");
-        var signingKey = config.GetValue<string>("Settings:jwt:SigningKey");
+        uint expirationTimeMinutes = config.GetValue<uint>("Settings:jwt:ExpiresMinutes");
+        string? signingKey = config.GetValue<string>("Settings:jwt:SigningKey");
 
         services.AddScoped<IAccessTokenGenerator>(config => new AccessTokenGenerator(expirationTimeMinutes, signingKey!, new DateTimeProvider()));
     }
 
     private static void AddRepositories(IServiceCollection services)
     {
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-
         services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
         services.AddScoped<IUserReadRepository, UserRepository>();
         services.AddScoped<IMarketReadRepository, MarketRepository>();
@@ -71,7 +69,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ISaveChangesInterceptor, EFCoreInterceptor>();
 
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        string? connectionString = config.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
@@ -82,5 +80,8 @@ public static class DependencyInjection
                 config.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
             }).UseSnakeCaseNamingConvention();
         });
+
+        services.AddScoped<IUnitOfWork>(s => s.GetRequiredService<ApplicationDbContext>());
+
     }
 }

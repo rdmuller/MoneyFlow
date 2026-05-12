@@ -13,7 +13,7 @@ internal class GetMarketByExternalIdQueryHandler(IMarketReadRepository marketRep
 
     public async Task<Result<MarketQueryDTO>> HandleAsync(GetMarketByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
-        var market = await _marketRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Market? market = await _marketRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
 
         return Result<MarketQueryDTO>.Create(market.Adapt<MarketQueryDTO>());
     }

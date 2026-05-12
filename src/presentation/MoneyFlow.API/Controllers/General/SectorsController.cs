@@ -8,6 +8,7 @@ using MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
@@ -30,7 +31,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        var result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
+        Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>> result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
 
         return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
@@ -44,7 +45,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<SectorQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
+        Result<SectorQueryDTO> result = await _mediator.SendAsync(new GetSectorByExternalIdQuery(externalId));
 
         return result.IsSuccess ? Ok(BaseResponse<SectorQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
@@ -59,7 +60,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<SectorCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateSectorCommand(request.Data?.Name ?? string.Empty, request.Data!.CategoryExternalId));
+        Result<Guid> result = await _mediator.SendAsync(new CreateSectorCommand(request.Data?.Name ?? string.Empty, request.Data!.CategoryExternalId));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -77,7 +78,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<SectorCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new UpdateSectorCommand(externalId, request.Data?.Name, request.Data?.CategoryExternalId, request.Data?.Active));
+        Result result = await _mediator.SendAsync(new UpdateSectorCommand(externalId, request.Data?.Name, request.Data?.CategoryExternalId, request.Data?.Active));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -95,7 +96,7 @@ public class SectorsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new DeleteSectorCommand(externalId));
+        Result result = await _mediator.SendAsync(new DeleteSectorCommand(externalId));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));

@@ -28,9 +28,9 @@ public sealed class Sector : BaseEntity
 
     public static Result<Sector> Create(string name, Category category)
     {
-        Sector sector = new Sector(0, name, category.Id, true, Guid.CreateVersion7());
+        var sector = new Sector(0, name, category.Id, true, Guid.CreateVersion7());
 
-        var result = sector.CheckRequiredFields();
+        Result result = sector.CheckRequiredFields();
         if (result.IsFailure)
             return Result.Failure<Sector>(result.Errors!);
 
@@ -47,11 +47,11 @@ public sealed class Sector : BaseEntity
         Active = active;
         CategoryId = category is not null ? category.Id : 0;
 
-        var result = this.CheckRequiredFields();
+        Result result = CheckRequiredFields();
         if (result.IsFailure)
             return result;
 
-        result = this.CheckForeignKeys(category!);
+        result = CheckForeignKeys(category!);
         if (result.IsFailure)
             return result;
 
@@ -65,10 +65,10 @@ public sealed class Sector : BaseEntity
 
     protected override Result CheckRequiredFields()
     {
-        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Sector name is required");
+        Result result = CheckRequiredField(string.IsNullOrWhiteSpace(Name), "Sector name is required");
         if (result.IsFailure)
             return result;
 
-        return CheckRequiredField((this.CategoryId.Equals(0)), "Category is required");
+        return CheckRequiredField(CategoryId.Equals(0), "Category is required");
     }
 }

@@ -14,7 +14,7 @@ internal class GetAllMarketsQueryHandler(IMarketReadRepository marketReadReposit
 
     public async Task<Result<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>>> HandleAsync(GetAllMarketsQuery request, CancellationToken cancellationToken = default)
     {
-        var markets = await _marketReadRepository.GetAllAsync(request.Query, cancellationToken);
+        BaseQueryResponse<IEnumerable<Market>> markets = await _marketReadRepository.GetAllAsync(request.Query, cancellationToken);
 
         return Result<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>>.Create(markets.Adapt<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>>());
     }

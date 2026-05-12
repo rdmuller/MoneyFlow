@@ -13,7 +13,7 @@ internal class GetCategoryByExternalIdQueryHandler(ICategoryReadRepository categ
 
     public async Task<Result<CategoryQueryDTO>> HandleAsync(GetCategoryByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
-        var category = await _categoryReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Category? category = await _categoryReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
 
         return Result<CategoryQueryDTO>.Create(category.Adapt<CategoryQueryDTO>());
     }

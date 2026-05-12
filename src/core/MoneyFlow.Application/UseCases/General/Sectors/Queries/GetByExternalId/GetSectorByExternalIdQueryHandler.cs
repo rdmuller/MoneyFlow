@@ -13,7 +13,7 @@ internal class GetSectorByExternalIdQueryHandler(ISectorReadRepository sectorRea
 
     public async Task<Result<SectorQueryDTO>> HandleAsync(GetSectorByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
-        var sector = await _sectorReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Sector? sector = await _sectorReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
 
         return Result<SectorQueryDTO>.Create(sector.Adapt<SectorQueryDTO>());
     }

@@ -16,7 +16,7 @@ internal class GetUserByExternalIdQueryHandler(IUserReadRepository userReadRepos
         if (!request.ExternalId.HasValue)
             return Result.Failure<GetUserFullQueryDTO>(Error.RequiredFieldIsEmpty("ExternalId is required."));
 
-        var user = await _userReadRepository.GetByExternalIdAsync((Guid)request.ExternalId!, cancellationToken);
+        User? user = await _userReadRepository.GetByExternalIdAsync((Guid)request.ExternalId!, cancellationToken);
         if (user is null)
             return Result.Failure<GetUserFullQueryDTO>(Error.RecordNotFound($"User with ExternalId {request.ExternalId} not found."));
 

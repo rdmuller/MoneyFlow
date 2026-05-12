@@ -8,7 +8,7 @@ public class HttpContextTokenValue(IHttpContextAccessor httpContextAccessor) : I
 
     public string TokenOnRequest()
     {
-        var authorization = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString();
+        string authorization = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString();
 
         return authorization["Bearer ".Length..].Trim();
     }

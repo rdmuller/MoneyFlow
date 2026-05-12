@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.General.Auth;
 using MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 
@@ -18,7 +19,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponseError), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] AuthLoginCommand authLoginCommand)
     {
-        var result = await _mediator.SendAsync(authLoginCommand);
+        Result<TokenDTO> result = await _mediator.SendAsync(authLoginCommand);
 
         if (result.IsSuccess)
             return Ok(result.Value);

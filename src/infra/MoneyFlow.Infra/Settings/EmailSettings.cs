@@ -14,20 +14,20 @@ internal class EmailSettings
 
     public static EmailSettings GetSettings(IConfiguration config)
     {
-        var emailSettings = config.GetSection("Settings:EmailSettings").Get<EmailSettings>() ?? new EmailSettings();
+        EmailSettings emailSettings = config.GetSection("Settings:EmailSettings").Get<EmailSettings>() ?? new EmailSettings();
 
         if (string.IsNullOrWhiteSpace(emailSettings.FromEmail))
         {
             emailSettings.SmtpServer = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SMTP_SERVER") ?? "";
 
-            var smtpPortEnv = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SMTP_PORT");
-            emailSettings.SmtpPort = int.TryParse(smtpPortEnv, out var port) ? port : 587;
+            string? smtpPortEnv = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SMTP_PORT");
+            emailSettings.SmtpPort = int.TryParse(smtpPortEnv, out int port) ? port : 587;
 
             emailSettings.SmtpUser = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SMTP_USER") ?? "";
             emailSettings.SmtpPassword = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SMTP_PASSWORD") ?? "";
 
-            var enableSslEnv = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SSL");
-            emailSettings.EnableSsl = bool.TryParse(enableSslEnv, out var enableSsl) && enableSsl;
+            string? enableSslEnv = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_SSL");
+            emailSettings.EnableSsl = bool.TryParse(enableSslEnv, out bool enableSsl) && enableSsl;
 
             emailSettings.FromEmail = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_FROM_EMAIL") ?? "";
             emailSettings.FromName = Environment.GetEnvironmentVariable("MONEYFLOW_EMAIL_FROM_NAME") ?? "";

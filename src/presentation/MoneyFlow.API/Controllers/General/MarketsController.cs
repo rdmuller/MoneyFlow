@@ -8,6 +8,7 @@ using MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
@@ -30,7 +31,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        var result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = queryParams });
+        Result<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>> result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = queryParams });
 
         return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
@@ -45,7 +46,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<MarketQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetMarketByExternalIdQuery(externalId));
+        Result<MarketQueryDTO> result = await _mediator.SendAsync(new GetMarketByExternalIdQuery(externalId));
 
         return result.IsSuccess ? Ok(BaseResponse<MarketQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
@@ -60,7 +61,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<MarketCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateMarketCommand(request.Data?.Name));
+        Result<Guid> result = await _mediator.SendAsync(new CreateMarketCommand(request.Data?.Name));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -78,7 +79,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<MarketCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new UpdateMarketCommand(externalId, request.Data?.Name, request.Data?.Active));
+        Result result = await _mediator.SendAsync(new UpdateMarketCommand(externalId, request.Data?.Name, request.Data?.Active));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -96,7 +97,7 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new DeleteMarketCommand(externalId));
+        Result result = await _mediator.SendAsync(new DeleteMarketCommand(externalId));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));

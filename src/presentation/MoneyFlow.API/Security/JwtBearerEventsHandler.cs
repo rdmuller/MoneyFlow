@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 using MoneyFlow.Domain.Tenant.Services;
+using SharedKernel.Abstractions;
 using SharedKernel.Mediator;
 using System.Security.Claims;
 
@@ -12,21 +14,21 @@ internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBeare
 
     public override async Task TokenValidated(TokenValidatedContext context)
     {
-        var userExternalIdClaim = context.Principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
+        string? userExternalIdClaim = context.Principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
         if (string.IsNullOrWhiteSpace(userExternalIdClaim))
         {
             context.Fail("Invalid token");
             return;
         }
 
-        if (!Guid.TryParse(userExternalIdClaim, out var userExternalId))
+        if (!Guid.TryParse(userExternalIdClaim, out Guid userExternalId))
         {
             context.Fail("Invalid token");
             return;
         }
 
-        var mediator = context.HttpContext.RequestServices.GetRequiredService<IMediator>();
-        var userDTO = await mediator.SendAsync(new GetUserByExternalIdQuery(userExternalId));
+        IMediator mediator = context.HttpContext.RequestServices.GetRequiredService<IMediator>();
+        Result<GetUserFullQueryDTO> userDTO = await mediator.SendAsync(new GetUserByExternalIdQuery(userExternalId));
         if (userDTO.IsFailure || userDTO.Value is null)
         {
             context.Fail("Invalid token user");

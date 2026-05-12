@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace SharedKernel.Mediator;
 
 public class Mediator(IServiceProvider serviceProvider) : IMediator
@@ -6,18 +8,18 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
 
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
     {
-        var requestType = request.GetType();
-        var handlerType = typeof(IRequestHandler<,>).MakeGenericType(requestType, typeof(TResponse));
-        var handler = _serviceProvider.GetService(handlerType);
+        Type requestType = request.GetType();
+        Type handlerType = typeof(IRequestHandler<,>).MakeGenericType(requestType, typeof(TResponse));
+        object? handler = _serviceProvider.GetService(handlerType);
 
         if (handler is null)
             throw new InvalidOperationException($"Handler not found for {requestType.Name}");
 
-        var method = handlerType.GetMethod("HandleAsync");
+        MethodInfo? method = handlerType.GetMethod("HandleAsync");
         if (method is null)
             throw new InvalidOperationException($"Method HandleAsync not found for {requestType.Name}");
 
-        var result = method.Invoke(handler, [request, cancellationToken]);
+        object? result = method.Invoke(handler, [request, cancellationToken]);
         if (result is not Task<TResponse> task)
             throw new InvalidOperationException($"Method returned unexpected type {result} for {requestType.Name}");
 

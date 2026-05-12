@@ -12,13 +12,13 @@ internal class CreateCategoryCommandHandler(ICategoryWriteRepository categoryWri
 
     public async Task<Result<Guid>> HandleAsync(CreateCategoryCommand request, CancellationToken cancellationToken = default)
     {
-        var category = Category.Create(request.Name);
+        Result<Category> category = Category.Create(request.Name);
 
         if (category.IsFailure)
             return Result.Failure<Guid>(category.Errors!);
 
         await _categoryWriteRepository.CreateAsync(category.Value, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<Guid>.Success(category.Value.ExternalId!.Value);
     }

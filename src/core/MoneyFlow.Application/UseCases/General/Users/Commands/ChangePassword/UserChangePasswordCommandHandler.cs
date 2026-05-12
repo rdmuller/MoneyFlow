@@ -23,8 +23,8 @@ public class UserChangePasswordCommandHandler(
     {
         await ValidateAsync(request.NewPassword!);
 
-        var userId = await _loggedUser.GetUserIdAsync();
-        var user = await _userWriteOnlyRepository.GetUserByIdAsync(userId);
+        long userId = await _loggedUser.GetUserIdAsync();
+        User? user = await _userWriteOnlyRepository.GetUserByIdAsync(userId);
 
         if (!_passwordHasher.Verify(request.OldPassword!, user.Password))
             throw AuthorizationException.InvalidData("Old password does not match");
@@ -35,7 +35,7 @@ public class UserChangePasswordCommandHandler(
 
         Console.WriteLine($"User {userId} changed password at {DateTime.UtcNow}");
 
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         //await _domainEvents.DispatchAsync([new UserChangePasswordDomainEvent(user)], cancellationToken);
 
         return new BaseResponse<string>();

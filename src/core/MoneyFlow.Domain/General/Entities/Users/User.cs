@@ -13,7 +13,7 @@ public sealed class User : BaseEntity
     public string Password { get; private set; } = string.Empty;
     public string Role { get; private set; } = Roles.USER;
 
-    private User() {}
+    private User() { }
 
     public User(long id, Email email, string name, string? password, string? role, Guid? externalId = null, DateTimeOffset? createdDate = null, DateTimeOffset? updatedDate = null)
         : base(id, externalId, createdDate, updatedDate)
@@ -26,9 +26,9 @@ public sealed class User : BaseEntity
 
     public static Result<User> Create(string name, Email email, string? password = null, IPasswordHasher? passwordHasher = null)
     {
-        User user = new User(0, email, name, "", "", Guid.CreateVersion7());
+        var user = new User(0, email, name, "", "", Guid.CreateVersion7());
 
-        var result = user.CheckRequiredFields();
+        Result result = user.CheckRequiredFields();
         if (result.IsFailure)
             return Result.Failure<User>(result.Errors!);
 
@@ -53,16 +53,16 @@ public sealed class User : BaseEntity
         RaiseDomainEvent(new UserChangePasswordDomainEvent(this));
     }
 
-    private void SetPassword(string password, IPasswordHasher passwordHasher) 
+    private void SetPassword(string password, IPasswordHasher passwordHasher)
         => Password = passwordHasher.Hash(password);
 
     protected override Result CheckRequiredFields()
     {
-        var result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "User name must be provided");
+        Result result = CheckRequiredField(string.IsNullOrWhiteSpace(Name), "User name must be provided");
         if (result.IsFailure)
             return result;
 
-        result = CheckRequiredField(string.IsNullOrWhiteSpace(this.Email.Value), "Email must be provided");
+        result = CheckRequiredField(string.IsNullOrWhiteSpace(Email.Value), "Email must be provided");
 
         return result;
     }

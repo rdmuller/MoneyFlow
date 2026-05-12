@@ -15,12 +15,12 @@ internal class DeleteMarketCommandHandler(
 
     public async Task<Result> HandleAsync(DeleteMarketCommand request, CancellationToken cancellationToken = default)
     {
-        var market = await _marketWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Market? market = await _marketWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
         if (market is null)
             return Result.Failure(Error.RecordNotFound("Market not found."));
 
         _marketWriteRepository.Delete(market, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

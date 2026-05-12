@@ -22,9 +22,9 @@ public sealed class Market : BaseEntity
 
     public static Result<Market> Create(string name)
     {
-        Market market = new Market(0, name, true, Guid.NewGuid());
+        var market = new Market(0, name, true, Guid.NewGuid());
 
-        var result = market.CheckRequiredFields();
+        Result result = market.CheckRequiredFields();
         if (result.IsFailure)
             return Result.Failure<Market>(result.Errors!);
 
@@ -43,6 +43,6 @@ public sealed class Market : BaseEntity
 
     protected override Result CheckRequiredFields()
     {
-        return CheckRequiredField(string.IsNullOrWhiteSpace(this.Name), "Market name must be provided");
+        return CheckRequiredField(string.IsNullOrWhiteSpace(Name), "Market name must be provided");
     }
 }

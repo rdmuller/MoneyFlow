@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -12,9 +13,8 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
-using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddDependencyInjectionApplication();
@@ -32,7 +32,7 @@ builder.Services.AddControllers(options =>
 //builder.Services.AddOpenApi();
 
 # region Authentication
-var signingKey = builder.Configuration.GetValue<string>("Settings:jwt:SigningKey");
+string? signingKey = builder.Configuration.GetValue<string>("Settings:jwt:SigningKey");
 builder.Services.AddAuthentication(config =>
 {
     config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -78,20 +78,22 @@ builder.Services.AddOpenTelemetry()
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
         .AddOtlpExporter())
-    .WithTracing(tracing => tracing
-        .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation()
-        .AddEntityFrameworkCoreInstrumentation()
-        .AddOtlpExporter()
-    //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
-    //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
-    );
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddOtlpExporter();
+        tracing.AddOtlpExporter();
+        //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
+        //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
+    });
 
-builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
 # endregion
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
 

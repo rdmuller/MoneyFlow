@@ -39,7 +39,7 @@ public static class StatusFilterExtensions
         if (string.IsNullOrWhiteSpace(code))
             return StatusFilter.Active;
 
-        var statusFilter = _statusFilterMappings.FirstOrDefault(x => x.Value.Equals(code, StringComparison.OrdinalIgnoreCase));
+        KeyValuePair<StatusFilter, string> statusFilter = _statusFilterMappings.FirstOrDefault(x => x.Value.Equals(code, StringComparison.OrdinalIgnoreCase));
 
         if (string.IsNullOrWhiteSpace(statusFilter.Value))
             return StatusFilter.Active;

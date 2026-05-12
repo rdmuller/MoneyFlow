@@ -11,7 +11,7 @@ internal class EmailService(EmailSettings emailSettings) : IEmailService
 
     public async Task SendEmailAsync(EmailMessage emailMessage, CancellationToken cancellationToken = default)
     {
-        var jsonSettings = System.Text.Json.JsonSerializer.Serialize(_emailSettings);
+        string jsonSettings = System.Text.Json.JsonSerializer.Serialize(_emailSettings);
 
         Console.WriteLine(jsonSettings);
 
@@ -26,7 +26,7 @@ internal class EmailService(EmailSettings emailSettings) : IEmailService
             Body = emailMessage.Body,
         };
 
-        foreach (var emailTo in emailMessage.To)
+        foreach (string emailTo in emailMessage.To)
             email.Bcc.Add(emailTo);
 
         using var client = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.SmtpPort)

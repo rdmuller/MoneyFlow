@@ -8,6 +8,7 @@ using MoneyFlow.Application.UseCases.General.Currencies.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
@@ -30,7 +31,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        var result = await _mediator.SendAsync(new GetAllCurrenciesQuery { Query = queryParams });
+        Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>> result = await _mediator.SendAsync(new GetAllCurrenciesQuery { Query = queryParams });
 
         return result.IsSuccess ? Ok(result.Value) : NoContent();
     }
@@ -44,7 +45,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<CurrencyQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new GetCurrencyByExternalIdQuery(externalId));
+        Result<CurrencyQueryDTO> result = await _mediator.SendAsync(new GetCurrencyByExternalIdQuery(externalId));
 
         return result.IsSuccess ? Ok(BaseResponse<CurrencyQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
@@ -59,7 +60,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BaseRequest<CurrencyCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new CreateCurrencyCommand(request.Data?.Name, request.Data?.Symbol));
+        Result<Guid> result = await _mediator.SendAsync(new CreateCurrencyCommand(request.Data?.Name, request.Data?.Symbol));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -77,7 +78,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid externalId, [FromBody] BaseRequest<CurrencyCommandDTO> request)
     {
-        var result = await _mediator.SendAsync(new UpdateCurrencyCommand(externalId, request.Data?.Name, request.Data?.Symbol, request.Data?.Active));
+        Result result = await _mediator.SendAsync(new UpdateCurrencyCommand(externalId, request.Data?.Name, request.Data?.Symbol, request.Data?.Active));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -95,7 +96,7 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid externalId)
     {
-        var result = await _mediator.SendAsync(new DeleteCurrencyCommand(externalId));
+        Result result = await _mediator.SendAsync(new DeleteCurrencyCommand(externalId));
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));

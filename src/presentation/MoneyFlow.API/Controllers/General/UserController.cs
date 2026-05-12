@@ -5,6 +5,7 @@ using MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
+using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 
@@ -22,7 +23,7 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetProfile()
     {
-        var result = await _mediator.SendAsync(new GetLoggedUserProfileQuery());
+        Result<GetUserFullQueryDTO> result = await _mediator.SendAsync(new GetLoggedUserProfileQuery());
 
         return result.IsSuccess ? Ok(BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
@@ -32,8 +33,8 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfile([FromBody] BaseRequest<UpdateUserProfileCommandDTO> request)
     {
-        var command = new UpdateUserProfileCommand(request?.Data?.Name, request?.Data?.Email);
-        var result = await _mediator.SendAsync(command);
+        UpdateUserProfileCommand command = new(request?.Data?.Name, request?.Data?.Email);
+        Result result = await _mediator.SendAsync(command);
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
@@ -46,7 +47,7 @@ public class UserController(IMediator mediator) : ControllerBase
     {
         UserChangePasswordCommand command = request!.Data!;
 
-        var result = await _mediator.SendAsync(command);
+        BaseResponse<string> result = await _mediator.SendAsync(command);
 
         return Ok(result);
     }
@@ -57,8 +58,8 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser([FromBody] BaseRequest<RegisterUserCommandDTO> request)
     {
-        var command = new RegisterUserCommand(request?.Data?.Name, request?.Data?.Email, request?.Data?.Password);
-        var result = await _mediator.SendAsync(command);
+        RegisterUserCommand command = new(request?.Data?.Name, request?.Data?.Email, request?.Data?.Password);
+        Result<Guid> result = await _mediator.SendAsync(command);
 
         if (result.IsFailure)
             return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));

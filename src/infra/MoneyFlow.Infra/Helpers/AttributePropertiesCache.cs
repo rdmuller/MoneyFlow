@@ -29,7 +29,7 @@ internal static class AttributePropertiesCache
 
         foreach (string part in parts)
         {
-            var map = _propertyCache.GetOrAdd(currentType, t =>
+            Dictionary<string, AttributeProperties> map = _propertyCache.GetOrAdd(currentType, t =>
                 t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                  .ToDictionary(p => p.Name.ToLower(), p => new AttributeProperties(
                      p.Name,

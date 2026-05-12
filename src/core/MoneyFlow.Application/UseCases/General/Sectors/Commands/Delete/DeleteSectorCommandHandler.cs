@@ -15,12 +15,12 @@ internal class DeleteSectorCommandHandler(
 
     public async Task<Result> HandleAsync(DeleteSectorCommand request, CancellationToken cancellationToken = default)
     {
-        var sector = await _sectorWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Sector? sector = await _sectorWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
         if (sector is null)
             return Result.Failure(Error.RecordNotFound("Sector not found."));
 
         _sectorWriteRepository.Delete(sector, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

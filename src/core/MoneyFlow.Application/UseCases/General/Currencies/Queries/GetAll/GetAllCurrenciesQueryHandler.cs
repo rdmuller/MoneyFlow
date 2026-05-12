@@ -14,7 +14,7 @@ internal class GetAllCurrenciesQueryHandler(ICurrencyReadRepository currencyRead
 
     public async Task<Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>> HandleAsync(GetAllCurrenciesQuery request, CancellationToken cancellationToken = default)
     {
-        var currencies = await _currencyReadRepository.GetAllAsync(request.Query, cancellationToken);
+        BaseQueryResponse<IEnumerable<Currency>> currencies = await _currencyReadRepository.GetAllAsync(request.Query, cancellationToken);
 
         return Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>.Create(currencies.Adapt<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>());
     }

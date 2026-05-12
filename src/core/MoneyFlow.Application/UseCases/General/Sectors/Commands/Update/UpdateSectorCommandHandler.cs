@@ -21,20 +21,20 @@ internal class UpdateSectorCommandHandler(
         if (!request.ExternalId.HasValue)
             return Result.Failure(Error.RequiredFieldIsEmpty("Sector is required"));
 
-        var sector = await _sectorWriteRepository.GetByExternalIdAsync(request.ExternalId.Value);
+        Sector? sector = await _sectorWriteRepository.GetByExternalIdAsync(request.ExternalId.Value);
         if (sector is null)
             return Result.Failure(Error.RecordNotFound("Sector not found"));
 
-        var category = await _categoryReadRepository.GetByExternalIdAsync(request.CategoryId ?? Guid.Empty, cancellationToken);
+        Category? category = await _categoryReadRepository.GetByExternalIdAsync(request.CategoryId ?? Guid.Empty, cancellationToken);
         if (category is null)
             return Result.Failure(Error.RecordNotFound("Category not found"));
 
-        var result = sector.Update(request.Name!, category!, (bool)request.Active!);
+        Result result = sector.Update(request.Name!, category!, (bool)request.Active!);
         if (result.IsFailure)
             return Result.Failure(result.Errors!);
 
         _sectorWriteRepository.Update(sector);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

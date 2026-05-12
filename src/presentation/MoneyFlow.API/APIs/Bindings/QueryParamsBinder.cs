@@ -7,17 +7,16 @@ public class QueryParamsBinder : IModelBinder
 {
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        if (bindingContext == null)
-            throw new ArgumentNullException(nameof(bindingContext));
+        ArgumentNullException.ThrowIfNull(bindingContext);
 
-        var query = bindingContext.HttpContext.Request.Query;
+        IQueryCollection query = bindingContext.HttpContext.Request.Query;
 
-        var result = new BoundQueryParams
+        BoundQueryParams result = new()
         {
             PageNum = TryGetInt(query, "pageNum"),
             PageRows = TryGetInt(query, "pageRows"),
-            Sort = query.TryGetValue("sort", out var sortValue) ? sortValue.ToString() : string.Empty,
-            Status = query.TryGetValue("status", out var statusValue) ? statusValue.ToString() : null,
+            Sort = query.TryGetValue("sort", out Microsoft.Extensions.Primitives.StringValues sortValue) ? sortValue.ToString() : string.Empty,
+            Status = query.TryGetValue("status", out Microsoft.Extensions.Primitives.StringValues statusValue) ? statusValue.ToString() : null,
             ExtraParams = query
                 .Where(kv => !kv.Key.Equals("pageNum", StringComparison.OrdinalIgnoreCase) &&
                              !kv.Key.Equals("pageRows", StringComparison.OrdinalIgnoreCase) &&
@@ -30,9 +29,9 @@ public class QueryParamsBinder : IModelBinder
         return Task.CompletedTask;
     }
 
-    private int? TryGetInt(IQueryCollection query, string key)
+    private static int? TryGetInt(IQueryCollection query, string key)
     {
-        if (query.TryGetValue(key, out var value) && int.TryParse(value, out var intValue))
+        if (query.TryGetValue(key, out Microsoft.Extensions.Primitives.StringValues value) && int.TryParse(value, out int intValue))
             return intValue;
 
         return null;

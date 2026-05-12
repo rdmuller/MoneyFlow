@@ -12,7 +12,7 @@ internal sealed class MarketRepository : BaseRepository<Market>, IMarketReadRepo
     public async Task<BaseQueryResponse<IEnumerable<Market>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
         System.Linq.Expressions.Expression<Func<Market, Market>> selectorFields = m => new Market(m.Id, m.Name, m.Active, m.ExternalId);
-        var query = _dbContext.Markets.AsNoTracking().AsQueryable();
+        IQueryable<Market> query = _dbContext.Markets.AsNoTracking().AsQueryable();
         var querySpecification = new QuerySpecification<Market>(queryParams ?? new QueryParams());
 
         //query = querySpecification.ApplyFilters(query);
@@ -27,7 +27,7 @@ internal sealed class MarketRepository : BaseRepository<Market>, IMarketReadRepo
         //    Data = await query.ToListAsync(cancellationToken)
         //};
 
-        return await querySpecification.ExecuteQueryAsync(query, selectorFields: selectorFields, orderBy: (m => m.Name), cancellationToken: cancellationToken);
+        return await querySpecification.ExecuteQueryAsync(query, selectorFields: selectorFields, orderBy: m => m.Name, cancellationToken: cancellationToken);
     }
 
     async Task<Market?> IMarketReadRepository.GetByIdAsync(long marketId, CancellationToken cancellationToken)

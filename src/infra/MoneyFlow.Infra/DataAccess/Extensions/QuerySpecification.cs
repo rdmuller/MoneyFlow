@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using SharedKernel.Abstractions;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
-using System.Linq.Expressions;
 using static MoneyFlow.Infra.Helpers.AttributePropertiesCache;
 
 
@@ -21,7 +21,7 @@ internal class QuerySpecification<T>
         Skip = (query.PageNum - 1) * query.PageRows ?? 0;
         Take = query.PageRows ?? 9999;
 
-        var statusFilter = StatusFilterExtensions.FromCode(query.Status);
+        StatusFilter statusFilter = StatusFilterExtensions.FromCode(query.Status);
         if (!statusFilter.Equals(StatusFilter.Full) && typeof(T).GetProperty(_ActivePropertyName) is not null)
         {
             if (statusFilter.Equals(StatusFilter.Active)) // testar se possui essa propriedade
@@ -36,7 +36,7 @@ internal class QuerySpecification<T>
 
     public IQueryable<T> ApplyFilters(IQueryable<T> query)
     {
-        foreach (var filter in Filters)
+        foreach (Expression<Func<T, bool>> filter in Filters)
             query = query.Where(filter);
 
         return query;
@@ -50,9 +50,9 @@ internal class QuerySpecification<T>
     }
 
     public async Task<BaseQueryResponse<IEnumerable<T>>> ExecuteQueryAsync(
-        IQueryable<T> query, 
-        bool addFilters = true, 
-        bool addPagination = true, 
+        IQueryable<T> query,
+        bool addFilters = true,
+        bool addPagination = true,
         Expression<Func<T, T>>? selectorFields = null,
         Expression<Func<T, object>>? orderBy = null,
         CancellationToken cancellationToken = default)
@@ -80,10 +80,9 @@ internal class QuerySpecification<T>
 
             query = AddPagination(query);
 
-            if (selectorFields is null)
-                resultQuery = await query.ToListAsync(cancellationToken);
-            else
-                resultQuery = await query.Select(selectorFields).ToListAsync(cancellationToken);
+            resultQuery = selectorFields is null
+                ? await query.ToListAsync(cancellationToken)
+                : await query.Select(selectorFields).ToListAsync(cancellationToken);
         }
 
         return new BaseQueryResponse<IEnumerable<T>>
@@ -96,14 +95,11 @@ internal class QuerySpecification<T>
 
     private void AddExtraParamsFilters(Dictionary<string, string> extraParams)
     {
-        foreach (var param in extraParams)
+        foreach (KeyValuePair<string, string> param in extraParams)
         {
             if (param.Value is not null)
             {
-                AttributeProperties attributeProperties;
-                string condition;
-
-                GetFieldAndConditionFromExtraParamKey(param.Key, out attributeProperties, out condition);
+                GetFieldAndConditionFromExtraParamKey(param.Key, out AttributeProperties attributeProperties, out string condition);
                 if (attributeProperties is null)
                     continue;
 
@@ -113,7 +109,8 @@ internal class QuerySpecification<T>
                 else if (attributeProperties.Type.Contains("int") || attributeProperties.Type.Contains("short") || attributeProperties.Type.Contains("long"))
                     AddNumericWihtoutDecimalsExtraParamFilter(attributeProperties.RealName, condition, param.Value);
 
-                else throw new NotImplementedException($"The filter for the attribute type '{attributeProperties.Type}' is not implemented.");
+                else
+                    throw new NotImplementedException($"The filter for the attribute type '{attributeProperties.Type}' is not implemented.");
             }
         }
     }
@@ -139,14 +136,14 @@ internal class QuerySpecification<T>
     private void AddStringExtraParamFilter2(string attributeName, string condition, string value)
     {
         // attributeName may be dotted (e.g. "category.name")
-        var parameter = Expression.Parameter(typeof(T), "x");
+        ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
         Expression current = parameter;
-        var parts = attributeName.Split('.', StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = attributeName.Split('.', StringSplitOptions.RemoveEmptyEntries);
         var memberExpressions = new List<Expression>();
 
         try
         {
-            foreach (var part in parts)
+            foreach (string part in parts)
             {
                 current = Expression.PropertyOrField(current, part);
                 memberExpressions.Add(current);
@@ -159,35 +156,26 @@ internal class QuerySpecification<T>
         }
 
         // Build ToLower() call on final member
-        var toLowerMethod = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
-        var finalToLower = Expression.Call(memberExpressions.Last(), toLowerMethod);
+        System.Reflection.MethodInfo toLowerMethod = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
+        MethodCallExpression finalToLower = Expression.Call(memberExpressions.Last(), toLowerMethod);
 
-        var constant = Expression.Constant(value, typeof(string));
+        ConstantExpression constant = Expression.Constant(value, typeof(string));
+        System.Reflection.MethodInfo equalsMethod = typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string) })!;
+        System.Reflection.MethodInfo containsMethod = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
 
-        Expression comparison;
-        var equalsMethod = typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string) })!;
-        var containsMethod = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
-
-        switch (condition)
+        Expression comparison = condition switch
         {
-            case "eq":
-                comparison = Expression.Call(finalToLower, equalsMethod, constant);
-                break;
-            case "neq":
-                comparison = Expression.Not(Expression.Call(finalToLower, equalsMethod, constant));
-                break;
-            case "like":
-                comparison = Expression.Call(finalToLower, containsMethod, constant);
-                break;
-            default:
-                throw new DataBaseException(new Error("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter."));
-        }
+            "eq" => Expression.Call(finalToLower, equalsMethod, constant),
+            "neq" => Expression.Not(Expression.Call(finalToLower, equalsMethod, constant)),
+            "like" => Expression.Call(finalToLower, containsMethod, constant),
+            _ => throw new DataBaseException(new Error("InvalidFilterCondition", $"Invalid condition ({condition}) for string attribute filter.")),
+        };
 
         // Build null checks for navigation chain (e.g. x.Category != null && x.Category.Name != null)
         Expression? nullChecks = null;
-        foreach (var member in memberExpressions)
+        foreach (MemberExpression member in memberExpressions)
         {
-            var notNull = Expression.NotEqual(member, Expression.Constant(null, member.Type));
+            BinaryExpression notNull = Expression.NotEqual(member, Expression.Constant(null, member.Type));
             nullChecks = nullChecks is null ? notNull : Expression.AndAlso(nullChecks, notNull);
         }
 
@@ -200,9 +188,7 @@ internal class QuerySpecification<T>
 
     private void AddNumericWihtoutDecimalsExtraParamFilter(string attributeName, string condition, string stringValue)
     {
-        long value;
-
-        if (long.TryParse(stringValue, out value))
+        if (long.TryParse(stringValue, out long value))
         {
             switch (condition)
             {
@@ -234,7 +220,7 @@ internal class QuerySpecification<T>
 
     private static void GetFieldAndConditionFromExtraParamKey(string extraParamKey, out AttributeProperties? attributeProperties, out string condition)
     {
-        var conditionParts = extraParamKey.Split("__");
+        string[] conditionParts = extraParamKey.Split("__");
         string attributeName;
 
         if (conditionParts.Length > 1)

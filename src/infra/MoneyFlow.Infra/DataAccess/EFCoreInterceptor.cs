@@ -1,14 +1,38 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using MoneyFlow.Domain.Abstractions.Events;
+using SharedKernel.Abstractions;
 using SharedKernel.Entities;
 using SharedKernel.Exceptions;
 using SharedKernel.Services;
 
 namespace MoneyFlow.Infra.DataAccess;
 
-public class EFCoreInterceptor(IDateTimeProvider timeProvider) : SaveChangesInterceptor
+public class EFCoreInterceptor(IDateTimeProvider timeProvider, IDomainEventsDispatcher domainEvents) : SaveChangesInterceptor
 {
     private readonly IDateTimeProvider _timeProvider = timeProvider;
+    private readonly IDomainEventsDispatcher _domainEvents;
+
+    public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
+    {
+        if (eventData.Context is not null)
+            await PublishDomainEventsAsync(eventData.Context, cancellationToken);
+
+        return await base.SavedChangesAsync(eventData, result, cancellationToken);
+    }
+
+    private async Task PublishDomainEventsAsync(DbContext context, CancellationToken cancellationToken)
+    {
+        IEnumerable<IDomainEvent> domainEvents = context.ChangeTracker.Entries<BaseEntity>()
+            .Select(e => e.Entity)
+            .SelectMany(e => e.GetDomainEvents());
+
+        foreach (IDomainEvent domainEvent in domainEvents)
+        {
+            await _domainEvents.DispatchAsync([domainEvent], cancellationToken);
+        }
+    }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -44,9 +68,9 @@ public class EFCoreInterceptor(IDateTimeProvider timeProvider) : SaveChangesInte
         if (context is null)
             return;
 
-        var utcNow = _timeProvider.UtcNow;
+        DateTimeOffset utcNow = _timeProvider.UtcNow;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseEntity>()
+        foreach (EntityEntry<BaseEntity> entry in context.ChangeTracker.Entries<BaseEntity>()
             .Where(e => e.Entity is BaseEntity && (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)))
         {
 

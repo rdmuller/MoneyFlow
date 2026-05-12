@@ -20,34 +20,34 @@ internal class RegisterUserCommandHandler(
 
     public async Task<Result<Guid>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        var user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
+        Result<User> user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
 
         if (user.IsFailure)
             return Result.Failure<Guid>(user.Errors!);
 
-        var validationResult = await ValidateAsync(user.Value);
+        Result validationResult = await ValidateAsync(user.Value);
         if (validationResult.IsFailure)
             return Result.Failure<Guid>(validationResult.Errors!);
 
         await _userRepository.CreateAsync(user.Value, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<Guid>.Success(user.Value.ExternalId!.Value);
     }
 
     private async Task<Result> ValidateAsync(User user)
     {
-        var errors = await new UserValidator().ValidateWithErrorsAsync(user);
+        List<Error> errors = await new UserValidator().ValidateWithErrorsAsync(user);
 
         if (!string.IsNullOrWhiteSpace(user.Email.Value))
         {
-            var emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email.Value);
+            bool emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email.Value);
 
             if (emailExist)
                 errors.Add(Error.RecordAlreadyExists("E-mail already exists"));
         }
 
-        var passwordError = await new UserPasswordValidator().ValidateWithErrorsAsync(user.Password);
+        List<Error> passwordError = await new UserPasswordValidator().ValidateWithErrorsAsync(user.Password);
         if (passwordError.Count > 0)
             errors.AddRange(passwordError);
 

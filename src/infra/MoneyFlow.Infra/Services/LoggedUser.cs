@@ -12,11 +12,11 @@ public class LoggedUser(ITokenProvider tokenProvider, ApplicationDbContext dbCon
 
     public async Task<long> GetUserIdAsync()
     {
-        var token = _tokenProvider.TokenOnRequest();
-        var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-        var jwtToken = tokenHandler.ReadJwtToken(token);
+        string token = _tokenProvider.TokenOnRequest();
+        System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler tokenHandler = new();
+        System.IdentityModel.Tokens.Jwt.JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(token);
 
-        var userExternalId = jwtToken.Claims.First(jwtToken => jwtToken.Type == ClaimTypes.Sid).Value;
+        string userExternalId = jwtToken.Claims.First(jwtToken => jwtToken.Type == ClaimTypes.Sid).Value;
 
         return await _dbContext
             .Users

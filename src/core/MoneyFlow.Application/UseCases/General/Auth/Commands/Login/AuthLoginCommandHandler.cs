@@ -17,12 +17,12 @@ public class AuthLoginCommandHandler(
 
     public async Task<Result<TokenDTO>> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken = default)
     {
-        var user = await ValidateLogin(request);
+        Result<User> user = await ValidateLogin(request);
 
         if (user.IsFailure)
             return Result.Failure<TokenDTO>(user.Errors!);
 
-        var token = _accessTokenGenerator.GenerateAccessToken(user.Value);
+        TokenJwt token = _accessTokenGenerator.GenerateAccessToken(user.Value);
         return new TokenDTO
         {
             Token = token.Token,
@@ -37,7 +37,7 @@ public class AuthLoginCommandHandler(
          if (errors.Count > 0)
              return Result.Failure<User>(errors);*/
 
-        var user = await _userQueryRepository.GetByEmailAsync(new Email(request.Email));
+        User? user = await _userQueryRepository.GetByEmailAsync(new Email(request.Email));
 
         if (user is null)
             return Result.Failure<User>(Error.NotAuthorized("Invalid e-mail"));

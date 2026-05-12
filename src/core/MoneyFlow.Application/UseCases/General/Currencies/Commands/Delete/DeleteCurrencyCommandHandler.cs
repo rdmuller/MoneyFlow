@@ -15,12 +15,12 @@ internal class DeleteCurrencyCommandHandler(
 
     public async Task<Result> HandleAsync(DeleteCurrencyCommand request, CancellationToken cancellationToken = default)
     {
-        var currency = await _currencyWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Currency? currency = await _currencyWriteRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
         if (currency is null)
             return Result.Failure(Error.RecordNotFound("Currency not found."));
 
         _currencyWriteRepository.Delete(currency, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

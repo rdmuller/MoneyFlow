@@ -14,8 +14,8 @@ internal class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRep
 
     public async Task<Result<GetUserFullQueryDTO>> HandleAsync(GetLoggedUserProfileQuery request, CancellationToken cancellationToken = default)
     {
-        var userId = await _loggedUser.GetUserIdAsync();
-        var user = await _userQueryRepository.GetByIdAsync(userId);
+        long userId = await _loggedUser.GetUserIdAsync();
+        User? user = await _userQueryRepository.GetByIdAsync(userId);
         var userDTO = GetUserFullQueryDTO.EntityToDTO(user);
 
         return Result<GetUserFullQueryDTO>.Create(userDTO);

@@ -13,7 +13,7 @@ internal class CurrencyRepository : BaseRepository<Currency>, ICurrencyWriteRepo
     public async Task<BaseQueryResponse<IEnumerable<Currency>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
         Expression<Func<Currency, Currency>> selectorFields = c => new Currency(c.Id, c.Name, c.Symbol, c.Active, c.ExternalId);
-        var query = _dbContext.Currencies.AsNoTracking().AsQueryable();
+        IQueryable<Currency> query = _dbContext.Currencies.AsNoTracking().AsQueryable();
         var querySpecification = new QuerySpecification<Currency>(queryParams ?? new QueryParams());
 
         return await querySpecification.ExecuteQueryAsync(query, selectorFields: selectorFields, orderBy: c => c.Name, cancellationToken: cancellationToken);

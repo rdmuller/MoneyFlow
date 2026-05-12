@@ -14,7 +14,7 @@ internal class GetAllSectorsQueryHandler(ISectorReadRepository sectorReadReposit
 
     public async Task<Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>> HandleAsync(GetAllSectorsQuery request, CancellationToken cancellationToken = default)
     {
-        var sectors = await _sectorReadRepository.GetAllAsync(request.Query, cancellationToken);
+        BaseQueryResponse<IEnumerable<Sector>> sectors = await _sectorReadRepository.GetAllAsync(request.Query, cancellationToken);
 
         return Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>.Create(sectors.Adapt<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>());
     }

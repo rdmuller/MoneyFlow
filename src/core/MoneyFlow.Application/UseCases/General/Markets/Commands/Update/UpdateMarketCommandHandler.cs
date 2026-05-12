@@ -17,16 +17,16 @@ internal class UpdateMarketCommandHandler(
         if (request.ExternalId.HasValue == false)
             return Result.Failure(Error.RequiredFieldIsEmpty("Market id is required"));
 
-        var market = await _marketWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
+        Market? market = await _marketWriteRepository.GetByExternalIdAsync((Guid)request.ExternalId, cancellationToken);
         if (market is null)
             return Result.Failure(Error.RecordNotFound("Market not found"));
 
-        var result = market.Update(request.Name!, request.Active);
+        Result result = market.Update(request.Name!, request.Active);
         if (result.IsFailure)
             return Result.Failure(result.Errors!);
 
         _marketWriteRepository.Update(market, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

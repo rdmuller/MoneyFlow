@@ -13,14 +13,14 @@ internal sealed class DomainEventsDispatcher(IServiceProvider serviceProvider) :
 
     public async Task DispatchAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken = default)
     {
-        foreach (var domainEvent in domainEvents)
+        foreach (IDomainEvent domainEvent in domainEvents)
         {
             using IServiceScope scope = _serviceProvider.CreateScope();
             Type domainEventType = domainEvent.GetType();
             Type handlerType = HandlerTypeDictionary.GetOrAdd(domainEventType, eventType => typeof(IDomainEventHandler<>).MakeGenericType(eventType));
             IEnumerable<object?> handlers = scope.ServiceProvider.GetServices(handlerType);
 
-            foreach (var handler in handlers)
+            foreach (object handler in handlers)
             {
                 if (handler is null)
                     continue;

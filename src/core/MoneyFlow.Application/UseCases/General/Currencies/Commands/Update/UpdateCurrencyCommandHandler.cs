@@ -17,16 +17,16 @@ internal class UpdateCurrencyCommandHandler(
         if (!request.ExternalId.HasValue)
             return Result.Failure(Error.RequiredFieldIsEmpty("Currency is required"));
 
-        var currency = await _currencyWriteRepository.GetByExternalIdAsync(request.ExternalId.Value, cancellationToken);
+        Currency? currency = await _currencyWriteRepository.GetByExternalIdAsync(request.ExternalId.Value, cancellationToken);
         if (currency is null)
             return Result.Failure(Error.RecordNotFound("Currency not found"));
 
-        var result = currency.Update(request.Name!, request.Symbol!, request.Active);
+        Result result = currency.Update(request.Name!, request.Symbol!, request.Active);
         if (result.IsFailure)
             return Result.Failure(result.Errors!);
 
         _currencyWriteRepository.Update(currency, cancellationToken);
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

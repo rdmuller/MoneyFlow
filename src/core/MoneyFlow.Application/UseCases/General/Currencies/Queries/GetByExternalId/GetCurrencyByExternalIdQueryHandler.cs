@@ -14,7 +14,7 @@ internal class GetCurrencyByExternalIdQueryHandler(
 
     public async Task<Result<CurrencyQueryDTO>> HandleAsync(GetCurrencyByExternalIdQuery request, CancellationToken cancellationToken = default)
     {
-        var currency = await _currencyReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+        Currency? currency = await _currencyReadRepository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
 
         return Result<CurrencyQueryDTO>.Create(currency.Adapt<CurrencyQueryDTO>());
     }

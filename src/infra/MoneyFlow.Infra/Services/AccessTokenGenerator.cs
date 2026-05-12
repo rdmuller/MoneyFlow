@@ -35,7 +35,7 @@ public class AccessTokenGenerator(
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+        SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
         var token = new TokenJwt
         {
@@ -48,7 +48,7 @@ public class AccessTokenGenerator(
 
     private SymmetricSecurityKey SecurityKey()
     {
-        var key = Encoding.UTF8.GetBytes(_signinKey);
+        byte[] key = Encoding.UTF8.GetBytes(_signinKey);
 
         return new SymmetricSecurityKey(key);
     }
