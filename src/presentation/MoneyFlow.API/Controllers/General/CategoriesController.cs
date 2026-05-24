@@ -8,7 +8,7 @@ using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
-using SharedKernel.Abstractions;
+using Shared.Domain;
 using SharedKernel.Communications;
 using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;

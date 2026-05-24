@@ -1,5 +1,5 @@
-﻿using SharedKernel.Abstractions;
-using SharedKernel.Entities;
+﻿using Shared.Domain;
+using Shared.Domain.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Currencies;
 

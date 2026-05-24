@@ -1,4 +1,4 @@
-using SharedKernel.Abstractions;
+using Shared.Domain;
 using SharedKernel.Communications;
 
 namespace SharedKernel.Exceptions;

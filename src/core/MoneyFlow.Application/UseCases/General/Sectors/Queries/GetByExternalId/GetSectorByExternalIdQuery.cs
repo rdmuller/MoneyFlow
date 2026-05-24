@@ -1,5 +1,5 @@
 ﻿using MoneyFlow.Application.DTOs.General.Sectors;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 

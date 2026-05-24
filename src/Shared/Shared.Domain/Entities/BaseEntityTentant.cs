@@ -1,4 +1,4 @@
-namespace SharedKernel.Entities;
+namespace Shared.Domain.Entities;
 
 public abstract class BaseEntityTentant : BaseEntity
 {

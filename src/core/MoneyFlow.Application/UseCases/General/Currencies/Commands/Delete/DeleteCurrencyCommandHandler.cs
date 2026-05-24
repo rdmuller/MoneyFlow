@@ -1,7 +1,7 @@
 using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Currencies;
-using SharedKernel.Abstractions;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
+using Shared.Domain;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Commands.Delete;
 

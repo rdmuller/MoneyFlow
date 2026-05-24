@@ -1,13 +1,10 @@
-using SharedKernel.Abstractions;
-using SharedKernel.BusinessRules;
-using SharedKernel.Communications;
-using SharedKernel.Exceptions;
+using Shared.Domain.BusinessRules;
 
-namespace SharedKernel.Entities;
+namespace Shared.Domain.Entities;
 
 public abstract class BaseEntity
 {
-    private readonly List<IDomainEvent> _domainEvents = new();
+    private readonly List<DomainEvent> _domainEvents = new();
 
     protected BaseEntity()
     {
@@ -36,7 +33,7 @@ public abstract class BaseEntity
     {
         if (rule.IsBroken())
             return Result.Failure(rule!.Error!);
-            
+
         return Result.Success();
     }
 
@@ -60,9 +57,9 @@ public abstract class BaseEntity
     #endregion
 
     #region Domain Events
-    public IReadOnlyList<IDomainEvent> GetDomainEvents() => _domainEvents.ToList();
+    public IReadOnlyList<DomainEvent> GetDomainEvents() => _domainEvents.ToList();
     public void ClearDomainEvents() => _domainEvents.Clear();
-    protected void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+    protected void RaiseDomainEvent(DomainEvent domainEvent) => _domainEvents.Add(domainEvent);
     #endregion
 
 }

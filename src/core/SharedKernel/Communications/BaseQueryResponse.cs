@@ -1,4 +1,4 @@
-﻿using SharedKernel.Abstractions;
+﻿using Shared.Domain;
 using System.Text.Json.Serialization;
 
 namespace SharedKernel.Communications;

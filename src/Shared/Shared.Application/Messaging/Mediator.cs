@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace SharedKernel.Mediator;
+namespace Shared.Application.Messaging;
 
 public class Mediator(IServiceProvider serviceProvider) : IMediator
 {

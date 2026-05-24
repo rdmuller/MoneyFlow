@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MoneyFlow.Domain.Abstractions.Events;
-using SharedKernel.Abstractions;
-using SharedKernel.Entities;
-using SharedKernel.Exceptions;
-using SharedKernel.Services;
+using Shared.Application.Messaging;
 
 namespace MoneyFlow.Infra.DataAccess;
 

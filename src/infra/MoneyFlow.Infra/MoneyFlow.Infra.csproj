@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\MoneyFlow.Domain\MoneyFlow.Domain.csproj" />
-    <ProjectReference Include="..\..\core\SharedKernel\SharedKernel.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Infra\Shared.Infra.csproj" />
   </ItemGroup>
 
   <ItemGroup>

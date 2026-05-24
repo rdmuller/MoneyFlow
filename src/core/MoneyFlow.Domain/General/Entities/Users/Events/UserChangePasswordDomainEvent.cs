@@ -1,4 +1,4 @@
-﻿using SharedKernel.Abstractions;
+﻿using Shared.Domain;
 
 namespace MoneyFlow.Domain.General.Entities.Users.Events;
 

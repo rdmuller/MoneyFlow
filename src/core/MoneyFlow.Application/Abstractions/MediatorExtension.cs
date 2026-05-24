@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
 using System.Reflection;
 
 namespace MoneyFlow.Application.Abstractions;

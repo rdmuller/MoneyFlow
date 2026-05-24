@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.General.Auth;
 using MoneyFlow.Application.UseCases.General.Auth.Commands.Login;
-using SharedKernel.Abstractions;
+using Shared.Application.Messaging;
+using Shared.Domain;
 using SharedKernel.Communications;
-using SharedKernel.Mediator;
 
 namespace MoneyFlow.API.Controllers.General;
 

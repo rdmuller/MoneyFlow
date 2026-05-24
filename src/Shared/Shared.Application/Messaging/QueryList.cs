@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Communications;
 
-namespace SharedKernel.Mediator;
+namespace Shared.Application.Messaging;
 
 public abstract class QueryList<T> : IQuery<BaseQueryResponse<IReadOnlyList<T>>>
 {

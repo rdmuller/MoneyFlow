@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.Abstractions;
+﻿namespace Shared.Domain;
 
 public record Error(string Code, string Message)
 {

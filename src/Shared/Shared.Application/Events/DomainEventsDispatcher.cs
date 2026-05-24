@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.Domain.Abstractions.Events;
-using SharedKernel.Abstractions;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Messaging;
+using Shared.Domain;
 
-namespace MoneyFlow.Application.Common.Events;
+namespace Shared.Application.Events;
 
 internal sealed class DomainEventsDispatcher(IServiceProvider serviceProvider) : IDomainEventsDispatcher
 {

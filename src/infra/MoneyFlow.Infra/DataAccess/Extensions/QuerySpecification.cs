@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Abstractions;
+using Shared.Domain;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
 using static MoneyFlow.Infra.Helpers.AttributePropertiesCache;

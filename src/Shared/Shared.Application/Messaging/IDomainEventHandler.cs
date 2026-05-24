@@ -1,6 +1,6 @@
-﻿using SharedKernel.Abstractions;
+﻿using Shared.Domain;
 
-namespace MoneyFlow.Domain.Abstractions.Events;
+namespace Shared.Application.Messaging;
 
 public interface IDomainEventHandler<in T> where T : IDomainEvent
 {

@@ -2,8 +2,8 @@
 using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
-using SharedKernel.Abstractions;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
+using Shared.Domain;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.Update;
 

@@ -1,7 +1,6 @@
-﻿using SharedKernel.Communications;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace SharedKernel.Abstractions;
+namespace Shared.Domain;
 
 public class Result
 {
@@ -39,9 +38,9 @@ public class Result
         ? Success(value)
         : Failure<T>(Error.NullValue);
 
-    public static Result<BaseQueryResponse<IReadOnlyList<T>>> Create<T>(BaseQueryResponse<IReadOnlyList<T>> value) => value.TotalRows > 0
+    /*public static Result<BaseQueryResponse<IReadOnlyList<T>>> Create<T>(BaseQueryResponse<IReadOnlyList<T>> value) => value.TotalRows > 0
         ? Success(value)
-        : Failure<BaseQueryResponse<IReadOnlyList<T>>>(Error.NullValue);
+        : Failure<BaseQueryResponse<IReadOnlyList<T>>>(Error.NullValue);*/
 }
 
 public sealed class Result<T> : Result

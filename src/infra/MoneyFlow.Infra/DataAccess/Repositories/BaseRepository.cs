@@ -1,4 +1,4 @@
-﻿using SharedKernel.Entities;
+﻿using Shared.Domain.Entities;
 
 namespace MoneyFlow.Infra.DataAccess.Repositories;
 

@@ -20,6 +20,11 @@
   <Folder Name="/src/presentation/">
     <Project Path="src/presentation/MoneyFlow.API/MoneyFlow.API.csproj" />
   </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/Shared.Application/Shared.Application.csproj" />
+    <Project Path="src/Shared/Shared.Domain/Shared.Domain.csproj" />
+    <Project Path="src/Shared/Shared.Infra/Shared.Infra.csproj" />
+  </Folder>
   <Folder Name="/tests/" />
   <Project Path="docker-compose.dcproj">
     <Platform Project="AnyCPU" />

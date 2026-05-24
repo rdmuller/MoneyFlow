@@ -1,4 +1,4 @@
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Commands.Delete;
 

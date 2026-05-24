@@ -8,9 +8,9 @@ using MoneyFlow.Application.UseCases.General.Sectors.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Sectors.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
-using SharedKernel.Abstractions;
+using Shared.Application.Messaging;
+using Shared.Domain;
 using SharedKernel.Communications;
-using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MoneyFlow.API.Controllers.General;

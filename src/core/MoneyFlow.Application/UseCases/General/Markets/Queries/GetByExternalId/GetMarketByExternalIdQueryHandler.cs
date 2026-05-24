@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using MoneyFlow.Application.DTOs.General.Markets;
 using MoneyFlow.Domain.General.Entities.Markets;
-using SharedKernel.Abstractions;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
+using Shared.Domain;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 

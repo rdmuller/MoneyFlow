@@ -1,6 +1,6 @@
-﻿using SharedKernel.Abstractions;
+﻿using Shared.Domain;
 
-namespace SharedKernel.Mediator;
+namespace Shared.Application.Messaging;
 
 public interface ICommand<TRequest> : IRequest<Result<TRequest>>
 {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Application.Abstractions;
 using MoneyFlow.Application.Common.Events;
 using MoneyFlow.Application.Common.Mappings;
-using MoneyFlow.Domain.Abstractions.Events;
+using Shared.Application.Messaging;
 using System.Reflection;
 
 namespace MoneyFlow.Application;

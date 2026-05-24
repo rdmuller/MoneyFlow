@@ -2,9 +2,9 @@
 using MoneyFlow.Domain.Abstractions.DataAccess;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
+using Shared.Application.Messaging;
 using SharedKernel.Communications;
 using SharedKernel.Exceptions;
-using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 

@@ -2,8 +2,8 @@
 using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 using MoneyFlow.Domain.Tenant.Services;
-using SharedKernel.Abstractions;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
+using Shared.Domain;
 using System.Security.Claims;
 
 namespace MoneyFlow.API.Security;

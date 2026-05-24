@@ -1,5 +1,5 @@
 ﻿using MoneyFlow.Application.DTOs.General.Currencies;
-using SharedKernel.Mediator;
+using Shared.Application.Messaging;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 

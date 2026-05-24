@@ -1,6 +1,6 @@
-﻿using SharedKernel.Abstractions;
+﻿using Shared.Domain;
 
-namespace SharedKernel.Mediator;
+namespace Shared.Application.Messaging;
 
 public interface IQueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, Result<TResponse>>
     where TQuery : IQuery<TResponse>

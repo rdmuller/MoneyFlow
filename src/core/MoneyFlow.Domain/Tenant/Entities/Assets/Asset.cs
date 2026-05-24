@@ -1,8 +1,8 @@
 ﻿using MoneyFlow.Domain.General.Entities.Categories;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using MoneyFlow.Domain.Tenant.Entities.Wallets;
-using SharedKernel.Abstractions;
-using SharedKernel.Entities;
+using Shared.Domain;
+using Shared.Domain.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Assets;
 

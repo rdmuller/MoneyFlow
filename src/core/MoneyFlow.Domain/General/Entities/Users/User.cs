@@ -1,8 +1,8 @@
 using MoneyFlow.Domain.General.Entities.Users.Events;
 using MoneyFlow.Domain.General.Enums;
 using MoneyFlow.Domain.General.Security;
-using SharedKernel.Abstractions;
-using SharedKernel.Entities;
+using Shared.Domain;
+using Shared.Domain.Entities;
 
 namespace MoneyFlow.Domain.General.Entities.Users;
 

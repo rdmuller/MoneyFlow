@@ -1,9 +1,9 @@
 ﻿using Mapster;
 using MoneyFlow.Application.DTOs.General.Categories;
 using MoneyFlow.Domain.General.Entities.Categories;
-using SharedKernel.Abstractions;
+using Shared.Application.Messaging;
+using Shared.Domain;
 using SharedKernel.Communications;
-using SharedKernel.Mediator;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 

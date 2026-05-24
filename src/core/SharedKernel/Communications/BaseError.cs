@@ -1,5 +1,5 @@
-using SharedKernel.Abstractions;
 using System.Text.Json.Serialization;
+using Shared.Domain;
 
 namespace SharedKernel.Communications;
 

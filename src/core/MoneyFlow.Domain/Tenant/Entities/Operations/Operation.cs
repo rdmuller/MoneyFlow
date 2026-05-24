@@ -1,6 +1,6 @@
 ﻿using MoneyFlow.Domain.Tenant.Entities.Assets;
-using SharedKernel.Abstractions;
-using SharedKernel.Entities;
+using Shared.Domain;
+using Shared.Domain.Entities;
 
 namespace MoneyFlow.Domain.Tenant.Entities.Operations;
 

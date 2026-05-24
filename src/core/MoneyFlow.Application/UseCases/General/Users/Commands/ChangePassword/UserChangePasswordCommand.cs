@@ -1,5 +1,5 @@
-﻿using SharedKernel.Communications;
-using SharedKernel.Mediator;
+﻿using Shared.Application.Messaging;
+using SharedKernel.Communications;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 

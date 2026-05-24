@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.Application\Shared.Application.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Domain\Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Infra\Shared.Infra.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Update="SonarAnalyzer.CSharp" Version="10.24.0.138807" />
   </ItemGroup>
 </Project>

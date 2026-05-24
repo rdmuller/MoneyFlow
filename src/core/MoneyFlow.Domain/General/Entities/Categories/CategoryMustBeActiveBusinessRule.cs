@@ -1,6 +1,5 @@
-﻿using SharedKernel.Abstractions;
-using SharedKernel.BusinessRules;
-using SharedKernel.Communications;
+﻿using Shared.Domain;
+using Shared.Domain.BusinessRules;
 
 namespace MoneyFlow.Domain.General.Entities.Categories;
 

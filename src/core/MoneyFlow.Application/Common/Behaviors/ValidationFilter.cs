@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SharedKernel.Abstractions;
+using Shared.Domain;
 using SharedKernel.Exceptions;
 
 namespace MoneyFlow.Application.Common.Behaviors;
