@@ -13,8 +13,6 @@
     <Project Path="src/core/MoneyFlow.Application/MoneyFlow.Application.csproj" />
     <Project Path="src/core/MoneyFlow.Domain/MoneyFlow.Domain.csproj" />
     <Project Path="src/core/SharedKernel/SharedKernel.csproj" />
-  </Folder>
-  <Folder Name="/src/infra/">
     <Project Path="src/infra/MoneyFlow.Infra/MoneyFlow.Infra.csproj" />
   </Folder>
   <Folder Name="/src/presentation/">
@@ -24,6 +22,7 @@
     <Project Path="src/Shared/Shared.Application/Shared.Application.csproj" />
     <Project Path="src/Shared/Shared.Domain/Shared.Domain.csproj" />
     <Project Path="src/Shared/Shared.Infra/Shared.Infra.csproj" />
+    <Project Path="src/Shared/Shared.Presentation/Shared.Presentation.csproj" Id="e08a5383-4d8a-4e46-9fc7-d35bfad91d9f" />
   </Folder>
   <Folder Name="/tests/" />
   <Project Path="docker-compose.dcproj">

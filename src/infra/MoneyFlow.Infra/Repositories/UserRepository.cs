@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Users;
+using MoneyFlow.Infra.DataAccess;
 
-namespace MoneyFlow.Infra.DataAccess.Repositories;
+namespace MoneyFlow.Infra.Repositories;
 
 internal sealed class UserRepository : BaseRepository<User>, IUserWriteOnlyRepository, IUserReadRepository
 {

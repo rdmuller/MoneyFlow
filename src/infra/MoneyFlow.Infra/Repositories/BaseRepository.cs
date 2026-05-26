@@ -1,6 +1,7 @@
-﻿using Shared.Domain.Entities;
+﻿using MoneyFlow.Infra.DataAccess;
+using Shared.Domain.Entities;
 
-namespace MoneyFlow.Infra.DataAccess.Repositories;
+namespace MoneyFlow.Infra.Repositories;
 
 abstract internal class BaseRepository<T>(ApplicationDbContext dbContext) where T : BaseEntity
 {

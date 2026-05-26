@@ -12,10 +12,10 @@ using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using MoneyFlow.Domain.General.Services.Email;
 using MoneyFlow.Infra.DataAccess;
-using MoneyFlow.Infra.DataAccess.Repositories;
+using MoneyFlow.Infra.Repositories;
 using MoneyFlow.Infra.Services;
 using MoneyFlow.Infra.Settings;
-using SharedKernel.Services;
+using Shared.Application.Clock;
 
 namespace MoneyFlow.Infra;
 

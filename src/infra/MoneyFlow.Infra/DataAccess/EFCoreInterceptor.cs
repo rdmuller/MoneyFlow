@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Shared.Application.Clock;
+using Shared.Application.Exceptions;
 using Shared.Application.Messaging;
+using Shared.Domain;
+using Shared.Domain.Entities;
 
 namespace MoneyFlow.Infra.DataAccess;
 
@@ -20,11 +24,11 @@ public class EFCoreInterceptor(IDateTimeProvider timeProvider, IDomainEventsDisp
 
     private async Task PublishDomainEventsAsync(DbContext context, CancellationToken cancellationToken)
     {
-        IEnumerable<IDomainEvent> domainEvents = context.ChangeTracker.Entries<BaseEntity>()
+        IEnumerable<DomainEvent> domainEvents = context.ChangeTracker.Entries<BaseEntity>()
             .Select(e => e.Entity)
             .SelectMany(e => e.GetDomainEvents());
 
-        foreach (IDomainEvent domainEvent in domainEvents)
+        foreach (DomainEvent domainEvent in domainEvents)
         {
             await _domainEvents.DispatchAsync([domainEvent], cancellationToken);
         }
@@ -87,7 +91,5 @@ public class EFCoreInterceptor(IDateTimeProvider timeProvider, IDomainEventsDisp
                     break;
             }
         }
-
-        return;
     }
 }

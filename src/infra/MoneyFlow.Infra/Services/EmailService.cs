@@ -1,7 +1,7 @@
-﻿using MoneyFlow.Domain.General.Services.Email;
+﻿using System.Net.Mail;
+using MoneyFlow.Domain.General.Services.Email;
 using MoneyFlow.Infra.Settings;
-using SharedKernel.Exceptions;
-using System.Net.Mail;
+using Shared.Application.Exceptions;
 
 namespace MoneyFlow.Infra.Services;
 
@@ -36,7 +36,5 @@ internal class EmailService(EmailSettings emailSettings) : IEmailService
         };
 
         await client.SendMailAsync(email, cancellationToken);
-
-        return;
     }
 }

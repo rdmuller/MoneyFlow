@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Markets;
+using MoneyFlow.Infra.DataAccess;
 using MoneyFlow.Infra.DataAccess.Extensions;
-using SharedKernel.Communications;
+using Shared.Domain;
 
-namespace MoneyFlow.Infra.DataAccess.Repositories;
+namespace MoneyFlow.Infra.Repositories;
 
 internal sealed class MarketRepository : BaseRepository<Market>, IMarketReadRepository, IMarketWriteRepository
 {
-    public MarketRepository(ApplicationDbContext dbContext) : base(dbContext) {}
+    public MarketRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<BaseQueryResponse<IEnumerable<Market>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<Market>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
         System.Linq.Expressions.Expression<Func<Market, Market>> selectorFields = m => new Market(m.Id, m.Name, m.Active, m.ExternalId);
         IQueryable<Market> query = _dbContext.Markets.AsNoTracking().AsQueryable();
@@ -39,7 +40,7 @@ internal sealed class MarketRepository : BaseRepository<Market>, IMarketReadRepo
     async Task<Market?> IMarketReadRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => await _dbContext.Markets.AsNoTracking().FirstOrDefaultAsync(t => t.ExternalId.Equals(externalId), cancellationToken);
 
-    async Task<Market?> IMarketWriteRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken) 
+    async Task<Market?> IMarketWriteRepository.GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => await _dbContext.Markets.FirstOrDefaultAsync(t => t.ExternalId.Equals(externalId), cancellationToken);
 
 }

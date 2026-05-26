@@ -2,4 +2,7 @@
 
 namespace MoneyFlow.Domain.General.Entities.Users.Events;
 
-public sealed record UserChangePasswordDomainEvent(User User) : IDomainEvent;
+public sealed class UserChangePasswordDomainEvent(User user) : DomainEvent
+{
+    public User User { get; set; } = user;
+}

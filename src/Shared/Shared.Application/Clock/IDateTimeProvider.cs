@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.Services;
+﻿namespace Shared.Application.Clock;
 
 public interface IDateTimeProvider
 {

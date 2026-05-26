@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SharedKernel.Communications;
+namespace Shared.Domain;
 
 public class QueryParams
 {

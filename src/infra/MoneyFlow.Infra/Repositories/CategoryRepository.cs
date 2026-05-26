@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.General.Entities.Categories;
+using MoneyFlow.Infra.DataAccess;
 using MoneyFlow.Infra.DataAccess.Extensions;
-using SharedKernel.Communications;
+using Shared.Domain;
 
-namespace MoneyFlow.Infra.DataAccess.Repositories;
+namespace MoneyFlow.Infra.Repositories;
 
 internal sealed class CategoryRepository : BaseRepository<Category>, ICategoryReadRepository, ICategoryWriteRepository
 {
     public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<BaseQueryResponse<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default)
     {
         System.Linq.Expressions.Expression<Func<Category, Category>> selectorFields = m => new Category(m.Id, m.Name, m.Active, m.ExternalId);
         IQueryable<Category> query = _dbContext.Categories.AsNoTracking().OrderBy(c => c.Name).AsQueryable();

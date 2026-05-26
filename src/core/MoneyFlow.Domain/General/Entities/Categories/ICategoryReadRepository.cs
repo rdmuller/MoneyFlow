@@ -1,10 +1,10 @@
-﻿using SharedKernel.Communications;
+﻿using Shared.Domain;
 
 namespace MoneyFlow.Domain.General.Entities.Categories;
 
 public interface ICategoryReadRepository
 {
-    Task<BaseQueryResponse<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default);
+    Task<Result<IEnumerable<Category>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default);
 
     Task<Category?> GetByIdAsync(long id, CancellationToken cancellationToken);
 

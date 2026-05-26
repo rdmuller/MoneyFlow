@@ -1,8 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Shared.Application.Exceptions;
 using Shared.Domain;
-using SharedKernel.Communications;
-using SharedKernel.Exceptions;
 using static MoneyFlow.Infra.Helpers.AttributePropertiesCache;
 
 
@@ -49,7 +48,7 @@ internal class QuerySpecification<T>
         return query;
     }
 
-    public async Task<BaseQueryResponse<IEnumerable<T>>> ExecuteQueryAsync(
+    public async Task<Result<IEnumerable<T>>> ExecuteQueryAsync(
         IQueryable<T> query,
         bool addFilters = true,
         bool addPagination = true,
@@ -85,12 +84,7 @@ internal class QuerySpecification<T>
                 : await query.Select(selectorFields).ToListAsync(cancellationToken);
         }
 
-        return new BaseQueryResponse<IEnumerable<T>>
-        {
-            Data = resultQuery,
-            TotalRows = totalRows,
-            TotalPages = totalPages
-        };
+        return Result<IEnumerable<T>>.Create(resultQuery, new PaginationResult(totalRows, totalPages));
     }
 
     private void AddExtraParamsFilters(Dictionary<string, string> extraParams)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.API.APIs.Bindings;
-using SharedKernel.Communications;
+using Shared.Domain;
 
 namespace MoneyFlow.API.APIs.Models;
 

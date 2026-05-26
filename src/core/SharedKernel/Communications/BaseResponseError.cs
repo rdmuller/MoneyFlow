@@ -1,3 +1,4 @@
+using Shared.Application.Exceptions;
 using Shared.Domain;
 using System.ComponentModel;
 using System.Text.Json.Serialization;

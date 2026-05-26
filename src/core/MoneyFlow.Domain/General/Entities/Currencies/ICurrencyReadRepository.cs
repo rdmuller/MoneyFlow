@@ -1,4 +1,4 @@
-﻿using SharedKernel.Communications;
+﻿using Shared.Domain;
 
 namespace MoneyFlow.Domain.General.Entities.Currencies;
 
@@ -8,5 +8,5 @@ public interface ICurrencyReadRepository
 
     Task<Currency?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default);
 
-    Task<BaseQueryResponse<IEnumerable<Currency>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default);
+    Task<Result<IEnumerable<Currency>>> GetAllAsync(QueryParams? queryParams, CancellationToken cancellationToken = default);
 }

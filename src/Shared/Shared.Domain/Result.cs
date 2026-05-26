@@ -30,6 +30,8 @@ public class Result
 
     public static Result<T> Success<T>(T value) => new(value, true);
 
+    public static Result<T> Success<T>(T value, PaginationResult pagination) => new(value, true, (List<Error>?)null, pagination);
+
     public static Result<T> Failure<T>(Error error) => new(default!, false, error);
 
     public static Result<T> Failure<T>(List<Error> errors) => new(default!, false, errors);
@@ -38,23 +40,27 @@ public class Result
         ? Success(value)
         : Failure<T>(Error.NullValue);
 
-    /*public static Result<BaseQueryResponse<IReadOnlyList<T>>> Create<T>(BaseQueryResponse<IReadOnlyList<T>> value) => value.TotalRows > 0
-        ? Success(value)
-        : Failure<BaseQueryResponse<IReadOnlyList<T>>>(Error.NullValue);*/
+    public static Result<IEnumerable<T>> Create<T>(IEnumerable<T> value, PaginationResult pagination) => pagination.TotalRows > 0
+        ? Success(value, pagination)
+        : Failure<IEnumerable<T>>(Error.NullValue);
 }
 
 public sealed class Result<T> : Result
 {
     private readonly T? _value;
 
-    public Result(T? value, bool isSuccess, List<Error>? errors) : base(isSuccess, errors)
+    public PaginationResult? Pagination { get; }
+
+    public Result(T? value, bool isSuccess, List<Error>? errors, PaginationResult? pagination = null) : base(isSuccess, errors)
     {
         _value = value;
+        Pagination = pagination;
     }
 
-    public Result(T? value, bool isSuccess, Error? error = null) : base(isSuccess, error is not null ? [error] : null)
+    public Result(T? value, bool isSuccess, Error? error = null, PaginationResult? pagination = null) : base(isSuccess, error is not null ? [error] : null)
     {
         _value = value;
+        Pagination = pagination;
     }
 
     [NotNull]

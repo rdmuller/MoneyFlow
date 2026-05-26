@@ -1,6 +1,6 @@
 ﻿using Shared.Domain;
 
-namespace SharedKernel.Exceptions;
+namespace Shared.Application.Exceptions;
 
 public class NoContentException : BaseException
 {

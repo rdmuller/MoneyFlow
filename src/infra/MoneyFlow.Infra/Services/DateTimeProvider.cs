@@ -1,4 +1,4 @@
-using SharedKernel.Services;
+using Shared.Application.Clock;
 
 namespace MoneyFlow.Infra.Services;
 

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Shared.Domain;
 
-namespace SharedKernel.Communications;
+namespace Shared.Application.Exceptions;
 
 public class BaseError
 {

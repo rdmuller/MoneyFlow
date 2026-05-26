@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Shared.Application.Exceptions;
 using SharedKernel.Communications;
-using SharedKernel.Exceptions;
 using System.Net;
 
 namespace MoneyFlow.Application.Common.Behaviors;

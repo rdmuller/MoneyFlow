@@ -1,7 +1,7 @@
 using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
-using SharedKernel.Services;
+using Shared.Application.Clock;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

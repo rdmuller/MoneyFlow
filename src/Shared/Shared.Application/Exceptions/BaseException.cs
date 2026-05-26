@@ -1,7 +1,6 @@
 using Shared.Domain;
-using SharedKernel.Communications;
 
-namespace SharedKernel.Exceptions;
+namespace Shared.Application.Exceptions;
 
 public abstract class BaseException : Exception
 {

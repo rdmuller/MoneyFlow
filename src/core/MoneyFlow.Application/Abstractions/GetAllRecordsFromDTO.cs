@@ -1,5 +1,5 @@
 ﻿using Shared.Application.Messaging;
-using SharedKernel.Communications;
+using Shared.Domain;
 
 namespace MoneyFlow.Application.Abstractions;
 
