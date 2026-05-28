@@ -4,7 +4,7 @@ services:
     container_name: MoneyFlow.Api
     build:
       context: .
-      dockerfile: src/presentation/MoneyFlow.API/Dockerfile
+      dockerfile: src/core/MoneyFlow.Presentation/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=moneyflow-db;Port=5432;Database=moneyflow;Username=postgres;Password=postgres

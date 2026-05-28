@@ -1,12 +1,16 @@
-﻿namespace Shared.Presentation.ExtensionMethods;
+﻿using Shared.Domain;
+
+namespace Shared.Presentation.ExtensionMethods;
 
 public static class ResultExtensions
 {
-    public static IActionResult ToActionResult<T>(this Result<T> result)
+    public static TOut Match<TOut>(this Result result, Func<TOut> onSuccess, Func<Result, TOut> onFailure)
     {
-        if (result.IsSuccess)
-            return new OkObjectResult(result.Value);
+        return result.IsSuccess ? onSuccess() : onFailure(result);
+    }
 
-        return new BadRequestObjectResult(new BaseResponseError(result.Errors!));
+    public static TOut Match<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> onSuccess, Func<Result<TIn>, TOut> onFailure)
+    {
+        return result.IsSuccess ? onSuccess(result.Value) : onFailure(result);
     }
 }

@@ -1,5 +1,4 @@
 using Shared.Domain;
-using SharedKernel.Communications;
 
 namespace Shared.Application.Exceptions;
 
@@ -16,12 +15,12 @@ public class AuthorizationException : BaseException
     public static AuthorizationException NotAuthorized()
         => new AuthorizationException(Error.NotAuthorized("User not authorized"));
 
-    public static AuthorizationException InvalidToken() 
+    public static AuthorizationException InvalidToken()
         => new AuthorizationException(Error.NotAuthorized("Token is invalid"));
 
-    public static AuthorizationException TokenExpired() 
+    public static AuthorizationException TokenExpired()
         => new AuthorizationException(Error.NotAuthorized("Token is expired"));
 
-    public static AuthorizationException InvalidData(string errorMessage) 
+    public static AuthorizationException InvalidData(string errorMessage)
         => new AuthorizationException(Error.NotAuthorized(errorMessage));
 }

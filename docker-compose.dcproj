@@ -16,6 +16,6 @@
     <None Include=".dockerignore" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="src\presentation\MoneyFlow.API\MoneyFlow.API.csproj" />
+    <ProjectReference Include="src\core\MoneyFlow.Presentation\MoneyFlow.Presentation.csproj" />
   </ItemGroup>
 </Project>

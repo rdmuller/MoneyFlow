@@ -7,11 +7,13 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/core/">
     <Project Path="src/core/MoneyFlow.Application/MoneyFlow.Application.csproj" />
     <Project Path="src/core/MoneyFlow.Domain/MoneyFlow.Domain.csproj" />
+    <Project Path="src/core/MoneyFlow.Presentation/MoneyFlow.Presentation.csproj" Id="584add05-2266-4903-82f6-33da3f360298" />
     <Project Path="src/core/SharedKernel/SharedKernel.csproj" />
     <Project Path="src/infra/MoneyFlow.Infra/MoneyFlow.Infra.csproj" />
   </Folder>
