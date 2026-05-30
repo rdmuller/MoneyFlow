@@ -27,8 +27,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\core\MoneyFlow.Application\MoneyFlow.Application.csproj" />
 		<ProjectReference Include="..\..\core\SharedKernel\SharedKernel.csproj" />
+		<ProjectReference Include="..\..\infra\MoneyFlow.Infra\MoneyFlow.Infra.csproj" />
 		<ProjectReference Include="..\..\Shared\Shared.Presentation\Shared.Presentation.csproj" />
 	</ItemGroup>
 

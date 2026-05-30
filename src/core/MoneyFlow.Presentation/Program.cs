@@ -1,10 +1,10 @@
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using MoneyFlow.Application;
-using MoneyFlow.Application.Common.Behaviors;
 using MoneyFlow.Domain.General.Security;
+using MoneyFlow.Infra;
 using MoneyFlow.Presentation;
 using MoneyFlow.Presentation.Security;
 using OpenTelemetry.Logs;
@@ -12,13 +12,18 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
+using Shared.Application;
+using Shared.Presentation.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfra(builder.Configuration);
-builder.Services.AddDependencyInjectionApplication();
+Assembly[] applicationAssemblies = [MoneyFlow.Application.AssemblyReference.Assembly];
+
+builder.Services.AddApplication(applicationAssemblies);
+
 builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddMoneyFlowModule(builder.Configuration);
 builder.Services.AddDependencyInjectionAPI();
 
 builder.Services.AddControllers(options =>

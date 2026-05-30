@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\MoneyFlow.Domain\MoneyFlow.Domain.csproj" />
+    <ProjectReference Include="..\..\core\MoneyFlow.Application\MoneyFlow.Application.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.Infra\Shared.Infra.csproj" />
   </ItemGroup>
 

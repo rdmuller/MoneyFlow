@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -16,18 +17,37 @@ using MoneyFlow.Infra.Repositories;
 using MoneyFlow.Infra.Services;
 using MoneyFlow.Infra.Settings;
 using Shared.Application.Clock;
+using Shared.Application.Messaging;
 
 namespace MoneyFlow.Infra;
 
 public static class DependencyInjection
 {
-    public static void AddInfra(this IServiceCollection services, IConfiguration config)
+    public static void AddMoneyFlowModule(this IServiceCollection services, IConfiguration config)
     {
         AddDataBase(services, config);
         AddServices(services);
         AddRepositories(services);
         AddToken(services, config);
         AddEmail(services, config);
+        AddDomainEvents(services);
+    }
+
+    private static void AddDomainEvents(IServiceCollection services)
+    {
+        //services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
+
+        Type domainEventHandlerType = typeof(IDomainEventHandler<>);
+        var domainEventHandlers = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(type => !type.IsAbstract && !type.IsInterface)
+            .SelectMany(x => x.GetInterfaces(), (t, i) => new { Type = t, Interface = i })
+            .Where(t => t.Interface.IsGenericType && t.Interface.GetGenericTypeDefinition() == domainEventHandlerType);
+
+        foreach (var handler in domainEventHandlers)
+        {
+            services.AddTransient(handler.Interface, handler.Type);
+        }
     }
 
     private static void AddEmail(IServiceCollection services, IConfiguration config)

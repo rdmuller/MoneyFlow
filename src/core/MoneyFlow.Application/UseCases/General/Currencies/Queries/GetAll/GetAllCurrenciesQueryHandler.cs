@@ -1,9 +1,8 @@
-﻿using Mapster;
+﻿/*using Mapster;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Domain.General.Entities.Currencies;
 using Shared.Application.Messaging;
 using Shared.Domain;
-using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 
@@ -19,3 +18,4 @@ internal class GetAllCurrenciesQueryHandler(ICurrencyReadRepository currencyRead
         return Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>.Create(currencies.Adapt<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>());
     }
 }
+*/

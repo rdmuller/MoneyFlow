@@ -1,4 +1,4 @@
-﻿using Mapster;
+﻿/*using Mapster;
 using MoneyFlow.Application.DTOs.General.Markets;
 using MoneyFlow.Domain.General.Entities.Markets;
 using Shared.Application.Messaging;
@@ -19,3 +19,4 @@ internal class GetAllMarketsQueryHandler(IMarketReadRepository marketReadReposit
         return Result<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>>.Create(markets.Adapt<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>>());
     }
 }
+*/

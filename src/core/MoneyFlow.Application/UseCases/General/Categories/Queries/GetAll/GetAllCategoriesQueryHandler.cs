@@ -1,21 +1,21 @@
-﻿using Mapster;
+﻿/*using Mapster;
 using MoneyFlow.Application.DTOs.General.Categories;
 using MoneyFlow.Domain.General.Entities.Categories;
 using Shared.Application.Messaging;
 using Shared.Domain;
-using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 
 internal class GetAllCategoriesQueryHandler(ICategoryReadRepository categoryReadRepository)
-    : IQueryHandler<GetAllCategoriesQuery, BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>
+    : IQueryHandler<GetAllCategoriesQuery, IReadOnlyList<CategoryQueryDTO>>
 {
     private readonly ICategoryReadRepository _categoryReadRepository = categoryReadRepository;
 
-    public async Task<Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>> HandleAsync(GetAllCategoriesQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<IReadOnlyList<CategoryQueryDTO>>> HandleAsync(GetAllCategoriesQuery request, CancellationToken cancellationToken = default)
     {
-        BaseQueryResponse<IEnumerable<Category>> categories = await _categoryReadRepository.GetAllAsync(request.Query, cancellationToken);
+        Result<IEnumerable<Category>> categories = await _categoryReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        return Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>.Create(categories.Adapt<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>>());
+        return Result<IReadOnlyList<CategoryQueryDTO>>.Create(categories.Adapt<IReadOnlyList<CategoryQueryDTO>>());
     }
 }
+*/

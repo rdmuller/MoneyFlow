@@ -1,25 +1,29 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Shared.Application.Exceptions;
 using Shared.Domain;
-using SharedKernel.Exceptions;
 
-namespace MoneyFlow.Application.Common.Behaviors;
+namespace Shared.Presentation.Filters;
 
+/// <summary>
+/// Global validation filter using FluentValidation.
+/// Following Clean Architecture: Filters belong to Presentation layer, not Application.
+/// </summary>
 public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFilter
 {
     private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        // Obtém os argumentos da action (os comandos)
+        // Validates all action arguments using FluentValidation
         foreach (object? argument in context.ActionArguments.Values)
         {
-            if (argument == null)
+            if (argument is null)
             {
                 continue;
             }
 
-            // Obtém o validador para o tipo do argumento
+            // Gets the validator for the argument type
             Type validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType());
             var validator = _serviceProvider.GetService(validatorType) as IValidator;
 
@@ -40,7 +44,7 @@ public class ValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFi
             }
         }
 
-        // Continua a execução da action se a validação passar
+        // Continues action execution if validation passes
         await next();
     }
 }

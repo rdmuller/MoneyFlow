@@ -1,4 +1,4 @@
-﻿using Mapster;
+﻿/*using Mapster;
 using MoneyFlow.Application.DTOs.General.Sectors;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using Shared.Application.Messaging;
@@ -19,3 +19,4 @@ internal class GetAllSectorsQueryHandler(ISectorReadRepository sectorReadReposit
         return Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>.Create(sectors.Adapt<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>());
     }
 }
+*/
