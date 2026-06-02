@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Behaviours;
 using Shared.Application.Events;
 using Shared.Application.Messaging;
 
@@ -22,7 +23,8 @@ public static class DependencyInjection
                 .WithScopedLifetime()
         );
 
-        services.AddTransient<IMediator, Mediator>();
+        services.Decorate(typeof(ICommandHandler<,>), typeof(LoggingDecorator.CommandHandler<,>));
+
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
         services.AddValidatorsFromAssemblies(assemblies, includeInternalTypes: true);
 

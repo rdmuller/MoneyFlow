@@ -8,17 +8,17 @@ namespace MoneyFlow.Presentation.Controllers.General;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(IMediator mediator) : ControllerBase
+public class AuthController : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
     //[ProducesResponseType(typeof(BaseResponseError), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Login([FromBody] AuthLoginCommand authLoginCommand)
+    public async Task<IActionResult> Login(
+        [FromServices] ICommandHandler<AuthLoginCommand, TokenDTO> handler,
+        [FromBody] AuthLoginCommand authLoginCommand)
     {
-        Result<TokenDTO> result = await _mediator.SendAsync(authLoginCommand);
+        Result<TokenDTO> result = await handler.HandleAsync(authLoginCommand);
 
         if (result.IsSuccess)
             return Ok(result.Value);

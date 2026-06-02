@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 using MoneyFlow.Domain.Tenant.Services;
 using Shared.Application.Messaging;
 using Shared.Domain;
-using System.Security.Claims;
 
 namespace MoneyFlow.Presentation.Security;
 
-internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBearerEvents
+internal class JwtBearerEventsHandler(ITenantProvider tenantProvider, IQueryHandler<GetUserByExternalIdQuery, GetUserFullQueryDTO> queryUser) : JwtBearerEvents
 {
     private readonly ITenantProvider _tenantProvider = tenantProvider;
 
@@ -27,8 +27,8 @@ internal class JwtBearerEventsHandler(ITenantProvider tenantProvider) : JwtBeare
             return;
         }
 
-        IMediator mediator = context.HttpContext.RequestServices.GetRequiredService<IMediator>();
-        Result<GetUserFullQueryDTO> userDTO = await mediator.SendAsync(new GetUserByExternalIdQuery(userExternalId));
+        //IMediator mediator = context.HttpContext.RequestServices.GetRequiredService<IMediator>();
+        Result<GetUserFullQueryDTO> userDTO = await queryUser.HandleAsync(new GetUserByExternalIdQuery(userExternalId));
         if (userDTO.IsFailure || userDTO.Value is null)
         {
             context.Fail("Invalid token user");
