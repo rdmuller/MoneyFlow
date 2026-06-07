@@ -14,6 +14,9 @@ services:
       - OTEL_EXPORTER_OTLP_HEADERS=x-otlp-api-key=meu-token-secreto-fixo-xyz123
     depends_on:
       - moneyflow-db
+    ports:
+      - 5000:8080
+      - 5001:8081
 
   moneyflow-db:
     image: postgres:latest
@@ -35,9 +38,18 @@ services:
       #- Dashboard__Frontend__AuthMode=BrowserToken
       #- Dashboard__Frontend__BrowserToken=admin123
       - DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS=true
-
       # Proteção OTLP (já está correta)
       - DASHBOARD__OTLP__AUTHMODE=ApiKey
       - DASHBOARD__OTLP__PRIMARYAPIKEY=meu-token-secreto-fixo-xyz123
     ports:
       - 18888:18888
+
+  moneyflow.seq:
+    image: datalust/seq:2025.2
+    container_name: MoneyFlow.Seq
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_NOAUTHENTICATION=true # local dev only
+    ports:
+      - 5341:5341
+      - 8081:80

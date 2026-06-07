@@ -12,10 +12,16 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
+using Serilog;
 using Shared.Application;
 using Shared.Presentation.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
+    loggerConfig.ReadFrom.Configuration(context.Configuration);
+});
 
 Assembly[] applicationAssemblies = [MoneyFlow.Application.AssemblyReference.Assembly];
 
@@ -98,6 +104,8 @@ builder.Services.AddOpenTelemetry()
 
 
 WebApplication app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
