@@ -5,7 +5,6 @@ using MoneyFlow.Application.DTOs.General.Markets;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Delete;
 using MoneyFlow.Application.UseCases.General.Markets.Commands.Update;
-using MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Markets.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
 using Shared.Application.Messaging;
@@ -31,9 +30,10 @@ public class MarketsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        Result<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>> result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = queryParams });
+        //Result<BaseQueryResponse<IReadOnlyList<MarketQueryDTO>>> result = await _mediator.SendAsync(new GetAllMarketsQuery { Query = queryParams });
 
-        return result.IsSuccess ? Ok(result.Value) : NoContent();
+        //return result.IsSuccess ? Ok(result.Value) : NoContent();
+        return Ok(queryParams);
     }
 
 

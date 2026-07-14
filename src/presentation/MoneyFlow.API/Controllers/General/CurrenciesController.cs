@@ -5,7 +5,6 @@ using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Create;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Delete;
 using MoneyFlow.Application.UseCases.General.Currencies.Commands.Update;
-using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Currencies.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
 using Shared.Application.Messaging;
@@ -31,9 +30,11 @@ public class CurrenciesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>> result = await _mediator.SendAsync(new GetAllCurrenciesQuery { Query = queryParams });
+        /*Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>> result = await _mediator.SendAsync(new GetAllCurrenciesQuery { Query = queryParams });
 
         return result.IsSuccess ? Ok(result.Value) : NoContent();
+        */
+        return Ok(queryParams);
     }
 
     [HttpGet("{externalId}")]

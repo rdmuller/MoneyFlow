@@ -31,9 +31,11 @@ public class SectorsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>> result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
+        /*Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>> result = await _mediator.SendAsync(new GetAllSectorsQuery { Query = queryParams });
 
         return result.IsSuccess ? Ok(result.Value) : NoContent();
+        */
+        return Ok(queryParams);
     }
 
     [HttpGet("{externalId}")]

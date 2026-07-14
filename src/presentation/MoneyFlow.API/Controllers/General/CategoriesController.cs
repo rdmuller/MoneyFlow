@@ -8,9 +8,9 @@ using MoneyFlow.Application.UseCases.General.Categories.Commands.Update;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetAll;
 using MoneyFlow.Application.UseCases.General.Categories.Queries.GetByExternalId;
 using MoneyFlow.Domain.General.Enums;
+using Shared.Application.Messaging;
 using Shared.Domain;
 using SharedKernel.Communications;
-using SharedKernel.Mediator;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MoneyFlow.API.Controllers.General;
@@ -31,9 +31,10 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll([FromQuery] BoundQueryParams queryParams)
     {
-        Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>> result = await _mediator.SendAsync(new GetAllCategoriesQuery { Query = queryParams });
+        // Result<BaseQueryResponse<IReadOnlyList<CategoryQueryDTO>>> result = await _mediator.SendAsync(new GetAllCategoriesQuery { Query = queryParams });
 
-        return result.IsSuccess ? Ok(result.Value) : NoContent();
+        // return result.IsSuccess ? Ok(result.Value) : NoContent();
+        return Ok(queryParams);
     }
 
 
