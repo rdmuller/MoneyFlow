@@ -5,6 +5,10 @@
 **/.gitignore
 **/.project
 **/.settings
+.containers
+.containers/**
+**/.containers
+**/.containers/**
 **/.toolstarget
 **/.vs
 **/.vscode

@@ -13,12 +13,12 @@ internal static class ValidationDecorator
          : ICommandHandler<TCommand, TResponse>
         where TCommand : ICommand<TResponse>
     {
-        public async Task<Result<TResponse>> HandleAsync(TCommand command, CancellationToken cancellationToken = default)
+        public async Task<Result<TResponse>> HandleAsync(TCommand request, CancellationToken cancellationToken = default)
         {
-            ValidationFailure[] validationFailures = await ValidateAsync(command, validators);
+            ValidationFailure[] validationFailures = await ValidateAsync(request, validators);
 
             if (validationFailures.Length == 0)
-                return await innerHandler.HandleAsync(command, cancellationToken);
+                return await innerHandler.HandleAsync(request, cancellationToken);
 
             return Result.Failure<TResponse>(CreateValidationError(validationFailures));
         }
@@ -30,12 +30,12 @@ internal static class ValidationDecorator
          : ICommandHandler<TCommand>
         where TCommand : ICommand
     {
-        public async Task<Result> HandleAsync(TCommand command, CancellationToken cancellationToken = default)
+        public async Task<Result> HandleAsync(TCommand request, CancellationToken cancellationToken = default)
         {
-            ValidationFailure[] validationFailures = await ValidateAsync(command, validators);
+            ValidationFailure[] validationFailures = await ValidateAsync(request, validators);
 
             if (validationFailures.Length == 0)
-                return await innerHandler.HandleAsync(command, cancellationToken);
+                return await innerHandler.HandleAsync(request, cancellationToken);
 
             return Result.Failure(CreateValidationError(validationFailures));
         }

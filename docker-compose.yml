@@ -28,7 +28,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./.containers/database:/var/lib/postgresql
+      - moneyflow-db-data:/var/lib/postgresql
  
   moneyflow.dashboard:
     image: mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest
@@ -53,3 +53,6 @@ services:
     ports:
       - 5341:5341
       - 8081:80
+
+volumes:
+  moneyflow-db-data:

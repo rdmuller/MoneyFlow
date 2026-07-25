@@ -1,3 +1,10 @@
+/*
+
+
+ESTE PROJETO SERÃ DESCONTINUADO
+
+
+*/
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,7 +40,7 @@ builder.Services.AddMoneyFlowModule(builder.Configuration);
 
 builder.Services.AddControllers(options =>
 {
-    //options.ModelBinderProviders.Insert(0, new QueryParamsBinderProvider()); // se ficar assim, não é necessário adicionar no modelo, ex: QueryParamsBinder
+    //options.ModelBinderProviders.Insert(0, new QueryParamsBinderProvider()); // se ficar assim, nï¿½o ï¿½ necessï¿½rio adicionar no modelo, ex: QueryParamsBinder
     options.Filters.Add<ValidationFilter>();
     options.Filters.Add<ExceptionFilter>();
 });

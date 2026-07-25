@@ -11,31 +11,31 @@ internal class RegisterUserCommandHandler(
     IUserWriteOnlyRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserReadRepository userQueryRepository,
-    IPasswordHasher passwordHasher) : ICommandHandler<RegisterUserCommand, Guid>
+    IPasswordHasher passwordHasher) : ICommandHandler<RegisterUserCommand, string>
 {
     private readonly IUserWriteOnlyRepository _userRepository = userRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
 
-    public async Task<Result<Guid>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
+    public async Task<Result<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
         Result<User> user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
 
         if (user.IsFailure)
-            return Result.Failure<Guid>(user.Errors!);
+            return Result.Failure<string>(user.Errors!);
 
-        Result validationResult = await ValidateAsync(user.Value);
+        Result validationResult = await ValidateAsync(user.Value, request.Password);
         if (validationResult.IsFailure)
-            return Result.Failure<Guid>(validationResult.Errors!);
+            return Result.Failure<string>(validationResult.Errors!);
 
         await _userRepository.CreateAsync(user.Value, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<Guid>.Success(user.Value.ExternalId!.Value);
+        return Result<string>.Success(user.Value.ExternalId!.Value.ToString());
     }
 
-    private async Task<Result> ValidateAsync(User user)
+    private async Task<Result> ValidateAsync(User user, string? password = "")
     {
         List<Error> errors = await new UserValidator().ValidateWithErrorsAsync(user);
 
@@ -47,7 +47,7 @@ internal class RegisterUserCommandHandler(
                 errors.Add(Error.RecordAlreadyExists("E-mail already exists"));
         }
 
-        List<Error> passwordError = await new UserPasswordValidator().ValidateWithErrorsAsync(user.Password);
+        List<Error> passwordError = await new UserPasswordValidator().ValidateWithErrorsAsync(password);
         if (passwordError.Count > 0)
             errors.AddRange(passwordError);
 

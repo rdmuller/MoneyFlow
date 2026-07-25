@@ -6,5 +6,5 @@ public interface IUserWriteOnlyRepository
 
     void Update(User user, CancellationToken cancellationToken = default);
 
-    Task<User> GetUserByIdAsync(long userId, CancellationToken cancellationToken = default);
+    Task<User?> GetUserByIdAsync(long userId, CancellationToken cancellationToken = default);
 }

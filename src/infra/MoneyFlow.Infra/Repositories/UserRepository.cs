@@ -14,12 +14,12 @@ internal sealed class UserRepository : BaseRepository<User>, IUserWriteOnlyRepos
     public async Task<bool> ExistUserWithEmailAsync(string email, CancellationToken cancellationToken = default)
         => await _dbContext.Users.AsNoTracking().AnyAsync(u => u.Email.Equals(email), cancellationToken);
 
-    async Task<User> IUserReadRepository.GetByIdAsync(long userId, CancellationToken cancellationToken)
-        => await _dbContext.Users.AsNoTracking().FirstAsync(u => u.Id.Equals(userId), cancellationToken);
+    public async Task<User?> GetByIdAsync(long userId, CancellationToken cancellationToken = default)
+        => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
 
-    async Task<User> IUserWriteOnlyRepository.GetUserByIdAsync(long userId, CancellationToken cancellationToken)
-        => await _dbContext.Users.FirstAsync(u => u.Id.Equals(userId), cancellationToken);
+    public async Task<User?> GetUserByIdAsync(long userId, CancellationToken cancellationToken = default)
+        => await _dbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
 
-    public async Task<User> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default)
-        => await _dbContext.Users.AsNoTracking().FirstAsync(u => u.ExternalId.Equals(externalId), cancellationToken);
+    public async Task<User?> GetByExternalIdAsync(Guid externalId, CancellationToken cancellationToken = default)
+        => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.ExternalId.Equals(externalId), cancellationToken);
 }

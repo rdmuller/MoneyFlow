@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: MoneyFlow Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/src/core/MoneyFlow.Presentation/MoneyFlow.Presentation.csproj",
+            "preLaunchTask": "docker-compose-up"
+        }
+    ]
+}
