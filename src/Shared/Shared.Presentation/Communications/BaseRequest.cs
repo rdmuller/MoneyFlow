@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SharedKernel.Communications;
+namespace Shared.Presentation.Communications;
 
 public class BaseRequest<T>
 {

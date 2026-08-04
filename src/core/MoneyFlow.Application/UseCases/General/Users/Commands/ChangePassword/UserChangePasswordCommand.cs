@@ -1,11 +1,11 @@
 ﻿using Shared.Application.Messaging;
-using SharedKernel.Communications;
+using Shared.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 
-public class UserChangePasswordCommand : IRequest<BaseResponse<string>>
+public class UserChangePasswordCommand : IRequest<Result>
 {
     [JsonPropertyName("old_password")]
     [Required]

@@ -3,7 +3,6 @@ using MoneyFlow.Application.DTOs.General.Markets;
 using MoneyFlow.Domain.General.Entities.Markets;
 using Shared.Application.Messaging;
 using Shared.Domain;
-using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Markets.Queries.GetAll;
 

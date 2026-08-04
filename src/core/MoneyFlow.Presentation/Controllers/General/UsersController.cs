@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 using Shared.Application.Messaging;
 using Shared.Domain;
-using SharedKernel.Communications;
+using Shared.Presentation.Communications;
 
 namespace MoneyFlow.Presentation.Controllers.General;
 
@@ -22,7 +22,7 @@ public class UsersController : ControllerBase
         Result<string> result = await handler.HandleAsync(command.Data);
 
         if (result.IsFailure)
-            return BadRequest(result.Errors);
+            return BadRequest(BaseResponse<string>.CreateErrorResponse(result.Errors!));
 
         return Created("", BaseResponse<string>.CreateNewObjectIdResponse(result.Value));
     }

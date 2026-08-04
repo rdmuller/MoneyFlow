@@ -20,7 +20,7 @@ internal class RegisterUserCommandHandler(
 
     public async Task<Result<string>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        Result<User> user = User.Create(request.Name, new Email(request.Email), request.Password, _passwordHasher);
+        Result<User> user = User.Create(request.Name ?? string.Empty, new Email(request.Email ?? string.Empty), request.Password, _passwordHasher);
 
         if (user.IsFailure)
             return Result.Failure<string>(user.Errors!);

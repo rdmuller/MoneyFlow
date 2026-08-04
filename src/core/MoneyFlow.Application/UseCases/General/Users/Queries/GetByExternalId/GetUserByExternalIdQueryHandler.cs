@@ -2,7 +2,6 @@
 using MoneyFlow.Domain.General.Entities.Users;
 using Shared.Application.Messaging;
 using Shared.Domain;
-using SharedKernel.Communications;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetByExternalId;
 

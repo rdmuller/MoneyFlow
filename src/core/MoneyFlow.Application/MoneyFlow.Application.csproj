@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.Application\Shared.Application.csproj" />
     <ProjectReference Include="..\MoneyFlow.Domain\MoneyFlow.Domain.csproj" />
-    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

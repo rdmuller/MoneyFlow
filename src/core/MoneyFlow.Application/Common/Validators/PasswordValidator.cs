@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace MoneyFlow.Application.Common.Validators;
 
-public partial class PasswordValidator<T> : PropertyValidator<T, string>
+public partial class PasswordValidator<T> : PropertyValidator<T, string?>
 {
     public override string Name => "PasswordValidator";
 
@@ -15,7 +15,7 @@ public partial class PasswordValidator<T> : PropertyValidator<T, string>
         return $"{{{ERROR_CODE}}}";
     }
 
-    public override bool IsValid(ValidationContext<T> context, string password)
+    public override bool IsValid(ValidationContext<T> context, string? password)
     {
         if (string.IsNullOrWhiteSpace(password)
             || password.Length < 8
@@ -24,7 +24,7 @@ public partial class PasswordValidator<T> : PropertyValidator<T, string>
             || !Numbers().IsMatch(password)
             || !SpecialSymbols().IsMatch(password))
         {
-            context.MessageFormatter.AppendArgument(ERROR_CODE, "Password must contain 8 characters, upper/lower case letters, numbers and special characters"); // Senha deve conter 8 caracteres, letras maiúsculas/minúsculas, números e caracteres especiais.
+            context.MessageFormatter.AppendArgument(ERROR_CODE, "Password must contain 8 characters, upper/lower case letters, numbers and special characters"); // Senha deve conter 8 caracteres, letras maiï¿½sculas/minï¿½sculas, nï¿½meros e caracteres especiais.
             return false;
         }
 

@@ -1,9 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using SharedKernel.Abstractions;
 
-namespace SharedKernel.Communications;
+namespace Shared.Presentation.Communications;
 
-public class BaseQueryResponse<T> : BaseResponseGeneric<T>
+public class BaseQueryResponse<T> : BaseResponse<T>
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("total_pages")]
