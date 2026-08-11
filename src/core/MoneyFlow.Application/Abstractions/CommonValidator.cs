@@ -9,7 +9,7 @@ public abstract class CommonValidator<T> : AbstractValidator<T>
 {
     public async Task<List<Error>> ValidateWithErrorsAsync(T context, CancellationToken cancellation = default)
     {
-        ValidationResult result = await base.ValidateAsync(context, cancellation);
+        ValidationResult result = await ValidateAsync(context, cancellation);
 
         if (result.IsValid)
             return new List<Error>();
