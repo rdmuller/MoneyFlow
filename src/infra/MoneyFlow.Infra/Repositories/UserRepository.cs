@@ -11,7 +11,7 @@ internal sealed class UserRepository : BaseRepository<User>, IUserWriteOnlyRepos
     public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
         => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(email), cancellationToken);
 
-    public async Task<bool> ExistUserWithEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistUserWithEmailAsync(Email email, CancellationToken cancellationToken = default)
         => await _dbContext.Users.AsNoTracking().AnyAsync(u => u.Email.Equals(email), cancellationToken);
 
     public async Task<User?> GetByIdAsync(long userId, CancellationToken cancellationToken = default)

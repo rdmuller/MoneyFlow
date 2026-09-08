@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MoneyFlow.Application.DTOs.General.Users;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Register;
+using MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 using Shared.Application.Messaging;
 using Shared.Domain;
 using Shared.Presentation.Communications;
@@ -22,8 +23,19 @@ public class UsersController : ControllerBase
         Result<string> result = await handler.HandleAsync(command.Data);
 
         if (result.IsFailure)
-            return BadRequest(BaseResponse<string>.CreateErrorResponse(result.Errors!));
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
 
         return Created("", BaseResponse<string>.CreateNewObjectIdResponse(result.Value));
+    }
+
+    [HttpGet("profile")]
+    [ProducesResponseType(typeof(BaseResponse<GetUserFullQueryDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetProfile(
+        [FromServices] IQueryHandler<GetLoggedUserProfileQuery, GetUserFullQueryDTO> handler)
+    {
+        Result<GetUserFullQueryDTO> result = await handler.HandleAsync(new GetLoggedUserProfileQuery());
+
+        return result.IsSuccess ? Ok(BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
     }
 }

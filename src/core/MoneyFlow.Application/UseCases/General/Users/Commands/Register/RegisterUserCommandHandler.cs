@@ -41,7 +41,7 @@ internal class RegisterUserCommandHandler(
 
         if (!string.IsNullOrWhiteSpace(user.Email.Value))
         {
-            bool emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email.Value);
+            bool emailExist = await _userQueryRepository.ExistUserWithEmailAsync(user.Email);
 
             if (emailExist)
                 errors.Add(Error.RecordAlreadyExists("E-mail already exists"));

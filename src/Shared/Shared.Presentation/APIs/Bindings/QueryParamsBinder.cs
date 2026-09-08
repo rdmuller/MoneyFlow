@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MoneyFlow.Presentation.APIs.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Shared.Presentation.APIs.Models;
 
-namespace MoneyFlow.Presentation.APIs.Bindings;
+namespace Shared.Presentation.APIs.Bindings;
 
 public class QueryParamsBinder : IModelBinder
 {

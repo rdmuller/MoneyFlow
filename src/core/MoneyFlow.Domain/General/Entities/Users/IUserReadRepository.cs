@@ -4,7 +4,7 @@ public interface IUserReadRepository
 {
     Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default);
 
-    Task<bool> ExistUserWithEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<bool> ExistUserWithEmailAsync(Email email, CancellationToken cancellationToken = default);
 
     Task<User?> GetByIdAsync(long userId, CancellationToken cancellationToken = default);
 

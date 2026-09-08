@@ -19,7 +19,7 @@ public class BaseResponse<T>
     public IEnumerable<BaseError>? Errors { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("object_i/d")]
+    [JsonPropertyName("object_id")]
     public object? ObjectId { get; set; }
 
     public static BaseResponse<T> CreateSuccessResponse(T? data, object? objectId = null) => new BaseResponse<T>
@@ -36,11 +36,6 @@ public class BaseResponse<T>
     public static BaseResponse<T> CreateFailureResponse(List<Error> errors) => new BaseResponse<T>
     {
         Errors = errors.Select(e => BaseError.CreateError(e)).ToList()
-    };
-
-    public static BaseResponse<T> CreateErrorResponse(IEnumerable<BaseError> errors) => new BaseResponse<T>
-    {
-        Errors = errors
     };
 
     public static BaseResponse<T> CreateErrorResponse(Error error) => new BaseResponse<T>{

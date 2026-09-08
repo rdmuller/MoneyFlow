@@ -6,7 +6,7 @@ using Shared.Domain;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 
-internal class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRepository, ILoggedUser loggedUser)
+internal sealed class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRepository, ILoggedUser loggedUser)
     : IQueryHandler<GetLoggedUserProfileQuery, GetUserFullQueryDTO>
 {
     private readonly IUserReadRepository _userQueryRepository = userQueryRepository;
@@ -15,9 +15,11 @@ internal class GetLoggedUserProfileQueryHandler(IUserReadRepository userQueryRep
     public async Task<Result<GetUserFullQueryDTO>> HandleAsync(GetLoggedUserProfileQuery request, CancellationToken cancellationToken = default)
     {
         long userId = await _loggedUser.GetUserIdAsync();
-        User? user = await _userQueryRepository.GetByIdAsync(userId);
-        var userDTO = GetUserFullQueryDTO.EntityToDTO(user);
+        User? user = await _userQueryRepository.GetByIdAsync(userId, cancellationToken);
 
-        return Result<GetUserFullQueryDTO>.Create(userDTO);
+        if (user is null)
+            return (Result<GetUserFullQueryDTO>)Result<GetUserFullQueryDTO>.Failure(Error.RecordNotFound("Profile cannot be accessed"));
+
+        return Result.Create(GetUserFullQueryDTO.EntityToDTO(user));
     }
 }
