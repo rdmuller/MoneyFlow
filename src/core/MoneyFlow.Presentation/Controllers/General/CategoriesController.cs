@@ -24,6 +24,7 @@ public class CategoriesController : ControllerBase
         Summary = "Get list",
         Description = "Retorna lista de categorias"
     )]
+    [Authorize(Policy = Roles.ADMIN_OR_USER)]
     [ProducesResponseType(typeof(BaseQueryResponse<IEnumerable<CategoryQueryDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAll(
@@ -40,6 +41,7 @@ public class CategoriesController : ControllerBase
         Summary = "Get by id",
         Description = "Retorna todos os dados de uma categoria"
     )]
+    [Authorize(Policy = Roles.ADMIN_OR_USER)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(BaseResponse<CategoryQueryDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(
