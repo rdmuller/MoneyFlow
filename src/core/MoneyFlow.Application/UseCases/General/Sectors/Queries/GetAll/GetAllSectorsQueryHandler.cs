@@ -1,4 +1,4 @@
-﻿/*using Mapster;
+using Mapster;
 using MoneyFlow.Application.DTOs.General.Sectors;
 using MoneyFlow.Domain.General.Entities.Sectors;
 using Shared.Application.Messaging;
@@ -6,16 +6,22 @@ using Shared.Domain;
 
 namespace MoneyFlow.Application.UseCases.General.Sectors.Queries.GetAll;
 
-internal class GetAllSectorsQueryHandler(ISectorReadRepository sectorReadRepository)
-    : IQueryHandler<GetAllSectorsQuery, BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>
+internal sealed class GetAllSectorsQueryHandler(ISectorReadRepository sectorReadRepository)
+    : IQueryHandler<GetAllSectorsQuery, IReadOnlyList<SectorQueryDTO>>
 {
     private readonly ISectorReadRepository _sectorReadRepository = sectorReadRepository;
 
-    public async Task<Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>> HandleAsync(GetAllSectorsQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<IReadOnlyList<SectorQueryDTO>>> HandleAsync(GetAllSectorsQuery request, CancellationToken cancellationToken = default)
     {
-        BaseQueryResponse<IEnumerable<Sector>> sectors = await _sectorReadRepository.GetAllAsync(request.Query, cancellationToken);
+        Result<IEnumerable<Sector>> sectors = await _sectorReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        return Result<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>.Create(sectors.Adapt<BaseQueryResponse<IReadOnlyList<SectorQueryDTO>>>());
+        if (sectors.IsFailure)
+            return Result.Failure<IReadOnlyList<SectorQueryDTO>>(sectors.Errors!);
+
+        IReadOnlyList<SectorQueryDTO> dtos = sectors.Value.Adapt<IReadOnlyList<SectorQueryDTO>>();
+
+        return sectors.Pagination is not null
+            ? Result.Success(dtos, sectors.Pagination)
+            : Result.Success(dtos);
     }
 }
-*/

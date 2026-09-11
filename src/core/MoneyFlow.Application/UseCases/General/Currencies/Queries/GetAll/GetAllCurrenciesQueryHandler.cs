@@ -1,4 +1,4 @@
-﻿/*using Mapster;
+using Mapster;
 using MoneyFlow.Application.DTOs.General.Currencies;
 using MoneyFlow.Domain.General.Entities.Currencies;
 using Shared.Application.Messaging;
@@ -6,16 +6,22 @@ using Shared.Domain;
 
 namespace MoneyFlow.Application.UseCases.General.Currencies.Queries.GetAll;
 
-internal class GetAllCurrenciesQueryHandler(ICurrencyReadRepository currencyReadRepository)
-    : IQueryHandler<GetAllCurrenciesQuery, BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>
+internal sealed class GetAllCurrenciesQueryHandler(ICurrencyReadRepository currencyReadRepository)
+    : IQueryHandler<GetAllCurrenciesQuery, IReadOnlyList<CurrencyQueryDTO>>
 {
     private readonly ICurrencyReadRepository _currencyReadRepository = currencyReadRepository;
 
-    public async Task<Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>> HandleAsync(GetAllCurrenciesQuery request, CancellationToken cancellationToken = default)
+    public async Task<Result<IReadOnlyList<CurrencyQueryDTO>>> HandleAsync(GetAllCurrenciesQuery request, CancellationToken cancellationToken = default)
     {
-        BaseQueryResponse<IEnumerable<Currency>> currencies = await _currencyReadRepository.GetAllAsync(request.Query, cancellationToken);
+        Result<IEnumerable<Currency>> currencies = await _currencyReadRepository.GetAllAsync(request.Query, cancellationToken);
 
-        return Result<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>.Create(currencies.Adapt<BaseQueryResponse<IReadOnlyList<CurrencyQueryDTO>>>());
+        if (currencies.IsFailure)
+            return Result.Failure<IReadOnlyList<CurrencyQueryDTO>>(currencies.Errors!);
+
+        IReadOnlyList<CurrencyQueryDTO> dtos = currencies.Value.Adapt<IReadOnlyList<CurrencyQueryDTO>>();
+
+        return currencies.Pagination is not null
+            ? Result.Success(dtos, currencies.Pagination)
+            : Result.Success(dtos);
     }
 }
-*/
