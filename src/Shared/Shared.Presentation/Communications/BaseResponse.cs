@@ -15,12 +15,27 @@ public class BaseResponse<T>
     public string? Message { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("total_pages")]
+    public long? TotalPages { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("total_rows")]
+    public long? TotalRows { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("errors")]
     public IEnumerable<BaseError>? Errors { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("object_id")]
     public object? ObjectId { get; set; }
+
+    public static BaseResponse<T> CreatePaginatedResponse(Result<T> result) => new BaseResponse<T>
+    {
+        Data = result.Value,
+        TotalPages = result.Pagination?.TotalPages,
+        TotalRows = result.Pagination?.TotalRows,
+    };
 
     public static BaseResponse<T> CreateSuccessResponse(T? data, object? objectId = null) => new BaseResponse<T>
     {

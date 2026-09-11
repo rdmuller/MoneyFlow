@@ -32,7 +32,7 @@ public class CategoriesController : ControllerBase
     {
         Result<IReadOnlyList<CategoryQueryDTO>> result = await handler.HandleAsync(new GetAllCategoriesQuery { Query = queryParams });
 
-        return result.IsSuccess ? Ok(result.Value) : NoContent();
+        return result.IsSuccess ? Ok(BaseResponse<IReadOnlyList<CategoryQueryDTO>>.CreatePaginatedResponse(result)) : NoContent();
     }
 
     [HttpGet("{externalId}")]

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Domain;
 
-namespace Shared.Presentation.ApiResult;
+namespace Shared.Presentation.Results;
 
 internal static class ApiResults
 {
@@ -10,6 +10,6 @@ internal static class ApiResults
         if (result.IsSuccess)
             throw new InvalidOperationException();
 
-        return Results.Problem();
+        return Microsoft.AspNetCore.Http.Results.Problem();
     }
 }
