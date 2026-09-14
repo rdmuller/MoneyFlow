@@ -69,10 +69,10 @@ internal static class LoggingDecorator
     }
 
     internal sealed class QueryHandler<TQuery, TResponse>(
-        ICommandHandler<TQuery, TResponse> innerHandler,
+        IQueryHandler<TQuery, TResponse> innerHandler,
         ILogger<QueryHandler<TQuery, TResponse>> logger)
-        : ICommandHandler<TQuery, TResponse>
-        where TQuery : ICommand<TResponse>
+        : IQueryHandler<TQuery, TResponse>
+        where TQuery : IQuery<TResponse>
     {
         public async Task<Result<TResponse>> HandleAsync(TQuery request, CancellationToken cancellationToken = default)
         {

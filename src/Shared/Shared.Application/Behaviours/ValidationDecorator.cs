@@ -42,10 +42,10 @@ internal static class ValidationDecorator
     }
 
     internal sealed class QueryHandler<TQuery, TResponse>(
-        ICommandHandler<TQuery, TResponse> innerHandler,
+        IQueryHandler<TQuery, TResponse> innerHandler,
         IEnumerable<IValidator<TQuery>> validators)
-         : ICommandHandler<TQuery, TResponse>
-        where TQuery : ICommand<TResponse>
+         : IQueryHandler<TQuery, TResponse>
+        where TQuery : IQuery<TResponse>
     {
         public async Task<Result<TResponse>> HandleAsync(TQuery query, CancellationToken cancellationToken = default)
         {

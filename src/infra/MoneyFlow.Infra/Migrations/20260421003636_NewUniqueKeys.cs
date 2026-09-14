@@ -16,11 +16,6 @@ public partial class NewUniqueKeys : Migration
             table: "sectors");
 
         migrationBuilder.DropIndex(
-            name: "imarket2",
-            schema: "app",
-            table: "markets");
-
-        migrationBuilder.DropIndex(
             name: "icurrency2",
             schema: "app",
             table: "currencies");
