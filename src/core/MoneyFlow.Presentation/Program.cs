@@ -34,7 +34,7 @@ builder.Services.AddDependencyInjectionAPI();
 
 builder.Services.AddControllers(options =>
 {
-    //options.ModelBinderProviders.Insert(0, new QueryParamsBinderProvider()); // se ficar assim, não é necessário adicionar no modelo, ex: QueryParamsBinder
+    //options.ModelBinderProviders.Insert(0, new QueryParamsBinderProvider()); // se ficar assim, nï¿½o ï¿½ necessï¿½rio adicionar no modelo, ex: QueryParamsBinder
     options.Filters.Add<ValidationFilter>();
     options.Filters.Add<ExceptionFilter>();
 });
@@ -82,12 +82,18 @@ builder.Services.AddSwaggerGen(config =>
 });
 
 # region Observability
+string otelEndpoint = builder.Configuration["Settings:Observability:OtelEndpoint"];
+
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(r => r.AddService(nameof(MoneyFlow.Presentation)))
-    .WithMetrics(m => m
-        .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation()
-        .AddOtlpExporter())
+    .WithMetrics(m =>
+    {
+        m.AddAspNetCoreInstrumentation()
+         .AddHttpClientInstrumentation();
+
+        if (!string.IsNullOrWhiteSpace(otelEndpoint))
+            m.AddOtlpExporter(opt => opt.Endpoint = new Uri(otelEndpoint));
+    })
     .WithTracing(tracing =>
     {
         tracing
@@ -95,7 +101,9 @@ builder.Services.AddOpenTelemetry()
             .AddHttpClientInstrumentation()
             .AddEntityFrameworkCoreInstrumentation()
             .AddOtlpExporter();
-        tracing.AddOtlpExporter();
+
+        if (!string.IsNullOrWhiteSpace(otelEndpoint))
+            tracing.AddOtlpExporter(opt => opt.Endpoint = new Uri(otelEndpoint));
         //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://moneyflow.dashboard:18889"))
         //.AddOtlpExporter(opt => opt.Endpoint = new Uri("http://otel-collector:4317"))
     });

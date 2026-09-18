@@ -11,7 +11,7 @@ public class UserChangePasswordCommandHandler(
     ILoggedUser loggedUser,
     IUserWriteOnlyRepository userWriteOnlyRepository,
     IUnitOfWork unitOfWork,
-    IPasswordHasher passwordHasher) : IRequestHandler<UserChangePasswordCommand, Result>
+    IPasswordHasher passwordHasher) : ICommandHandler<UserChangePasswordCommand>
 {
     private readonly ILoggedUser _loggedUser = loggedUser;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository = userWriteOnlyRepository;
@@ -35,7 +35,6 @@ public class UserChangePasswordCommandHandler(
         Console.WriteLine($"User {userId} changed password at {DateTime.UtcNow}");
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        //await _domainEvents.DispatchAsync([new UserChangePasswordDomainEvent(user)], cancellationToken);
 
         return Result.Success();
     }

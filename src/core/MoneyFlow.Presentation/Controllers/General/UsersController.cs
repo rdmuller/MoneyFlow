@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoneyFlow.Application.DTOs.General.Users;
+using MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 using MoneyFlow.Application.UseCases.General.Users.Commands.Register;
 using MoneyFlow.Application.UseCases.General.Users.Queries.GetLoggedUserProfile;
 using Shared.Application.Messaging;
@@ -37,5 +38,18 @@ public class UsersController : ControllerBase
         Result<GetUserFullQueryDTO> result = await handler.HandleAsync(new GetLoggedUserProfileQuery());
 
         return result.IsSuccess ? Ok(BaseResponse<GetUserFullQueryDTO>.CreateSuccessResponse(result.Value)) : NoContent();
+    }
+
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword(
+        [FromServices] ICommandHandler<UserChangePasswordCommand> handler,
+        [FromBody] BaseRequest<UserChangePasswordCommand> command)
+    {
+        Result result = await handler.HandleAsync(command.Data);
+
+        if (result.IsFailure)
+            return BadRequest(BaseResponse<string>.CreateFailureResponse(result.Errors!));
+
+        return Ok(BaseResponse<string>.CreateSuccessResponse("Password changed successfully"));
     }
 }

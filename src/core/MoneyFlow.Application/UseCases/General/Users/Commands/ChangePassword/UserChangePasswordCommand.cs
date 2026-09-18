@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 
-public class UserChangePasswordCommand : IRequest<Result>
+public sealed class UserChangePasswordCommand : ICommand
 {
     [JsonPropertyName("old_password")]
     [Required]

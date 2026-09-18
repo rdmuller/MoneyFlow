@@ -43,6 +43,7 @@ services:
       - DASHBOARD__OTLP__PRIMARYAPIKEY=meu-token-secreto-fixo-xyz123
     ports:
       - 18888:18888
+      - 18889:18889
 
   moneyflow.seq:
     image: datalust/seq:2025.2
