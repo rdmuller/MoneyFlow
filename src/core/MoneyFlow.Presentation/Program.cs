@@ -14,7 +14,7 @@ using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using Serilog;
 using Shared.Application;
-using Shared.Presentation.Filters;
+using Shared.Presentation.Behaviours;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -32,12 +32,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddMoneyFlowModule(builder.Configuration);
 builder.Services.AddDependencyInjectionAPI();
 
-builder.Services.AddControllers(options =>
-{
-    //options.ModelBinderProviders.Insert(0, new QueryParamsBinderProvider()); // se ficar assim, n�o � necess�rio adicionar no modelo, ex: QueryParamsBinder
-    options.Filters.Add<ValidationFilter>();
-    options.Filters.Add<ExceptionFilter>();
-});
+builder.Services.AddControllersWithBehaviours();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 
