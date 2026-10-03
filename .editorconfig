@@ -345,6 +345,9 @@ dotnet_diagnostic.CS8618.severity = none
 
 # IDE Code Analyzers rules
 
+# IDE0005: Remove unnecessary usings
+dotnet_diagnostic.IDE0005.severity = warning
+
 # IDE0046: Convert to conditional expression
 dotnet_diagnostic.IDE0046.severity = none
 
