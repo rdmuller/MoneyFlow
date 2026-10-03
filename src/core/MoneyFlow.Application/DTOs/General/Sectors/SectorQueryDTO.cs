@@ -1,5 +1,5 @@
-﻿using MoneyFlow.Application.DTOs.General.Categories;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using MoneyFlow.Application.DTOs.General.Categories;
 
 namespace MoneyFlow.Application.DTOs.General.Sectors;
 

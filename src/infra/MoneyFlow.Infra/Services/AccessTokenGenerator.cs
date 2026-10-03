@@ -1,10 +1,10 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MoneyFlow.Domain.General.Entities.Users;
 using MoneyFlow.Domain.General.Security;
 using Shared.Application.Clock;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace MoneyFlow.Infra.Services;
 

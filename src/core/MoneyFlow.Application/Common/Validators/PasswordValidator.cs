@@ -1,6 +1,6 @@
+using System.Text.RegularExpressions;
 using FluentValidation;
 using FluentValidation.Validators;
-using System.Text.RegularExpressions;
 
 namespace MoneyFlow.Application.Common.Validators;
 

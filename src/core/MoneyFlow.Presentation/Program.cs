@@ -15,6 +15,7 @@ using Scalar.AspNetCore;
 using Serilog;
 using Shared.Application;
 using Shared.Presentation.Behaviours;
+using Shared.Presentation.Endpoints;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddMoneyFlowModule(builder.Configuration);
 builder.Services.AddDependencyInjectionAPI();
 
 builder.Services.AddControllersWithBehaviours();
+builder.Services.AddEndpoints(typeof(Program).Assembly);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
@@ -132,5 +134,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.MapEndpoints();
 
 app.Run();

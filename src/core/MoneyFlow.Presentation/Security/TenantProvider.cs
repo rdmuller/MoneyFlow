@@ -1,5 +1,4 @@
-﻿using MoneyFlow.Domain.General.Security;
-using MoneyFlow.Domain.Tenant.Services;
+﻿using MoneyFlow.Domain.Tenant.Services;
 
 namespace MoneyFlow.Presentation.Security;
 

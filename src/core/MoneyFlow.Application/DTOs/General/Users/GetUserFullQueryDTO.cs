@@ -1,5 +1,5 @@
-﻿using MoneyFlow.Domain.General.Entities.Users;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using MoneyFlow.Domain.General.Entities.Users;
 
 namespace MoneyFlow.Application.DTOs.General.Users;
 

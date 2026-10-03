@@ -1,7 +1,6 @@
-﻿using Shared.Application.Messaging;
-using Shared.Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Shared.Application.Messaging;
 
 namespace MoneyFlow.Application.UseCases.General.Users.Commands.ChangePassword;
 
